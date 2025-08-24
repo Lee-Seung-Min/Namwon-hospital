@@ -1,0 +1,411 @@
+<html class="">
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <style>
+            * {
+                font-family: "Inter", sans-serif;
+            }
+            ::-webkit-scrollbar {
+                display: none;
+            }
+            .submenu {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-in-out;
+            }
+
+            .submenu.active {
+                max-height: 500px;
+            }
+
+            .arrow {
+                transition: transform 0.3s ease-in-out;
+            }
+
+            .arrow.rotated {
+                transform: rotate(90deg);
+            }
+        </style>
+    </head>
+
+    <body class="h-full text-base-content">
+        <!-- Header -->
+        <header class="bg-white border-b border-neutral-200 px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <i class="fa-solid fa-hospital text-2xl text-neutral-700"></i>
+                    <h1 class="text-xl text-neutral-900">병원 관리 시스템</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <img
+                            src="https://api.dicebear.com/7.x/notionists/svg?scale=200&seed=789"
+                            class="w-8 h-8 rounded-full"
+                        />
+                        <span class="text-sm text-neutral-700">김의사</span>
+                    </div>
+                    <button class="px-3 py-1 text-sm text-neutral-600 hover:text-neutral-900">
+                        <i class="fa-solid fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="h-full flex">
+            <!-- 사이드바 -->
+            <aside id="sidebar" class="w-64 bg-neutral-50 border-r border-neutral-200 p-6">
+                <nav class="space-y-2">
+                    <!-- 일정 관리 -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('schedule-submenu')"
+                            class="flex items-center justify-between px-3 py-2 bg-neutral-900 text-white rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-calendar-days"></i>
+                                <span>일정 관리</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="schedule-arrow"></i>
+                        </span>
+                        <div id="schedule-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="main.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-clock"></i>
+                                <span>월별 일정</span>
+                            </a>
+                            <a
+                                href="weeklySchedule.html"
+                                class="flex items-center space-x-3 px-3 py-2 bg-neutral-100 text-neutral-900 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-calendar-week"></i>
+                                <span>주간 일정</span>
+                            </a>
+                            <a
+                                href="appointmentManage.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-user-clock"></i>
+                                <span>예약 관리</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 환자 관리 -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('patient-submenu')"
+                            class="flex items-center justify-between px-3 py-2 text-neutral-700 hover:bg-neutral-200 rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-users"></i>
+                                <span>환자 관리</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="patient-arrow"></i>
+                        </span>
+                        <div id="patient-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="patientList.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-list"></i>
+                                <span>환자 목록</span>
+                            </a>
+                            <!-- <a href="new-patient.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-user-plus"></i>
+                            <span>신규 환자 등록</span>
+                        </a>
+                        <a href="patient-search.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <span>환자 검색</span>
+                        </a> -->
+                        </div>
+                    </div>
+
+                    <!-- 진료 기록 (현재 활성화된 메뉴) -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('record-submenu')"
+                            class="flex items-center justify-between px-3 py-2 text-neutral-700 hover:bg-neutral-200 rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-users"></i>
+                                <span>진료 기록</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="patient-arrow"></i>
+                        </span>
+                        <div id="record-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="patientDgnsLst.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-file-lines"></i>
+                                <span>환자별 진료 기록</span>
+                            </a>
+                            <!-- <a href="today-records.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-calendar-day"></i>
+                            <span>오늘 진료 기록</span>
+                        </a> -->
+                            <!-- <a href="search-records.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-search"></i>
+                            <span>기록 검색</span>
+                        </a> -->
+                            <!-- <a href="diagnosis-history.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-history"></i>
+                            <span>진단 이력</span>
+                        </a> -->
+                            <!-- <a href="prescription-manage.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-pills"></i>
+                            <span>처방 관리</span>
+                        </a> -->
+                        </div>
+                    </div>
+
+                    <!-- 통계 -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('stats-submenu')"
+                            class="flex items-center justify-between px-3 py-2 text-neutral-700 hover:bg-neutral-200 rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-chart-bar"></i>
+                                <span>통계</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="stats-arrow"></i>
+                        </span>
+                        <div id="stats-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="patient-stats.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-user-chart"></i>
+                                <span>진료 통계</span>
+                            </a>
+                            <a
+                                href="revenue-stats.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-won-sign"></i>
+                                <span>결제 현황</span>
+                            </a>
+                            <a
+                                href="disease-stats.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-chart-pie"></i>
+                                <span>정산 현황</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 설정 -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('settings-submenu')"
+                            class="flex items-center justify-between px-3 py-2 text-neutral-700 hover:bg-neutral-200 rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-cog"></i>
+                                <span>설정</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="settings-arrow"></i>
+                        </span>
+                        <div id="settings-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="profile-settings.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-user-gear"></i>
+                                <span>병원 정보 설정</span>
+                            </a>
+                            <a
+                                href="clinic-settings.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-hospital"></i>
+                                <span>병원 시간 설정</span>
+                            </a>
+                            <!-- <a href="system-settings.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-sliders"></i>
+                            <span>시스템 설정</span>
+                        </a> -->
+                            <a
+                                href="backup-settings.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-database"></i>
+                                <span>-</span>
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- Weekly Calendar -->
+            <section class="flex-1 p-6">
+                <div class="mb-6">
+                    <h2 class="text-2xl text-neutral-900 mb-4">주간 진료 일정</h2>
+                    <div class="flex items-center space-x-4 mb-6">
+                        <div class="flex-1">
+                            <div class="relative">
+                                <i
+                                    class="fa-solid fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400"
+                                ></i>
+                                <input
+                                    type="text"
+                                    placeholder="환자명으로 검색"
+                                    class="w-full pl-10 pr-4 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-500"
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <input
+                                type="date"
+                                value="2025-01-15"
+                                class="px-4 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-500"
+                            />
+                        </div>
+                        <button class="px-4 py-2 bg-neutral-900 text-white rounded-md hover:bg-neutral-800">
+                            <i class="fa-solid fa-plus mr-2"></i>
+                            새 예약
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-neutral-200 rounded-lg">
+                    <div class="flex items-center justify-between p-4 border-b border-neutral-200">
+                        <button class="p-2 hover:bg-neutral-100 rounded-md">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+                        <h3 class="text-lg text-neutral-900">2025년 1월 12일 ~ 1월 18일</h3>
+                        <button class="p-2 hover:bg-neutral-100 rounded-md">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+
+                    <!-- Time Table -->
+                    <div id="timetable" class="overflow-x-auto"></div>
+                </div>
+
+                <!-- 주 단위 진료일 설정 -->
+                <!-- <div class="mt-6 bg-white border border-neutral-200 rounded-lg p-4">
+                <h3 class="text-lg text-neutral-900 mb-4">주 단위 진료일 설정</h3>
+
+                <div class="flex flex-wrap gap-2 mb-4">
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" class="w-4 h-4 text-neutral-900 border-neutral-300 rounded">
+                        <span>월</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" class="w-4 h-4 text-neutral-900 border-neutral-300 rounded">
+                        <span>화</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" class="w-4 h-4 text-neutral-900 border-neutral-300 rounded">
+                        <span>수</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" class="w-4 h-4 text-neutral-900 border-neutral-300 rounded">
+                        <span>목</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" class="w-4 h-4 text-neutral-900 border-neutral-300 rounded">
+                        <span>금</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" class="w-4 h-4 text-neutral-900 border-neutral-300 rounded">
+                        <span>토</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" class="w-4 h-4 text-neutral-900 border-neutral-300 rounded">
+                        <span>일</span>
+                    </label>
+                </div>
+
+                <div class="flex items-center space-x-4 mb-4">
+                    <div>
+                        <label class="block text-sm text-neutral-700 mb-1">진료 시작 시간</label>
+                        <input type="time" class="px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-neutral-700 mb-1">진료 종료 시간</label>
+                        <input type="time" class="px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-500">
+                    </div>
+                </div>
+
+                <button class="px-4 py-2 bg-neutral-900 text-white rounded-md hover:bg-neutral-800">
+                    저장
+                </button>
+            </div> -->
+            </section>
+
+            <!-- Appointment Sidebar -->
+            <aside class="w-80 bg-neutral-50 border-l border-neutral-200 p-6">
+                <h4 class="text-lg text-neutral-900 mb-3">빠른 통계</h4>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-neutral-600">오늘 예약</span>
+                        <span>8건</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-neutral-600">이번 주</span>
+                        <span>42건</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-neutral-600">이번 달</span>
+                        <span>186건</span>
+                    </div>
+                </div>
+
+                <h4 class="text-lg text-neutral-900 mt-6 mb-3">예약 상세</h4>
+                <div id="appointment-detail" class="space-y-3 text-sm text-neutral-600">
+                    환자를 클릭하면 상세 정보가 표시됩니다.
+                </div>
+            </aside>
+        </main>
+
+        <!-- 외부 JS 파일 -->
+        <script src="weeklySchedule.js"></script>
+    </body>
+    <script>
+        function toggleSubmenu(submenuId) {
+            const submenu = document.getElementById(submenuId);
+            const arrow = document.getElementById(submenuId.replace("-submenu", "-arrow"));
+
+            // 현재 서브메뉴가 열려있는지 확인
+            const isActive = submenu.classList.contains("active");
+
+            // 모든 서브메뉴 닫기
+            const allSubmenus = document.querySelectorAll(".submenu");
+            const allArrows = document.querySelectorAll(".arrow");
+
+            allSubmenus.forEach((menu) => menu.classList.remove("active"));
+            allArrows.forEach((arr) => arr.classList.remove("rotated"));
+
+            // 클릭한 서브메뉴가 닫혀있었다면 열기
+            if (!isActive) {
+                submenu.classList.add("active");
+                arrow.classList.add("rotated");
+            }
+        }
+
+        // 페이지 로드 시 현재 활성화된 메뉴의 서브메뉴 열기 (진료 기록)
+        document.addEventListener("DOMContentLoaded", function () {
+            toggleSubmenu("schedule-submenu");
+        });
+    </script>
+</html>

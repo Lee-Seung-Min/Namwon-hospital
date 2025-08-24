@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <title>진료 완료</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        />
+        <style>
+            * {
+                font-family: "Inter", sans-serif;
+            }
+            ::-webkit-scrollbar {
+                display: none;
+            }
+            html,
+            body {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            .submenu {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-in-out;
+            }
+            .submenu.active {
+                max-height: 500px;
+            }
+            .arrow {
+                transition: transform 0.3s ease-in-out;
+            }
+            .arrow.rotated {
+                transform: rotate(90deg);
+            }
+        </style>
+    </head>
+    <body class="h-full text-base-content bg-neutral-50">
+        <header id="header" class="bg-white border-b border-neutral-200 px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <i class="fa-solid fa-hospital text-2xl text-neutral-700"></i>
+                    <h1 class="text-xl text-neutral-900">병원 관리 시스템</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <img
+                            src="https://api.dicebear.com/7.x/notionists/svg?scale=200&seed=789"
+                            alt="User Avatar"
+                            class="w-8 h-8 rounded-full"
+                        />
+                        <span class="text-sm text-neutral-700">김의사</span>
+                    </div>
+                    <button class="px-3 py-1 text-sm text-neutral-600 hover:text-neutral-900">
+                        <i class="fa-solid fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex">
+            <!-- 사이드바 -->
+            <aside id="sidebar" class="w-64 bg-neutral-50 border-r border-neutral-200 p-6">
+                <nav class="space-y-2">
+                    <!-- 일정 관리 -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('schedule-submenu')"
+                            class="flex items-center justify-between px-3 py-2 text-neutral-700 hover:bg-neutral-200 rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-calendar-days"></i>
+                                <span>일정 관리</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="schedule-arrow"></i>
+                        </span>
+                        <div id="schedule-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="main.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-clock"></i>
+                                <span>월별 일정</span>
+                            </a>
+                            <a
+                                href="weeklySchedule.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-calendar-week"></i>
+                                <span>주간 일정</span>
+                            </a>
+                            <a
+                                href="appointmentManage.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-user-clock"></i>
+                                <span>예약 관리</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 환자 관리 -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('patient-submenu')"
+                            class="flex items-center justify-between px-3 py-2 text-neutral-700 hover:bg-neutral-200 rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-users"></i>
+                                <span>환자 관리</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="patient-arrow"></i>
+                        </span>
+                        <div id="patient-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="patientList.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-list"></i>
+                                <span>환자 목록</span>
+                            </a>
+                            <!-- <a href="new-patient.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-user-plus"></i>
+                            <span>신규 환자 등록</span>
+                        </a>
+                        <a href="patient-search.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <span>환자 검색</span>
+                        </a> -->
+                        </div>
+                    </div>
+
+                    <!-- 진료 기록 (현재 활성화된 메뉴) -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('record-submenu')"
+                            class="flex items-center justify-between px-3 py-2 text-neutral-700 hover:bg-neutral-200 rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-file-medical"></i>
+                                <span>진료 기록</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm text-white" id="record-arrow"></i>
+                        </span>
+                        <div id="record-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="patientDgnsLst.html"
+                                class="flex items-center space-x-3 px-3 py-2 bg-neutral-100 text-neutral-900 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-file-lines"></i>
+                                <span>환자별 진료 기록</span>
+                            </a>
+                            <!-- <a href="today-records.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-calendar-day"></i>
+                            <span>오늘 진료 기록</span>
+                        </a> -->
+                            <!-- <a href="search-records.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-search"></i>
+                            <span>기록 검색</span>
+                        </a> -->
+                            <!-- <a href="diagnosis-history.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-history"></i>
+                            <span>진단 이력</span>
+                        </a> -->
+                            <!-- <a href="prescription-manage.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-pills"></i>
+                            <span>처방 관리</span>
+                        </a> -->
+                        </div>
+                    </div>
+
+                    <!-- 통계 -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('stats-submenu')"
+                            class="flex items-center justify-between px-3 py-2 text-neutral-700 hover:bg-neutral-200 rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-chart-bar"></i>
+                                <span>통계</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="stats-arrow"></i>
+                        </span>
+                        <div id="stats-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="patient-stats.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-user-chart"></i>
+                                <span>진료 통계</span>
+                            </a>
+                            <a
+                                href="revenue-stats.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-won-sign"></i>
+                                <span>결제 현황</span>
+                            </a>
+                            <a
+                                href="disease-stats.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-chart-pie"></i>
+                                <span>정산 현황</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 설정 -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('settings-submenu')"
+                            class="flex items-center justify-between px-3 py-2 text-neutral-700 hover:bg-neutral-200 rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-cog"></i>
+                                <span>설정</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="settings-arrow"></i>
+                        </span>
+                        <div id="settings-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="profile-settings.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-user-gear"></i>
+                                <span>병원 정보 설정</span>
+                            </a>
+                            <a
+                                href="clinic-settings.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-hospital"></i>
+                                <span>병원 시간 설정</span>
+                            </a>
+                            <!-- <a href="system-settings.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-sliders"></i>
+                            <span>시스템 설정</span>
+                        </a> -->
+                            <a
+                                href="backup-settings.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-database"></i>
+                                <span>-</span>
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            </aside>
+
+            <section class="flex-1 p-6">
+                <div class="mb-6">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <button class="p-2 hover:bg-neutral-100 rounded-md" onclick="history.back()">
+                            <i class="fa-solid fa-arrow-left text-neutral-600"></i>
+                        </button>
+                        <h2 class="text-2xl text-neutral-900">진료 완료</h2>
+                    </div>
+
+                    <div class="flex items-center space-x-4 text-sm text-neutral-600">
+                        <span>진료 관리</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                        <span>2025년 8월 20일</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                        <span class="text-neutral-900">김환자 - 진료 완료</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-6">
+                    <div class="col-span-2 space-y-6">
+                        <!-- 환자 정보 -->
+                        <div class="bg-white border border-neutral-200 rounded-lg p-6">
+                            <h3 class="text-lg font-medium mb-4">환자 정보</h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <p class="text-sm text-neutral-500">이름</p>
+                                    <p class="text-neutral-900">김환자</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-neutral-500">생년월일</p>
+                                    <p class="text-neutral-900">1990-01-01</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-neutral-500">연락처</p>
+                                    <p class="text-neutral-900">010-1234-5678</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-neutral-500">차트 번호</p>
+                                    <p class="text-neutral-900">#12345</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 진료 정보 -->
+                        <div class="bg-white border border-neutral-200 rounded-lg p-6">
+                            <h3 class="text-lg font-medium mb-4">진료 정보</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <p class="text-sm text-neutral-500">진료 일시</p>
+                                    <p class="text-neutral-900">2025년 8월 20일 09:00</p>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <p class="text-sm text-neutral-500">담당 의사</p>
+                                        <p class="text-neutral-900">김의사</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-neutral-500">진료과</p>
+                                        <p class="text-neutral-900">내과</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-neutral-500">진단명</p>
+                                    <input
+                                        type="text"
+                                        class="w-full mt-2 p-3 border border-neutral-100 rounded-lg"
+                                        value="감기"
+                                    />
+                                </div>
+                                <div>
+                                    <p class="text-sm text-neutral-500">진료 내용</p>
+                                    <textarea
+                                        class="w-full h-32 mt-2 p-3 border border-neutral-200 rounded-lg"
+                                        placeholder="진료 내용을 입력하세요"
+                                    >
+상기 환자는 OO하여 OOOOOO 진단을 내림</textarea
+                                    >
+                                </div>
+                                <div>
+                                    <p class="text-sm text-neutral-500 mb-2">처방 내역</p>
+                                    <textarea
+                                        class="w-full h-24 p-3 border border-neutral-200 rounded-lg"
+                                        placeholder="처방 내역을 입력하세요"
+                                    >
+진통제, 해열제</textarea
+                                    >
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 파일 업로드 영역 -->
+                        <div class="bg-white border border-neutral-200 rounded-lg p-6">
+                            <h3 class="text-lg font-medium mb-4">파일 첨부</h3>
+                            <div class="space-y-4">
+                                <div class="border-2 border-dashed border-neutral-300 rounded-lg p-6">
+                                    <div class="text-center">
+                                        <i class="fa-solid fa-cloud-upload-alt text-4xl text-neutral-400 mb-2"></i>
+                                        <p class="text-neutral-600">파일을 드래그하여 업로드하거나</p>
+                                        <label
+                                            class="mt-2 inline-block px-4 py-2 bg-neutral-900 text-white rounded-md cursor-pointer hover:bg-neutral-800"
+                                        >
+                                            파일 선택
+                                            <input type="file" class="hidden" multiple />
+                                        </label>
+                                    </div>
+                                </div>
+                                <div id="file-list" class="space-y-2">
+                                    <!-- 업로드된 파일 목록이 여기에 표시됩니다 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <button
+                            onclick="alert('처방전 업로드 완료')"
+                            class="w-full px-6 py-3 bg-neutral-900 text-white rounded-lg hover:bg-neutral-800 flex items-center justify-center space-x-2"
+                        >
+                            <i class="fa-solid fa-file-alt mr-2"></i>
+                            <span>처방전 업로드</span>
+                        </button>
+                        <!-- 진료 완료 버튼 -->
+                        <button
+                            onclick="completeTreatment()"
+                            class="w-full px-6 py-3 bg-neutral-900 text-white rounded-lg hover:bg-neutral-800 flex items-center justify-center space-x-2"
+                        >
+                            <i class="fa-solid fa-check"></i>
+                            <span>진료 완료</span>
+                        </button>
+
+                        <!-- 메모 -->
+                        <div class="bg-white border border-neutral-200 rounded-lg p-6">
+                            <h3 class="text-lg font-medium mb-4">메모</h3>
+                            <textarea
+                                class="w-full h-32 p-3 border border-neutral-200 rounded-lg text-sm"
+                                placeholder="메모를 입력하세요"
+                            ></textarea>
+                            <button
+                                class="mt-3 w-full px-4 py-2 bg-neutral-100 text-neutral-700 rounded-md hover:bg-neutral-200"
+                            >
+                                <i class="fa-solid fa-save mr-2"></i>
+                                메모 저장
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <script>
+            function toggleSubmenu(submenuId) {
+                const submenu = document.getElementById(submenuId);
+                const arrow = document.getElementById(submenuId.replace("-submenu", "-arrow"));
+
+                const isActive = submenu.classList.contains("active");
+                const allSubmenus = document.querySelectorAll(".submenu");
+                const allArrows = document.querySelectorAll(".arrow");
+
+                allSubmenus.forEach((menu) => menu.classList.remove("active"));
+                allArrows.forEach((arr) => arr.classList.remove("rotated"));
+
+                if (!isActive) {
+                    submenu.classList.add("active");
+                    arrow.classList.add("rotated");
+                }
+            }
+
+            // 파일 업로드 처리
+            document.querySelector('input[type="file"]').addEventListener("change", function (e) {
+                const fileList = document.getElementById("file-list");
+                for (let file of e.target.files) {
+                    const fileItem = document.createElement("div");
+                    fileItem.className = "flex items-center justify-between p-3 bg-neutral-50 rounded-lg";
+                    fileItem.innerHTML = `
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-file text-neutral-400"></i>
+                            <span class="text-sm text-neutral-700">${file.name}</span>
+                        </div>
+                        <button class="text-neutral-400 hover:text-neutral-600">
+                            <i class="fa-solid fa-times"></i>
+                        </button>
+                    `;
+                    fileList.appendChild(fileItem);
+                }
+            });
+
+            // 드래그 앤 드롭 처리
+            const dropZone = document.querySelector(".border-dashed");
+
+            dropZone.addEventListener("dragover", (e) => {
+                e.preventDefault();
+                dropZone.classList.add("border-neutral-400");
+            });
+
+            dropZone.addEventListener("dragleave", () => {
+                dropZone.classList.remove("border-neutral-400");
+            });
+
+            dropZone.addEventListener("drop", (e) => {
+                e.preventDefault();
+                dropZone.classList.remove("border-neutral-400");
+                const files = e.dataTransfer.files;
+                document.querySelector('input[type="file"]').files = files;
+                const changeEvent = new Event("change");
+                document.querySelector('input[type="file"]').dispatchEvent(changeEvent);
+            });
+
+            // 진료 완료 처리 함수
+            function completeTreatment() {
+                if (confirm("진료를 완료하시겠습니까?")) {
+                    // 여기에 진료 완료 처리 로직 추가
+                    alert("진료가 완료되었습니다.");
+                    window.location.href = "main.html"; // 환자별 진료 기록 페이지로 이동
+                }
+            }
+
+            // 페이지 로드 시 설정
+            document.addEventListener("DOMContentLoaded", function () {
+                toggleSubmenu("");
+            });
+        </script>
+    </body>
+</html>

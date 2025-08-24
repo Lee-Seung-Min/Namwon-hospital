@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <title>병원 정보 설정</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        />
+        <style>
+            * {
+                font-family: "Inter", sans-serif;
+            }
+            ::-webkit-scrollbar {
+                display: none;
+            }
+            html,
+            body {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            .submenu {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-in-out;
+            }
+            .submenu.active {
+                max-height: 500px;
+            }
+            .arrow {
+                transition: transform 0.3s ease-in-out;
+            }
+            .arrow.rotated {
+                transform: rotate(90deg);
+            }
+            .tab-active {
+                border-bottom: 2px solid #1f2937;
+                color: #1f2937;
+            }
+            .time-grid {
+                display: grid;
+                grid-template-columns: auto 1fr 1fr;
+                gap: 1rem;
+                align-items: center;
+            }
+        </style>
+    </head>
+    <body class="h-full text-base-content bg-neutral-50">
+        <header id="header" class="bg-white border-b border-neutral-200 px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <i class="fa-solid fa-hospital text-2xl text-neutral-700"></i>
+                    <h1 class="text-xl text-neutral-900">병원 관리 시스템</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <img
+                            src="https://api.dicebear.com/7.x/notionists/svg?scale=200&seed=789"
+                            alt="User Avatar"
+                            class="w-8 h-8 rounded-full"
+                        />
+                        <span class="text-sm text-neutral-700">김의사</span>
+                    </div>
+                    <button class="px-3 py-1 text-sm text-neutral-600 hover:text-neutral-900">
+                        <i class="fa-solid fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+        <main class="h-full flex">
+            <!-- 사이드바 -->
+            <aside id="sidebar" class="w-64 bg-neutral-50 border-r border-neutral-200 p-6">
+                <nav class="space-y-2">
+                    <!-- 일정 관리 -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('schedule-submenu')"
+                            class="flex items-center justify-between px-3 py-2 text-neutral-700 hover:bg-neutral-200 rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-calendar-days"></i>
+                                <span>일정 관리</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="schedule-arrow"></i>
+                        </span>
+                        <div id="schedule-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="main.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-clock"></i>
+                                <span>월별 일정</span>
+                            </a>
+                            <a
+                                href="weeklySchedule.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-calendar-week"></i>
+                                <span>주간 일정</span>
+                            </a>
+                            <a
+                                href="appointmentManage.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-user-clock"></i>
+                                <span>예약 관리</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 환자 관리 -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('patient-submenu')"
+                            class="flex items-center justify-between px-3 py-2 text-neutral-700 hover:bg-neutral-200 rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-users"></i>
+                                <span>환자 관리</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="patient-arrow"></i>
+                        </span>
+                        <div id="patient-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="patientList.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-list"></i>
+                                <span>환자 목록</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 진료 기록 -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('record-submenu')"
+                            class="flex items-center justify-between px-3 py-2 text-neutral-700 hover:bg-neutral-200 rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-file-medical"></i>
+                                <span>진료 기록</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="record-arrow"></i>
+                        </span>
+                        <div id="record-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="patientDgnsLst.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-file-lines"></i>
+                                <span>환자별 진료 기록</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 통계 -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('stats-submenu')"
+                            class="flex items-center justify-between px-3 py-2 text-neutral-700 hover:bg-neutral-200 rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-chart-bar"></i>
+                                <span>통계</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="stats-arrow"></i>
+                        </span>
+                        <div id="stats-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="patient-stats.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-user-chart"></i>
+                                <span>진료 통계</span>
+                            </a>
+                            <a
+                                href="revenue-stats.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-won-sign"></i>
+                                <span>결제 현황</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 설정 (현재 활성화) -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('settings-submenu')"
+                            class="flex items-center justify-between px-3 py-2 bg-neutral-900 text-white rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-cog"></i>
+                                <span>설정</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm text-white" id="settings-arrow"></i>
+                        </span>
+                        <div id="settings-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="profile-settings.html"
+                                class="flex items-center space-x-3 px-3 py-2 bg-neutral-100 text-neutral-900 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-user-gear"></i>
+                                <span>병원 정보 설정</span>
+                            </a>
+                            <a
+                                href="clinic-settings.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-hospital"></i>
+                                <span>병원 시간 설정</span>
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- 메인 콘텐츠 -->
+            <section class="flex-1 p-6 overflow-y-auto">
+                <div class="mb-6">
+                    <h2 class="text-2xl text-neutral-900 mb-4">병원 정보 설정</h2>
+
+                    <!-- 탭 메뉴 -->
+                    <div class="border-b border-neutral-200 mb-6">
+                        <div class="flex space-x-8">
+                            <button
+                                onclick="showTab('general')"
+                                class="tab-button px-4 py-2 tab-active"
+                                data-tab="general"
+                            >
+                                일반 정보
+                            </button>
+                            <!-- <button onclick="showTab('hours')" class="tab-button px-4 py-2" data-tab="hours">
+                                진료 시간
+                            </button> -->
+                            <button onclick="showTab('doctors')" class="tab-button px-4 py-2" data-tab="doctors">
+                                의사 정보
+                            </button>
+                            <!-- <button onclick="showTab('holidays')" class="tab-button px-4 py-2" data-tab="holidays">
+                                휴일 관리
+                            </button> -->
+                        </div>
+                        <!-- 저장 버튼 -->
+                        <div class="mt-0 flex justify-end">
+                            <button class="px-6 py-2 bg-neutral-900 text-white rounded-md hover:bg-neutral-800">
+                                저장
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 일반 정보 탭 -->
+                    <div id="general-tab" class="tab-content">
+                        <form class="max-w-4xl mx-auto">
+                            <!-- 기본 정보 섹션 -->
+                            <div class="bg-white rounded-lg border border-neutral-200 p-6 mb-6">
+                                <h3 class="text-lg font-medium text-neutral-900 mb-4">기본 정보</h3>
+                                <div class="grid grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-neutral-700 mb-1">병원명</label>
+                                        <input
+                                            type="text"
+                                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
+                                            value="바로병원"
+                                            placeholder="병원 이름을 입력하세요"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-neutral-700 mb-1"
+                                            >요양기관 번호</label
+                                        >
+                                        <input
+                                            type="text"
+                                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
+                                            value="12345"
+                                            placeholder="요양기관 번호를 입력하세요"
+                                        />
+                                    </div>
+                                    <div class="col-span-2">
+                                        <label class="block text-sm text-neutral-600 mb-1">진료과목</label>
+                                        <div class="grid grid-cols-4 gap-3">
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                안과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                이비인후과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                피부과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                신경외과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                산부인과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                소화기내과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                정신건강의학과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                한방내과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                가정의학과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                재활의학과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                비뇨의학과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                흉부외과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                외과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                정형외과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                신경과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                내분비내과
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <style>
+                                        .department-btn.selected {
+                                            background-color: #1f2937;
+                                            color: white;
+                                            border-color: #1f2937;
+                                        }
+                                    </style>
+
+                                    <script>
+                                        // 진료과 버튼 선택 기능
+                                        document.querySelectorAll(".department-btn").forEach((button) => {
+                                            button.addEventListener("click", function () {
+                                                this.classList.toggle("selected");
+                                            });
+                                        });
+                                    </script>
+                                </div>
+                            </div>
+
+                            <!-- 연락처 정보 섹션 -->
+                            <div class="bg-white rounded-lg border border-neutral-200 p-6 mb-6">
+                                <h3 class="text-lg font-medium text-neutral-900 mb-4">연락처 정보</h3>
+                                <div class="grid grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-neutral-700 mb-1"
+                                            >사업자등록번호</label
+                                        >
+                                        <input
+                                            type="text"
+                                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
+                                            value="123-45-67890"
+                                            placeholder="사업자등록번호를 입력하세요"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-neutral-700 mb-1"
+                                            >병원 전화번호</label
+                                        >
+                                        <input
+                                            type="tel"
+                                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
+                                            value="02-1234-5678"
+                                            placeholder="전화번호를 입력하세요"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-neutral-700 mb-1">담당자</label>
+                                        <input
+                                            type="text"
+                                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
+                                            value="김비트"
+                                            placeholder="담당자 이름을 입력하세요"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-neutral-700 mb-1"
+                                            >담당자 연락처</label
+                                        >
+                                        <input
+                                            type="tel"
+                                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
+                                            value="010-1234-5678"
+                                            placeholder="연락처를 입력하세요"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 주소 정보 섹션 -->
+                            <div class="bg-white rounded-lg border border-neutral-200 p-6 mb-6">
+                                <h3 class="text-lg font-medium text-neutral-900 mb-4">주소 정보</h3>
+                                <div class="space-y-4">
+                                    <div class="flex gap-3">
+                                        <div class="w-1/3">
+                                            <input
+                                                type="text"
+                                                class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
+                                                placeholder="우편번호"
+                                                value="12345"
+                                                readonly
+                                            />
+                                        </div>
+                                        <button
+                                            class="px-6 py-2.5 bg-neutral-900 text-white rounded-lg hover:bg-neutral-800 transition-colors"
+                                        >
+                                            우편번호 검색
+                                        </button>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
+                                        placeholder="기본주소"
+                                        value="서울시 강남구 테헤란로 123"
+                                        readonly
+                                    />
+                                    <input
+                                        type="text"
+                                        class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
+                                        placeholder="상세주소를 입력하세요"
+                                        value="4층"
+                                    />
+                                </div>
+                            </div>
+                            <!-- 소개글 섹션 -->
+                            <div class="bg-white rounded-lg border border-neutral-200 p-6">
+                                <h3 class="text-lg font-medium text-neutral-900 mb-4">병원 소개</h3>
+                                <textarea
+                                    class="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors resize-none"
+                                    rows="5"
+                                    placeholder="병원 소개글을 입력하세요"
+                                >
+바로병원은 최상의 의료 서비스를 제공합니다.</textarea
+                                >
+                                <p class="mt-2 text-sm text-neutral-500">병원의 특징과 주요 서비스를 소개해주세요.</p>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- 진료 시간 탭 -->
+                    <div id="hours-tab" class="tab-content hidden">
+                        <div class="space-y-6">
+                            <!-- 기준 시간 설정 -->
+                            <div class="bg-white border border-neutral-200 rounded-lg p-6">
+                                <h3 class="text-lg font-medium mb-4">진료 시간 설정</h3>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-neutral-700 mb-2"
+                                            >진료 기준 시간</label
+                                        >
+                                        <div class="flex items-center gap-4">
+                                            <div class="flex items-center gap-2">
+                                                <select
+                                                    id="timeInterval"
+                                                    class="px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500"
+                                                >
+                                                    <option value="30">30분</option>
+                                                    <option value="20">20분</option>
+                                                    <option value="15">15분</option>
+                                                    <option value="10">10분</option>
+                                                </select>
+                                                <span class="text-sm text-neutral-600">간격으로 예약 설정</span>
+                                            </div>
+                                            <div class="flex gap-2">
+                                                <button
+                                                    onclick="generateTimeSlots()"
+                                                    class="px-4 py-2 bg-neutral-900 text-white rounded-lg hover:bg-neutral-800"
+                                                >
+                                                    시간표 자동 생성
+                                                </button>
+                                                <button
+                                                    onclick="selectAllSlots()"
+                                                    class="px-4 py-2 bg-neutral-700 text-white rounded-lg hover:bg-neutral-600"
+                                                >
+                                                    전체 선택
+                                                </button>
+                                                <button
+                                                    onclick="unselectAllSlots()"
+                                                    class="px-4 py-2 bg-neutral-700 text-white rounded-lg hover:bg-neutral-600"
+                                                >
+                                                    전체 해제
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 주간 진료 시간 -->
+                            <div class="bg-white border border-neutral-200 rounded-lg p-6">
+                                <h3 class="text-lg font-medium mb-4">주간 진료 시간</h3>
+                                <div class="space-y-4">
+                                    <div class="time-grid items-center">
+                                        <label class="font-medium">월요일</label>
+                                        <div class="flex items-center gap-3">
+                                            <div class="flex items-center">
+                                                <input
+                                                    type="checkbox"
+                                                    id="monday-active"
+                                                    class="w-4 h-4 text-neutral-900 border-neutral-300 rounded mr-2"
+                                                    checked
+                                                    onchange="toggleDayOperation('monday')"
+                                                />
+                                                <label for="monday-active" class="text-sm">운영</label>
+                                            </div>
+                                            <input
+                                                type="time"
+                                                id="monday-start"
+                                                class="px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500"
+                                                value="09:00"
+                                                data-day="monday"
+                                                onchange="updateTimeSlots('monday')"
+                                            />
+                                            <span class="text-neutral-500">~</span>
+                                            <input
+                                                type="time"
+                                                id="monday-end"
+                                                class="px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500"
+                                                value="18:00"
+                                                data-day="monday"
+                                                onchange="updateTimeSlots('monday')"
+                                            />
+                                        </div>
+                                        <div class="time-slots hidden" id="monday-slots">
+                                            <!-- 시간 슬롯이 여기에 동적으로 표시됩니다 -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="time-grid items-center">
+                                    <label class="font-medium">화요일</label>
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex items-center">
+                                            <input
+                                                type="checkbox"
+                                                id="tuesday-active"
+                                                class="w-4 h-4 text-neutral-900 border-neutral-300 rounded mr-2"
+                                                checked
+                                                onchange="toggleDayOperation('tuesday')"
+                                            />
+                                            <label for="tuesday-active" class="text-sm">운영</label>
+                                        </div>
+                                        <input
+                                            type="time"
+                                            id="tuesday-start"
+                                            class="px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500"
+                                            value="09:00"
+                                            data-day="tuesday"
+                                            onchange="updateTimeSlots('tuesday')"
+                                        />
+                                        <span class="text-neutral-500">~</span>
+                                        <input
+                                            type="time"
+                                            id="tuesday-end"
+                                            class="px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500"
+                                            value="18:00"
+                                            data-day="tuesday"
+                                            onchange="updateTimeSlots('tuesday')"
+                                        />
+                                    </div>
+                                    <div class="time-slots hidden" id="tuesday-slots">
+                                        <!-- 시간 슬롯이 여기에 동적으로 표시됩니다 -->
+                                    </div>
+                                </div>
+                                <div class="time-grid items-center">
+                                    <label class="font-medium">수요일</label>
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex items-center">
+                                            <input
+                                                type="checkbox"
+                                                id="wednesday-active"
+                                                class="w-4 h-4 text-neutral-900 border-neutral-300 rounded mr-2"
+                                                checked
+                                                onchange="toggleDayOperation('wednesday')"
+                                            />
+                                            <label for="wednesday-active" class="text-sm">운영</label>
+                                        </div>
+                                        <input
+                                            type="time"
+                                            id="wednesday-start"
+                                            class="px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500"
+                                            value="09:00"
+                                            data-day="wednesday"
+                                            onchange="updateTimeSlots('wednesday')"
+                                        />
+                                        <span class="text-neutral-500">~</span>
+                                        <input
+                                            type="time"
+                                            id="wednesday-end"
+                                            class="px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500"
+                                            value="18:00"
+                                            data-day="wednesday"
+                                            onchange="updateTimeSlots('wednesday')"
+                                        />
+                                    </div>
+                                    <div class="time-slots hidden" id="wednesday-slots">
+                                        <!-- 시간 슬롯이 여기에 동적으로 표시됩니다 -->
+                                    </div>
+                                </div>
+                                <div class="time-grid items-center">
+                                    <label class="font-medium">목요일</label>
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex items-center">
+                                            <input
+                                                type="checkbox"
+                                                id="thursday-active"
+                                                class="w-4 h-4 text-neutral-900 border-neutral-300 rounded mr-2"
+                                                checked
+                                                onchange="toggleDayOperation('thursday')"
+                                            />
+                                            <label for="thursday-active" class="text-sm">운영</label>
+                                        </div>
+                                        <input
+                                            type="time"
+                                            id="thursday-start"
+                                            class="px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500"
+                                            value="09:00"
+                                            data-day="thursday"
+                                            onchange="updateTimeSlots('thursday')"
+                                        />
+                                        <span class="text-neutral-500">~</span>
+                                        <input
+                                            type="time"
+                                            id="thursday-end"
+                                            class="px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500"
+                                            value="18:00"
+                                            data-day="thursday"
+                                            onchange="updateTimeSlots('thursday')"
+                                        />
+                                    </div>
+                                    <div class="time-slots hidden" id="thursday-slots">
+                                        <!-- 시간 슬롯이 여기에 동적으로 표시됩니다 -->
+                                    </div>
+                                </div>
+                                <div class="time-grid items-center">
+                                    <label class="font-medium">금요일</label>
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex items-center">
+                                            <input
+                                                type="checkbox"
+                                                id="friday-active"
+                                                class="w-4 h-4 text-neutral-900 border-neutral-300 rounded mr-2"
+                                                checked
+                                                onchange="toggleDayOperation('friday')"
+                                            />
+                                            <label for="friday-active" class="text-sm">운영</label>
+                                        </div>
+                                        <input
+                                            type="time"
+                                            id="friday-start"
+                                            class="px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500"
+                                            value="09:00"
+                                            data-day="friday"
+                                            onchange="updateTimeSlots('friday')"
+                                        />
+                                        <span class="text-neutral-500">~</span>
+                                        <input
+                                            type="time"
+                                            id="friday-end"
+                                            class="px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500"
+                                            value="18:00"
+                                            data-day="friday"
+                                            onchange="updateTimeSlots('friday')"
+                                        />
+                                    </div>
+                                    <div class="time-slots hidden" id="friday-slots">
+                                        <!-- 시간 슬롯이 여기에 동적으로 표시됩니다 -->
+                                    </div>
+                                </div>
+                                <div class="time-grid items-center">
+                                    <label class="font-medium">토요일</label>
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex items-center">
+                                            <input
+                                                type="checkbox"
+                                                id="saturday-active"
+                                                class="w-4 h-4 text-neutral-900 border-neutral-300 rounded mr-2"
+                                                checked
+                                                onchange="toggleDayOperation('saturday')"
+                                            />
+                                            <label for="saturday-active" class="text-sm">운영</label>
+                                        </div>
+                                        <input
+                                            type="time"
+                                            id="saturday-start"
+                                            class="px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500"
+                                            value="09:00"
+                                            data-day="saturday"
+                                            onchange="updateTimeSlots('saturday')"
+                                        />
+                                        <span class="text-neutral-500">~</span>
+                                        <input
+                                            type="time"
+                                            id="saturday-end"
+                                            class="px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500"
+                                            value="13:00"
+                                            data-day="saturday"
+                                            onchange="updateTimeSlots('saturday')"
+                                        />
+                                    </div>
+                                    <div class="time-slots hidden" id="saturday-slots">
+                                        <!-- 시간 슬롯이 여기에 동적으로 표시됩니다 -->
+                                    </div>
+                                </div>
+                                <div class="time-grid items-center">
+                                    <label class="font-medium">일요일</label>
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex items-center">
+                                            <input
+                                                type="checkbox"
+                                                id="sunday-active"
+                                                class="w-4 h-4 text-neutral-900 border-neutral-300 rounded mr-2"
+                                                checked
+                                                onchange="toggleDayOperation('sunday')"
+                                            />
+                                            <label for="sunday-active" class="text-sm">운영</label>
+                                        </div>
+                                        <input
+                                            type="time"
+                                            id="sunday-start"
+                                            class="px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500"
+                                            value="09:00"
+                                            data-day="sunday"
+                                            onchange="updateTimeSlots('sunday')"
+                                        />
+                                        <span class="text-neutral-500">~</span>
+                                        <input
+                                            type="time"
+                                            id="sunday-end"
+                                            class="px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500"
+                                            value="13:00"
+                                            data-day="sunday"
+                                            onchange="updateTimeSlots('sunday')"
+                                        />
+                                    </div>
+                                    <div class="time-slots hidden" id="sunday-slots">
+                                        <!-- 시간 슬롯이 여기에 동적으로 표시됩니다 -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white border border-neutral-200 rounded-lg p-6">
+                                <h3 class="text-lg font-medium mb-4">점심 시간</h3>
+                                <div class="time-grid">
+                                    <label class="font-medium">점심 시간</label>
+                                    <input
+                                        type="time"
+                                        class="px-3 py-2 border border-neutral-300 rounded-md"
+                                        value="13:00"
+                                    />
+                                    <input
+                                        type="time"
+                                        class="px-3 py-2 border border-neutral-300 rounded-md"
+                                        value="14:00"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 의사 정보 탭 -->
+                    <div id="doctors-tab" class="tab-content hidden">
+                        <div class="space-y-6">
+                            <button
+                                onclick="showDoctorForm()"
+                                class="px-4 py-2 bg-neutral-900 text-white rounded-md hover:bg-neutral-800"
+                            >
+                                <i class="fa-solid fa-plus mr-2"></i>
+                                새 의사 추가
+                            </button>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="doctors-list">
+                                <!-- 의사 카드 예시 -->
+                                <div class="bg-white border border-neutral-200 rounded-lg p-6">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div>
+                                            <h4 class="text-lg font-medium">김의사</h4>
+                                            <p class="text-sm text-neutral-500">내과</p>
+                                        </div>
+                                        <div class="space-x-2">
+                                            <button
+                                                class="text-neutral-600 hover:text-neutral-900"
+                                                onclick="editDoctor(1)"
+                                            >
+                                                <i class="fa-solid fa-edit"></i>
+                                            </button>
+                                            <button class="text-red-600 hover:text-red-800" onclick="removeDoctor(1)">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2 text-sm">
+                                        <p><span class="text-neutral-500">면허번호:</span> 12345</p>
+                                        <p><span class="text-neutral-500">전문의:</span> 내과 전문의</p>
+                                        <p>
+                                            <span class="text-neutral-500">연락처:</span>
+                                            010-1234-5678
+                                        </p>
+                                        <p>
+                                            <span class="text-neutral-500">이메일:</span>
+                                            kim@example.com
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 휴일 관리 탭 -->
+                    <div id="holidays-tab" class="tab-content hidden">
+                        <div class="space-y-6">
+                            <div class="flex space-x-4">
+                                <input type="date" class="px-3 py-2 border border-neutral-300 rounded-md" />
+                                <input
+                                    type="text"
+                                    placeholder="휴일 설명"
+                                    class="flex-1 px-3 py-2 border border-neutral-300 rounded-md"
+                                />
+                                <button class="px-4 py-2 bg-neutral-900 text-white rounded-md hover:bg-neutral-800">
+                                    법정 공휴일 추가
+                                </button>
+                                <button class="px-4 py-2 bg-neutral-900 text-white rounded-md hover:bg-neutral-800">
+                                    추가
+                                </button>
+                            </div>
+
+                            <div class="bg-white border border-neutral-200 rounded-lg">
+                                <table class="w-full">
+                                    <thead>
+                                        <tr class="border-b border-neutral-200">
+                                            <th class="px-4 py-3 text-left">날짜</th>
+                                            <th class="px-4 py-3 text-left">설명</th>
+                                            <th class="px-4 py-3 text-right">관리</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="border-b border-neutral-100">
+                                            <td class="px-4 py-3">2025-01-01</td>
+                                            <td class="px-4 py-3">신정</td>
+                                            <td class="px-4 py-3 text-right">
+                                                <button class="text-red-600 hover:text-red-800">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr class="border-b border-neutral-100">
+                                            <td class="px-4 py-3">2025-02-09</td>
+                                            <td class="px-4 py-3">설날</td>
+                                            <td class="px-4 py-3 text-right">
+                                                <button class="text-red-600 hover:text-red-800">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- 의사 정보 입력/수정 모달 -->
+        <div id="doctor-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
+            <div class="bg-white rounded-lg p-6 w-full max-w-md">
+                <h3 class="text-lg font-medium mb-4">의사 정보</h3>
+                <form id="doctor-form" class="space-y-4">
+                    <div>
+                        <label class="block text-sm text-neutral-600 mb-1">이름</label>
+                        <input type="text" name="name" class="w-full px-3 py-2 border border-neutral-300 rounded-md" />
+                    </div>
+                    <div>
+                        <label class="block text-sm text-neutral-600 mb-1">진료과</label>
+                        <input
+                            type="text"
+                            name="department"
+                            class="w-full px-3 py-2 border border-neutral-300 rounded-md"
+                        />
+                    </div>
+                    <div>
+                        <label class="block text-sm text-neutral-600 mb-1">면허번호</label>
+                        <input
+                            type="text"
+                            name="license"
+                            class="w-full px-3 py-2 border border-neutral-300 rounded-md"
+                        />
+                    </div>
+                    <div>
+                        <label class="block text-sm text-neutral-600 mb-1">전문의 자격</label>
+                        <input
+                            type="text"
+                            name="specialty"
+                            class="w-full px-3 py-2 border border-neutral-300 rounded-md"
+                        />
+                    </div>
+                    <div>
+                        <label class="block text-sm text-neutral-600 mb-1">연락처</label>
+                        <input type="tel" name="phone" class="w-full px-3 py-2 border border-neutral-300 rounded-md" />
+                    </div>
+                    <div>
+                        <label class="block text-sm text-neutral-600 mb-1">이메일</label>
+                        <input
+                            type="email"
+                            name="email"
+                            class="w-full px-3 py-2 border border-neutral-300 rounded-md"
+                        />
+                    </div>
+                    <div class="flex justify-end space-x-3">
+                        <button
+                            type="button"
+                            onclick="closeDoctorForm()"
+                            class="px-4 py-2 text-neutral-600 hover:text-neutral-900"
+                        >
+                            취소
+                        </button>
+                        <button
+                            type="submit"
+                            class="px-4 py-2 bg-neutral-900 text-white rounded-md hover:bg-neutral-800"
+                        >
+                            저장
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script src="profile-settings.js"></script>
+        <script>
+            function toggleSubmenu(submenuId) {
+                const submenu = document.getElementById(submenuId);
+                const arrow = document.getElementById(submenuId.replace("-submenu", "-arrow"));
+
+                const isActive = submenu.classList.contains("active");
+                const allSubmenus = document.querySelectorAll(".submenu");
+                const allArrows = document.querySelectorAll(".arrow");
+
+                allSubmenus.forEach((menu) => menu.classList.remove("active"));
+                allArrows.forEach((arr) => arr.classList.remove("rotated"));
+
+                if (!isActive) {
+                    submenu.classList.add("active");
+                    arrow.classList.add("rotated");
+                }
+            }
+
+            // 탭 전환 함수
+            function showTab(tabName) {
+                // 모든 탭 내용을 숨김
+                document.querySelectorAll(".tab-content").forEach((tab) => {
+                    tab.classList.add("hidden");
+                });
+
+                // 모든 탭 버튼의 활성화 상태를 제거
+                document.querySelectorAll(".tab-button").forEach((button) => {
+                    button.classList.remove("tab-active");
+                });
+
+                // 선택된 탭 내용을 표시
+                document.getElementById(`${tabName}-tab`).classList.remove("hidden");
+
+                // 선택된 탭 버튼을 활성화
+                document.querySelector(`[data-tab="${tabName}"]`).classList.add("tab-active");
+            }
+
+            // 의사 정보 관리 함수들
+            function showDoctorForm() {
+                document.getElementById("doctor-modal").style.display = "flex";
+            }
+
+            function closeDoctorForm() {
+                document.getElementById("doctor-modal").style.display = "none";
+            }
+
+            function editDoctor(id) {
+                // 의사 정보를 폼에 채우고 모달을 표시
+                showDoctorForm();
+            }
+
+            function removeDoctor(id) {
+                if (confirm("정말로 이 의사 정보를 삭제하시겠습니까?")) {
+                    // 의사 정보 삭제 로직
+                }
+            }
+
+            // 폼 제출 처리
+            document.getElementById("doctor-form").onsubmit = function (e) {
+                e.preventDefault();
+                // 폼 데이터 처리 로직
+                closeDoctorForm();
+            };
+
+            // 페이지 로드 시 설정 메뉴를 열어둠
+            document.addEventListener("DOMContentLoaded", function () {
+                toggleSubmenu("settings-submenu");
+            });
+
+            // 시간 슬롯 생성 함수
+            function generateTimeSlots() {
+                const interval = parseInt(document.getElementById("timeInterval").value);
+                const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+
+                days.forEach((day) => {
+                    const checkbox = document.getElementById(`${day}-active`);
+                    if (checkbox && checkbox.checked) {
+                        updateTimeSlots(day);
+                    }
+                });
+            }
+
+            // 특정 요일의 시간 슬롯 업데이트
+            function updateTimeSlots(day) {
+                const inputs = document.querySelectorAll(`[data-day="${day}"]`);
+                if (inputs.length !== 2) return;
+
+                const startTime = inputs[0].value;
+                const endTime = inputs[1].value;
+                const interval = parseInt(document.getElementById("timeInterval").value);
+
+                // 시작 시간과 종료 시간을 분으로 변환
+                const start = timeToMinutes(startTime);
+                const end = timeToMinutes(endTime);
+
+                // 시간 슬롯 생성
+                const slots = [];
+                for (let time = start; time < end; time += interval) {
+                    slots.push(minutesToTime(time));
+                }
+
+                // 슬롯 변경시 이벤트 처리 추가
+                setTimeout(() => {
+                    document.querySelectorAll(`#${day}-slots .time-slot-checkbox`).forEach((checkbox) => {
+                        const statusSpan = checkbox.nextElementSibling.querySelector("span");
+                        checkbox.addEventListener("change", function () {
+                            statusSpan.textContent = this.checked ? "활성화" : "비활성화";
+                        });
+                    });
+                }, 0);
+
+                // 시간 슬롯을 화면에 표시
+                const slotsContainer = document.getElementById(`${day}-slots`);
+                if (!slotsContainer) return;
+
+                slotsContainer.classList.remove("hidden");
+
+                // 점심시간 가져오기
+                const lunchStart = document.getElementById("lunch-start")?.value || "13:00";
+                const lunchEnd = document.getElementById("lunch-end")?.value || "14:00";
+                const lunchStartMins = timeToMinutes(lunchStart);
+                const lunchEndMins = timeToMinutes(lunchEnd);
+
+                // 시간 슬롯 HTML 생성
+                slotsContainer.innerHTML = `
+                    <div class="time-slot-grid">
+                        ${slots
+                            .map((time) => {
+                                const slotTime = timeToMinutes(time);
+                                const isLunchTime = slotTime >= lunchStartMins && slotTime < lunchEndMins;
+
+                                return `
+                                <label class="time-slot">
+                                    <input type="checkbox" 
+                                           class="hidden time-slot-checkbox" 
+                                           name="slots-${day}" 
+                                           value="${time}"
+                                           ${isLunchTime ? "disabled" : ""}>
+                                    <div class="time-slot-content ${isLunchTime ? "lunch-time" : ""}">
+                                        <div class="font-medium">${time}</div>
+                                        <div class="text-xs mt-1">${isLunchTime ? "점심시간" : "비활성화"}</div>
+                                    </div>
+                                </label>
+                            `;
+                            })
+                            .join("")}
+                    </div>
+                `;
+            }
+
+            // 시간을 분으로 변환하는 함수
+            function timeToMinutes(time) {
+                const [hours, minutes] = time.split(":").map(Number);
+                return hours * 60 + minutes;
+            }
+
+            // 분을 시간 형식으로 변환하는 함수
+            function minutesToTime(minutes) {
+                const hours = Math.floor(minutes / 60);
+                const mins = minutes % 60;
+                return `${String(hours).padStart(2, "0")}:${String(mins).padStart(2, "0")}`;
+            }
+
+            // 페이지 로드시 초기화
+            document.addEventListener("DOMContentLoaded", function () {
+                // 시간 간격 옵션 초기화
+                const timeIntervalSelect = document.getElementById("timeInterval");
+                if (timeIntervalSelect) {
+                    timeIntervalSelect.innerHTML = `
+                        <option value="60">1시간</option>
+                        <option value="30">30분</option>
+                        <option value="20">20분</option>
+                        <option value="15">15분</option>
+                        <option value="10">10분</option>
+                    `;
+                }
+
+                // 각 요일 체크박스 이벤트 리스너 초기화
+                const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+                days.forEach((day) => {
+                    const checkbox = document.getElementById(`${day}-active`);
+                    if (checkbox) {
+                        toggleDayOperation(day); // 초기 상태 설정
+                    }
+                });
+            });
+
+            // 운영 여부 토글 함수
+            function toggleDayOperation(day) {
+                const checkbox = document.getElementById(`${day}-active`);
+                const inputs = document.querySelectorAll(`[data-day="${day}"]`);
+                const slotsContainer = document.getElementById(`${day}-slots`);
+
+                if (!checkbox || !slotsContainer) return;
+
+                inputs.forEach((input) => {
+                    input.disabled = !checkbox.checked;
+                });
+
+                if (checkbox.checked) {
+                    slotsContainer.innerHTML = ""; // 기존 내용 제거
+                    updateTimeSlots(day);
+                } else {
+                    slotsContainer.classList.remove("hidden");
+                    slotsContainer.innerHTML = '<span class="text-neutral-500">휴진</span>';
+                }
+            }
+        </script>
+
+        <style>
+            .time-slots {
+                margin-top: 1rem;
+                padding: 1rem;
+                background-color: #f8f9fa;
+                border-radius: 0.5rem;
+            }
+
+            .time-slot-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 0.5rem;
+            }
+
+            .time-slot {
+                cursor: pointer;
+            }
+
+            .time-slot-content {
+                padding: 0.75rem 0.5rem;
+                border-radius: 0.25rem;
+                font-size: 0.875rem;
+                text-align: center;
+                background-color: #f3f4f6;
+                border: 1px solid #e5e7eb;
+                transition: all 0.2s;
+                display: flex;
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+
+            .time-slot-checkbox:checked + .time-slot-content {
+                background-color: #1f2937;
+                color: white;
+                border-color: #1f2937;
+            }
+
+            .time-slot-checkbox:checked + .time-slot-content span {
+                color: #d1d5db;
+            }
+
+            .time-slot-content.lunch-time {
+                background-color: #e5e7eb;
+                color: #9ca3af;
+                cursor: not-allowed;
+            }
+
+            .bulk-select-buttons {
+                display: flex;
+                gap: 0.5rem;
+                margin-bottom: 1rem;
+            }
+        </style>
+    </body>
+</html>

@@ -1,0 +1,1043 @@
+<html class="">
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            window.FontAwesomeConfig = {
+                autoReplaceSvg: "nest", // Options: 'nest', 'remove', 'replace'
+            };
+        </script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+
+        <style>
+            * {
+                font-family: "Inter", sans-serif;
+            }
+
+            ::-webkit-scrollbar {
+                display: none;
+            }
+        </style>
+
+        <style>
+            .highlighted-section {
+                outline: 2px solid #3f20fb;
+                background-color: rgba(63, 32, 251, 0.1);
+            }
+
+            .edit-button {
+                position: absolute;
+                z-index: 1000;
+            }
+            .submenu {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-in-out;
+            }
+
+            .submenu.active {
+                max-height: 500px;
+            }
+
+            .arrow {
+                transition: transform 0.3s ease-in-out;
+            }
+
+            .arrow.rotated {
+                transform: rotate(90deg);
+            }
+        </style>
+
+        <style>
+            :root {
+                /* Base colors */
+                --color-base: #ffffff;
+                --color-base-50: #f9fafb;
+                --color-base-100: #f3f4f6;
+                --color-base-200: #e5e7eb;
+                --color-base-300: #d1d5db;
+                --color-base-400: #9ca3af;
+                --color-base-500: #6b7280;
+                --color-base-600: #4b5563;
+                --color-base-700: #374151;
+                --color-base-800: #1f2937;
+                --color-base-900: #111827;
+                --color-base-content: #1f2937;
+
+                /* Primary colors */
+                --color-primary: #3b82f6;
+                --color-primary-50: #eff6ff;
+                --color-primary-100: #dbeafe;
+                --color-primary-200: #bfdbfe;
+                --color-primary-300: #93c5fd;
+                --color-primary-400: #60a5fa;
+                --color-primary-500: #3b82f6;
+                --color-primary-600: #2563eb;
+                --color-primary-700: #1d4ed8;
+                --color-primary-800: #1e40af;
+                --color-primary-900: #1e3a8a;
+                --color-primary-focus: #2563eb;
+                --color-primary-content: #ffffff;
+
+                /* Secondary colors */
+                --color-secondary: #8b5cf6;
+                --color-secondary-50: #f5f3ff;
+                --color-secondary-100: #ede9fe;
+                --color-secondary-200: #ddd6fe;
+                --color-secondary-300: #c4b5fd;
+                --color-secondary-400: #a78bfa;
+                --color-secondary-500: #8b5cf6;
+                --color-secondary-600: #7c3aed;
+                --color-secondary-700: #6d28d9;
+                --color-secondary-800: #5b21b6;
+                --color-secondary-900: #4c1d95;
+                --color-secondary-focus: #7c3aed;
+                --color-secondary-content: #ffffff;
+
+                /* Accent colors */
+                --color-accent: #f472b6;
+                --color-accent-50: #fdf2f8;
+                --color-accent-100: #fce7f3;
+                --color-accent-200: #fbcfe8;
+                --color-accent-300: #f9a8d4;
+                --color-accent-400: #f472b6;
+                --color-accent-500: #ec4899;
+                --color-accent-600: #db2777;
+                --color-accent-700: #be185d;
+                --color-accent-800: #9d174d;
+                --color-accent-900: #831843;
+                --color-accent-focus: #db2777;
+                --color-accent-content: #ffffff;
+
+                /* Neutral colors */
+                --color-neutral: #6b7280;
+                --color-neutral-50: #f9fafb;
+                --color-neutral-100: #f3f4f6;
+                --color-neutral-200: #e5e7eb;
+                --color-neutral-300: #d1d5db;
+                --color-neutral-400: #9ca3af;
+                --color-neutral-500: #6b7280;
+                --color-neutral-600: #4b5563;
+                --color-neutral-700: #374151;
+                --color-neutral-800: #1f2937;
+                --color-neutral-900: #111827;
+                --color-neutral-focus: #4b5563;
+                --color-neutral-content: #ffffff;
+
+                /* Info colors */
+                --color-info: #3b82f6;
+                --color-info-50: #eff6ff;
+                --color-info-100: #dbeafe;
+                --color-info-200: #bfdbfe;
+                --color-info-300: #93c5fd;
+                --color-info-400: #60a5fa;
+                --color-info-500: #3b82f6;
+                --color-info-600: #2563eb;
+                --color-info-700: #1d4ed8;
+                --color-info-800: #1e40af;
+                --color-info-900: #1e3a8a;
+                --color-info-focus: #2563eb;
+                --color-info-content: #ffffff;
+
+                /* Success colors */
+                --color-success: #10b981;
+                --color-success-50: #ecfdf5;
+                --color-success-100: #d1fae5;
+                --color-success-200: #a7f3d0;
+                --color-success-300: #6ee7b7;
+                --color-success-400: #34d399;
+                --color-success-500: #10b981;
+                --color-success-600: #059669;
+                --color-success-700: #047857;
+                --color-success-800: #065f46;
+                --color-success-900: #064e3b;
+                --color-success-focus: #059669;
+                --color-success-content: #ffffff;
+
+                /* Warning colors */
+                --color-warning: #f59e0b;
+                --color-warning-50: #fffbeb;
+                --color-warning-100: #fef3c7;
+                --color-warning-200: #fde68a;
+                --color-warning-300: #fcd34d;
+                --color-warning-400: #fbbf24;
+                --color-warning-500: #f59e0b;
+                --color-warning-600: #d97706;
+                --color-warning-700: #b45309;
+                --color-warning-800: #92400e;
+                --color-warning-900: #78350f;
+                --color-warning-focus: #d97706;
+                --color-warning-content: #ffffff;
+
+                /* Error colors */
+                --color-error: #ef4444;
+                --color-error-50: #fef2f2;
+                --color-error-100: #fee2e2;
+                --color-error-200: #fecaca;
+                --color-error-300: #fca5a5;
+                --color-error-400: #f87171;
+                --color-error-500: #ef4444;
+                --color-error-600: #dc2626;
+                --color-error-700: #b91c1c;
+                --color-error-800: #991b1b;
+                --color-error-900: #7f1d1d;
+                --color-error-focus: #dc2626;
+                --color-error-content: #ffffff;
+            }
+        </style>
+
+        <style>
+            /* Dark theme */
+            .dark {
+                /* Base colors */
+                --color-base: #1f2937;
+                --color-base-50: #111827;
+                --color-base-100: #1f2937;
+                --color-base-200: #374151;
+                --color-base-300: #4b5563;
+                --color-base-400: #6b7280;
+                --color-base-500: #9ca3af;
+                --color-base-600: #d1d5db;
+                --color-base-700: #e5e7eb;
+                --color-base-800: #f3f4f6;
+                --color-base-900: #f9fafb;
+                --color-base-content: #f9fafb;
+
+                /* Primary colors */
+                --color-primary: #60a5fa;
+                --color-primary-50: #1e3a8a;
+                --color-primary-100: #1e40af;
+                --color-primary-200: #1d4ed8;
+                --color-primary-300: #2563eb;
+                --color-primary-400: #3b82f6;
+                --color-primary-500: #60a5fa;
+                --color-primary-600: #93c5fd;
+                --color-primary-700: #bfdbfe;
+                --color-primary-800: #dbeafe;
+                --color-primary-900: #eff6ff;
+                --color-primary-focus: #3b82f6;
+                --color-primary-content: #1f2937;
+
+                /* Secondary colors */
+                --color-secondary: #a78bfa;
+                --color-secondary-50: #4c1d95;
+                --color-secondary-100: #5b21b6;
+                --color-secondary-200: #6d28d9;
+                --color-secondary-300: #7c3aed;
+                --color-secondary-400: #8b5cf6;
+                --color-secondary-500: #a78bfa;
+                --color-secondary-600: #c4b5fd;
+                --color-secondary-700: #ddd6fe;
+                --color-secondary-800: #ede9fe;
+                --color-secondary-900: #f5f3ff;
+                --color-secondary-focus: #8b5cf6;
+                --color-secondary-content: #1f2937;
+
+                /* Accent colors */
+                --color-accent: #f472b6;
+                --color-accent-50: #831843;
+                --color-accent-100: #9d174d;
+                --color-accent-200: #be185d;
+                --color-accent-300: #db2777;
+                --color-accent-400: #ec4899;
+                --color-accent-500: #f472b6;
+                --color-accent-600: #f9a8d4;
+                --color-accent-700: #fbcfe8;
+                --color-accent-800: #fce7f3;
+                --color-accent-900: #fdf2f8;
+                --color-accent-focus: #ec4899;
+                --color-accent-content: #1f2937;
+
+                /* Neutral colors remain the same as light theme */
+
+                /* Info colors */
+                --color-info: #60a5fa;
+                --color-info-50: #1e3a8a;
+                --color-info-100: #1e40af;
+                --color-info-200: #1d4ed8;
+                --color-info-300: #2563eb;
+                --color-info-400: #3b82f6;
+                --color-info-500: #60a5fa;
+                --color-info-600: #93c5fd;
+                --color-info-700: #bfdbfe;
+                --color-info-800: #dbeafe;
+                --color-info-900: #eff6ff;
+                --color-info-focus: #3b82f6;
+                --color-info-content: #1f2937;
+
+                /* Success colors */
+                --color-success: #34d399;
+                --color-success-50: #064e3b;
+                --color-success-100: #065f46;
+                --color-success-200: #047857;
+                --color-success-300: #059669;
+                --color-success-400: #10b981;
+                --color-success-500: #34d399;
+                --color-success-600: #6ee7b7;
+                --color-success-700: #a7f3d0;
+                --color-success-800: #d1fae5;
+                --color-success-900: #ecfdf5;
+                --color-success-focus: #10b981;
+                --color-success-content: #1f2937;
+
+                /* Warning colors */
+                --color-warning: #fbbf24;
+                --color-warning-50: #78350f;
+                --color-warning-100: #92400e;
+                --color-warning-200: #b45309;
+                --color-warning-300: #d97706;
+                --color-warning-400: #f59e0b;
+                --color-warning-500: #fbbf24;
+                --color-warning-600: #fcd34d;
+                --color-warning-700: #fde68a;
+                --color-warning-800: #fef3c7;
+                --color-warning-900: #fffbeb;
+                --color-warning-focus: #f59e0b;
+                --color-warning-content: #1f2937;
+
+                /* Error colors */
+                --color-error: #f87171;
+                --color-error-50: #7f1d1d;
+                --color-error-100: #991b1b;
+                --color-error-200: #b91c1c;
+                --color-error-300: #dc2626;
+                --color-error-400: #ef4444;
+                --color-error-500: #f87171;
+                --color-error-600: #fca5a5;
+                --color-error-700: #fecaca;
+                --color-error-800: #fee2e2;
+                --color-error-900: #fef2f2;
+                --color-error-focus: #ef4444;
+                --color-error-content: #1f2937;
+            }
+        </style>
+
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            transparent: "transparent",
+                            current: "currentColor",
+                            black: "#000000",
+                            white: "#ffffff",
+                            gray: {
+                                50: "#f9fafb",
+                                100: "#f3f4f6",
+                                200: "#e5e7eb",
+                                300: "#d1d5db",
+                                400: "#9ca3af",
+                                500: "#6b7280",
+                                600: "#4b5563",
+                                700: "#374151",
+                                800: "#1f2937",
+                                900: "#111827",
+                            },
+                            red: {
+                                50: "#fef2f2",
+                                100: "#fee2e2",
+                                200: "#fecaca",
+                                300: "#fca5a5",
+                                400: "#f87171",
+                                500: "#ef4444",
+                                600: "#dc2626",
+                                700: "#b91c1c",
+                                800: "#991b1b",
+                                900: "#7f1d1d",
+                            },
+                            yellow: {
+                                50: "#fffbeb",
+                                100: "#fef3c7",
+                                200: "#fde68a",
+                                300: "#fcd34d",
+                                400: "#fbbf24",
+                                500: "#f59e0b",
+                                600: "#d97706",
+                                700: "#b45309",
+                                800: "#92400e",
+                                900: "#78350f",
+                            },
+                            green: {
+                                50: "#ecfdf5",
+                                100: "#d1fae5",
+                                200: "#a7f3d0",
+                                300: "#6ee7b7",
+                                400: "#34d399",
+                                500: "#10b981",
+                                600: "#059669",
+                                700: "#047857",
+                                800: "#065f46",
+                                900: "#064e3b",
+                            },
+                            blue: {
+                                50: "#eff6ff",
+                                100: "#dbeafe",
+                                200: "#bfdbfe",
+                                300: "#93c5fd",
+                                400: "#60a5fa",
+                                500: "#3b82f6",
+                                600: "#2563eb",
+                                700: "#1d4ed8",
+                                800: "#1e40af",
+                                900: "#1e3a8a",
+                            },
+                            indigo: {
+                                50: "#eef2ff",
+                                100: "#e0e7ff",
+                                200: "#c7d2fe",
+                                300: "#a5b4fc",
+                                400: "#818cf8",
+                                500: "#6366f1",
+                                600: "#4f46e5",
+                                700: "#4338ca",
+                                800: "#3730a3",
+                                900: "#312e81",
+                            },
+                            purple: {
+                                50: "#f5f3ff",
+                                100: "#ede9fe",
+                                200: "#ddd6fe",
+                                300: "#c4b5fd",
+                                400: "#a78bfa",
+                                500: "#8b5cf6",
+                                600: "#7c3aed",
+                                700: "#6d28d9",
+                                800: "#5b21b6",
+                                900: "#4c1d95",
+                            },
+                            pink: {
+                                50: "#fdf2f8",
+                                100: "#fce7f3",
+                                200: "#fbcfe8",
+                                300: "#f9a8d4",
+                                400: "#f472b6",
+                                500: "#ec4899",
+                                600: "#db2777",
+                                700: "#be185d",
+                                800: "#9d174d",
+                                900: "#831843",
+                            },
+                            primary: {
+                                50: "var(--color-primary-50)",
+                                100: "var(--color-primary-100)",
+                                200: "var(--color-primary-200)",
+                                300: "var(--color-primary-300)",
+                                400: "var(--color-primary-400)",
+                                500: "var(--color-primary-500)",
+                                600: "var(--color-primary-600)",
+                                700: "var(--color-primary-700)",
+                                800: "var(--color-primary-800)",
+                                900: "var(--color-primary-900)",
+                                DEFAULT: "var(--color-primary)",
+                                focus: "var(--color-primary-focus)",
+                                content: "var(--color-primary-content)",
+                            },
+                            secondary: {
+                                50: "var(--color-secondary-50)",
+                                100: "var(--color-secondary-100)",
+                                200: "var(--color-secondary-200)",
+                                300: "var(--color-secondary-300)",
+                                400: "var(--color-secondary-400)",
+                                500: "var(--color-secondary-500)",
+                                600: "var(--color-secondary-600)",
+                                700: "var(--color-secondary-700)",
+                                800: "var(--color-secondary-800)",
+                                900: "var(--color-secondary-900)",
+                                DEFAULT: "var(--color-secondary)",
+                                focus: "var(--color-secondary-focus)",
+                                content: "var(--color-secondary-content)",
+                            },
+                            accent: {
+                                50: "var(--color-accent-50)",
+                                100: "var(--color-accent-100)",
+                                200: "var(--color-accent-200)",
+                                300: "var(--color-accent-300)",
+                                400: "var(--color-accent-400)",
+                                500: "var(--color-accent-500)",
+                                600: "var(--color-accent-600)",
+                                700: "var(--color-accent-700)",
+                                800: "var(--color-accent-800)",
+                                900: "var(--color-accent-900)",
+                                DEFAULT: "var(--color-accent)",
+                                focus: "var(--color-accent-focus)",
+                                content: "var(--color-accent-content)",
+                            },
+                            neutral: {
+                                50: "var(--color-neutral-50)",
+                                100: "var(--color-neutral-100)",
+                                200: "var(--color-neutral-200)",
+                                300: "var(--color-neutral-300)",
+                                400: "var(--color-neutral-400)",
+                                500: "var(--color-neutral-500)",
+                                600: "var(--color-neutral-600)",
+                                700: "var(--color-neutral-700)",
+                                800: "var(--color-neutral-800)",
+                                900: "var(--color-neutral-900)",
+                                DEFAULT: "var(--color-neutral)",
+                                focus: "var(--color-neutral-focus)",
+                                content: "var(--color-neutral-content)",
+                            },
+                            info: {
+                                50: "var(--color-info-50)",
+                                100: "var(--color-info-100)",
+                                200: "var(--color-info-200)",
+                                300: "var(--color-info-300)",
+                                400: "var(--color-info-400)",
+                                500: "var(--color-info-500)",
+                                600: "var(--color-info-600)",
+                                700: "var(--color-info-700)",
+                                800: "var(--color-info-800)",
+                                900: "var(--color-info-900)",
+                                DEFAULT: "var(--color-info)",
+                                focus: "var(--color-info-focus)",
+                                content: "var(--color-info-content)",
+                            },
+                            success: {
+                                50: "var(--color-success-50)",
+                                100: "var(--color-success-100)",
+                                200: "var(--color-success-200)",
+                                300: "var(--color-success-300)",
+                                400: "var(--color-success-400)",
+                                500: "var(--color-success-500)",
+                                600: "var(--color-success-600)",
+                                700: "var(--color-success-700)",
+                                800: "var(--color-success-800)",
+                                900: "var(--color-success-900)",
+                                DEFAULT: "var(--color-success)",
+                                focus: "var(--color-success-focus)",
+                                content: "var(--color-success-content)",
+                            },
+                            warning: {
+                                50: "var(--color-warning-50)",
+                                100: "var(--color-warning-100)",
+                                200: "var(--color-warning-200)",
+                                300: "var(--color-warning-300)",
+                                400: "var(--color-warning-400)",
+                                500: "var(--color-warning-500)",
+                                600: "var(--color-warning-600)",
+                                700: "var(--color-warning-700)",
+                                800: "var(--color-warning-800)",
+                                900: "var(--color-warning-900)",
+                                DEFAULT: "var(--color-warning)",
+                                focus: "var(--color-warning-focus)",
+                                content: "var(--color-warning-content)",
+                            },
+                            error: {
+                                50: "var(--color-error-50)",
+                                100: "var(--color-error-100)",
+                                200: "var(--color-error-200)",
+                                300: "var(--color-error-300)",
+                                400: "var(--color-error-400)",
+                                500: "var(--color-error-500)",
+                                600: "var(--color-error-600)",
+                                700: "var(--color-error-700)",
+                                800: "var(--color-error-800)",
+                                900: "var(--color-error-900)",
+                                DEFAULT: "var(--color-error)",
+                                focus: "var(--color-error-focus)",
+                                content: "var(--color-error-content)",
+                            },
+                            danger: {
+                                50: "var(--color-error-50)",
+                                100: "var(--color-error-100)",
+                                200: "var(--color-error-200)",
+                                300: "var(--color-error-300)",
+                                400: "var(--color-error-400)",
+                                500: "var(--color-error-500)",
+                                600: "var(--color-error-600)",
+                                700: "var(--color-error-700)",
+                                800: "var(--color-error-800)",
+                                900: "var(--color-error-900)",
+                                DEFAULT: "var(--color-error)",
+                                focus: "var(--color-error-focus)",
+                                content: "var(--color-error-content)",
+                            },
+                            failure: {
+                                50: "var(--color-error-50)",
+                                100: "var(--color-error-100)",
+                                200: "var(--color-error-200)",
+                                300: "var(--color-error-300)",
+                                400: "var(--color-error-400)",
+                                500: "var(--color-error-500)",
+                                600: "var(--color-error-600)",
+                                700: "var(--color-error-700)",
+                                800: "var(--color-error-800)",
+                                900: "var(--color-error-900)",
+                                DEFAULT: "var(--color-error)",
+                                focus: "var(--color-error-focus)",
+                                content: "var(--color-error-content)",
+                            },
+                        },
+                        fontFamily: {
+                            sans: ["Inter", "sans-serif"],
+                        },
+                    },
+                },
+                variants: {
+                    extend: {
+                        backgroundColor: ["active", "group-hover"],
+                        textColor: ["active", "group-hover"],
+                    },
+                },
+                plugins: [],
+            };
+        </script>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;500;600;700;800;900&amp;display=swap"
+        />
+        <style>
+            .highlighted-section {
+                outline: 2px solid #3f20fb;
+                background-color: rgba(63, 32, 251, 0.1);
+            }
+
+            .edit-button {
+                position: absolute;
+                z-index: 1000;
+            }
+
+            ::-webkit-scrollbar {
+                display: none;
+            }
+
+            html,
+            body {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+        </style>
+    </head>
+
+    <body class="h-screen text-base-content">
+        <div id="tablet-telemedicine" class="bg-white h-screen flex flex-col">
+            <!-- Main Video Area -->
+            <main class="flex-1 bg-neutral-900 relative">
+                <!-- Doctor Video -->
+                <div id="doctor-video" class="h-full relative">
+                    <div class="w-full h-full bg-neutral-700 flex items-center justify-center">
+                        <div class="text-center">
+                            <img
+                                src="https://api.dicebear.com/7.x/notionists/svg?scale=200&amp;seed=456"
+                                alt="Doctor"
+                                class="w-32 h-32 rounded-full mx-auto mb-4 bg-white"
+                            />
+                            <div class="text-white text-xl mb-2">김진수 의사</div>
+                            <div class="text-neutral-300">내과 전문의</div>
+                        </div>
+                    </div>
+
+                    <!-- Patient Video (Picture-in-Picture) -->
+                    <div
+                        class="absolute top-4 right-4 w-48 h-36 bg-neutral-800 rounded-lg border-2 border-white overflow-hidden"
+                    >
+                        <div class="w-full h-full bg-neutral-600 flex items-center justify-center">
+                            <img
+                                src="https://api.dicebear.com/7.x/notionists/svg?scale=200&amp;seed=123"
+                                alt="Patient"
+                                class="w-16 h-16 rounded-full bg-white"
+                            />
+                        </div>
+                    </div>
+
+                    <!-- Connection Status -->
+                    <div class="absolute top-4 left-4 bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-sm">
+                        <i class="fa-solid fa-signal text-neutral-400 mr-2"></i>
+                        연결 양호
+                    </div>
+
+                    <!-- Audio Wave Animation -->
+                    <div class="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex items-center space-x-1">
+                        <div class="w-1 h-4 bg-white rounded animate-pulse"></div>
+                        <div class="w-1 h-6 bg-white rounded animate-pulse" style="animation-delay: 0.1s"></div>
+                        <div class="w-1 h-3 bg-white rounded animate-pulse" style="animation-delay: 0.2s"></div>
+                        <div class="w-1 h-5 bg-white rounded animate-pulse" style="animation-delay: 0.3s"></div>
+                        <div class="w-1 h-2 bg-white rounded animate-pulse" style="animation-delay: 0.4s"></div>
+                    </div>
+                </div>
+
+                <!-- Control Panel -->
+                <div id="video-controls" class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-80 p-6">
+                    <div class="flex justify-center items-center space-x-6">
+                        <!-- Mute Button -->
+                        <button
+                            class="w-16 h-16 bg-neutral-700 hover:bg-neutral-600 rounded-full flex items-center justify-center"
+                        >
+                            <i class="fa-solid fa-microphone text-white text-2xl"></i>
+                        </button>
+
+                        <!-- Video Toggle -->
+                        <button
+                            class="w-16 h-16 bg-neutral-700 hover:bg-neutral-600 rounded-full flex items-center justify-center"
+                        >
+                            <i class="fa-solid fa-video text-white text-2xl"></i>
+                        </button>
+
+                        <!-- End Call -->
+                        <button
+                            class="w-16 h-16 bg-neutral-600 hover:bg-neutral-700 rounded-full flex items-center justify-center"
+                        >
+                            <i class="fa-solid fa-phone-slash text-white text-2xl"></i>
+                        </button>
+
+                        <!-- Chat -->
+                        <button
+                            class="w-16 h-16 bg-neutral-700 hover:bg-neutral-600 rounded-full flex items-center justify-center relative"
+                        >
+                            <i class="fa-solid fa-comment text-white text-2xl"></i>
+                            <div
+                                class="absolute -top-2 -right-2 w-6 h-6 bg-neutral-500 rounded-full flex items-center justify-center"
+                            >
+                                <span class="text-white text-base">2</span>
+                            </div>
+                        </button>
+
+                        <!-- Settings -->
+                        <button
+                            class="w-16 h-16 bg-neutral-700 hover:bg-neutral-600 rounded-full flex items-center justify-center"
+                        >
+                            <i class="fa-solid fa-cog text-white text-2xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Chat Sidebar (Hidden by default) -->
+            <div
+                id="chat-sidebar"
+                class="hidden absolute right-0 top-0 bottom-0 w-80 bg-white border-l border-neutral-200 flex flex-col"
+            >
+                <!-- Chat Header -->
+                <div class="border-b border-neutral-200 p-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg text-neutral-900">채팅</h3>
+                        <button>
+                            <i class="fa-solid fa-times text-neutral-500"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Chat Messages -->
+                <div class="flex-1 p-4 overflow-y-auto">
+                    <div class="space-y-4">
+                        <div class="flex">
+                            <div class="bg-neutral-100 rounded-lg p-3 max-w-xs">
+                                <div class="text-base text-neutral-900">안녕하세요. 오늘 컨디션은 어떠신가요?</div>
+                                <div class="text-xs text-neutral-500 mt-1">의사 • 14:32</div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end">
+                            <div class="bg-neutral-900 text-white rounded-lg p-3 max-w-xs">
+                                <div class="text-base">어제보다는 좀 나은 것 같습니다.</div>
+                                <div class="text-xs text-neutral-300 mt-1">14:33</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Input -->
+                <div class="border-t border-neutral-200 p-4">
+                    <div class="flex space-x-2">
+                        <input
+                            type="text"
+                            placeholder="메시지를 입력하세요..."
+                            class="flex-1 border border-neutral-300 rounded-lg px-3 py-2"
+                        />
+                        <button class="bg-neutral-900 text-white px-4 py-2 rounded-lg">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Emergency Alert (Hidden by default) -->
+            <div
+                id="emergency-alert"
+                class="hidden absolute top-20 left-1/2 transform -translate-x-1/2 bg-neutral-600 text-white px-6 py-3 rounded-lg shadow-lg"
+            >
+                <div class="flex items-center">
+                    <i class="fa-solid fa-exclamation-triangle mr-3"></i>
+                    <span>응급상황 신고가 접수되었습니다</span>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // ---------- 유틸 ----------
+            const $ = (sel, root = document) => root.querySelector(sel);
+            const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+            const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+            // ---------- 엘리먼트 찾기 (기존 마크업 기반) ----------
+            const header = $("#header");
+            const elapsedEl = $("#header .text-right .text-sm"); // "15:42 경과"
+            const statusChip = $("#doctor-video .absolute.top-4.left-4"); // "연결 양호"
+            const pip = $("#doctor-video .absolute.top-4.right-4"); // PiP 영상
+            const audioBarsWrap = $("#doctor-video .absolute.bottom-20"); // 하단 오디오 바 래퍼
+            const audioBars = $$("div", audioBarsWrap); // 오디오 바 5개
+            const controls = $("#video-controls");
+            const btnMic = $("button:has(.fa-microphone)", controls);
+            const btnCam = $("button:has(.fa-video)", controls);
+            const btnEnd = $("button:has(.fa-phone-slash)", controls);
+            const btnChat = $("button:has(.fa-comment)", controls);
+            const chatBadge = $(".absolute.w-6.h-6", btnChat);
+            const chatSidebar = $("#chat-sidebar");
+            const chatCloseBtn = $("#chat-sidebar .fa-times")?.closest("button");
+            const emergencyAlert = $("#emergency-alert");
+
+            // ---------- 1) 경과 타이머 ----------
+            let elapsedSec = 0;
+            (function startTimer() {
+                // 기존 UI에 "15:42 경과"가 있다면 그대로 두고 덮어씀
+                setInterval(() => {
+                    elapsedSec++;
+                    const mm = String(Math.floor(elapsedSec / 60)).padStart(2, "0");
+                    const ss = String(elapsedSec % 60).padStart(2, "0");
+                    if (elapsedEl) elapsedEl.textContent = `${mm}:${ss} 경과`;
+                }, 1000);
+            })();
+
+            // ---------- 2) 연결 상태 변화(5초마다) ----------
+            const QUALITY = [
+                { label: "연결 아주 좋음", bg: "bg-green-500" },
+                { label: "연결 양호", bg: "bg-green-400" },
+                { label: "보통", bg: "bg-yellow-500" },
+                { label: "불안정", bg: "bg-orange-500" },
+                { label: "끊김 위험", bg: "bg-red-500" },
+            ];
+            setInterval(() => {
+                if (!statusChip) return;
+                const dot = document.createElement("span");
+                dot.className = "inline-block w-2 h-2 rounded-full mr-2";
+                const pick = QUALITY[Math.floor(Math.random() * QUALITY.length)];
+                // 기존 내용 교체
+                statusChip.innerHTML = "";
+                dot.classList.add(pick.bg);
+                statusChip.appendChild(dot);
+                statusChip.insertAdjacentText("beforeend", pick.label);
+            }, 5000);
+
+            // ---------- 3) 오디오 바 랜덤 댄스(120ms) ----------
+            setInterval(() => {
+                if (!audioBars?.length) return;
+                audioBars.forEach((bar, i) => {
+                    const h = 6 + Math.floor(Math.random() * 24); // 6~30px
+                    bar.style.height = `${h}px`;
+                    bar.style.transition = "height 120ms ease";
+                });
+            }, 120);
+
+            // ---------- 4) 마이크/카메라 토글 ----------
+            let micOn = true,
+                camOn = true;
+            btnMic?.addEventListener("click", () => {
+                micOn = !micOn;
+                btnMic.classList.toggle("bg-red-600", !micOn);
+                btnMic.classList.toggle("hover:bg-red-700", !micOn);
+                const icon = $(".fa-microphone", btnMic);
+                icon?.classList.toggle("fa-microphone-slash", !micOn);
+                icon?.classList.toggle("fa-microphone", micOn);
+            });
+
+            btnCam?.addEventListener("click", () => {
+                camOn = !camOn;
+                btnCam.classList.toggle("bg-red-600", !camOn);
+                btnCam.classList.toggle("hover:bg-red-700", !camOn);
+                const icon = $(".fa-video", btnCam);
+                icon?.classList.toggle("fa-video-slash", !camOn);
+                icon?.classList.toggle("fa-video", camOn);
+                // 카메라 끄면 PiP를 흐리게
+                pip?.classList.toggle("opacity-40", !camOn);
+            });
+
+            // ---------- 5) 통화 종료 애니메이션 ----------
+            btnEnd?.addEventListener("click", async () => {
+                const overlay = document.createElement("div");
+                overlay.className = "fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50";
+                overlay.innerHTML = `
+    <div class="bg-white rounded-xl p-6 w-80 text-center">
+      <div class="text-xl font-semibold mb-2">통화를 종료할까요?</div>
+      <div class="text-lg text-neutral-500 mb-4">종료하면 다시 연결해야 합니다.</div>
+      <div class="flex justify-center gap-3">
+        <button id="cancel-end" class="px-4 py-2 border rounded-lg">취소</button>
+        <button id="confirm-end" class="px-4 py-2 rounded-lg text-white bg-neutral-900">종료</button>
+      </div>
+    </div>`;
+                document.body.appendChild(overlay);
+                $("#cancel-end", overlay).onclick = () => overlay.remove();
+                $("#confirm-end", overlay).onclick = async () => {
+                    // 페이드아웃
+                    overlay.remove();
+                    const blackout = document.createElement("div");
+                    blackout.className = "fixed inset-0 bg-black opacity-0 z-50 transition-opacity";
+                    document.body.appendChild(blackout);
+                    requestAnimationFrame(() => blackout.classList.add("opacity-90"));
+                    // await sleep(300);
+                    // 간단히 페이지 이동/종료 느낌
+                    document.body.innerHTML = `
+      <div class="fixed inset-0 bg-black flex items-center justify-center">
+        <div class="text-white text-center">
+          <i class="fa-solid fa-phone-slash text-4xl mb-4"></i>
+          <div class="text-lg mt-3">통화가 종료되었습니다.</div>
+          <div id="exitCountLabel" class="text-center">3초 후 자동으로 화면이 전환됩니다.</div> 
+        </div>
+      </div>`;
+
+                    await startCountdown();
+                };
+            });
+
+            async function startCountdown() {
+                let count = 3;
+
+                const label = document.getElementById("exitCountLabel");
+
+                // 1초마다 문구 변경
+                const intervalId = setInterval(() => {
+                    count--;
+                    label.textContent = `${count}초 후 자동으로 화면이 전환됩니다.`;
+                }, 1000);
+
+                // 3초 대기
+                await new Promise((resolve) => setTimeout(resolve, 3000));
+
+                clearInterval(intervalId); // 카운트 중지
+
+                setTimeout(() => {
+                    window.close();
+                }, 500); // 0.5초 후 새탭 닫기 (페이지 전환 후)
+            }
+
+            // ---------- 6) 채팅 사이드바 토글 + 뱃지 ----------
+            function toggleChat(open) {
+                const isOpen = chatSidebar.classList.contains("hidden") ? false : true;
+                const next = open ?? !isOpen;
+                chatSidebar.classList.toggle("hidden", !next);
+                // 열리면 뱃지 0
+                if (next && chatBadge) chatBadge.style.display = "none";
+            }
+            btnChat?.addEventListener("click", () => toggleChat());
+            chatCloseBtn?.addEventListener("click", () => toggleChat(false));
+
+            // 데모: 12~20초 랜덤 주기로 새 메시지 들어와 뱃지 증가
+            (function mockIncoming() {
+                let count = 2;
+                const bump = () => {
+                    if (!chatSidebar.classList.contains("hidden")) return; // 열려있으면 카운트 안 올림
+                    count++;
+                    if (chatBadge) {
+                        chatBadge.style.display = "flex";
+                        $("span", chatBadge).textContent = count;
+                    }
+                };
+                setInterval(bump, 12000 + Math.random() * 8000);
+            })();
+
+            // ---------- 7) PiP(오른쪽 위 작은 비디오) 드래그 ----------
+            (function makeDraggable() {
+                if (!pip) return;
+                pip.style.touchAction = "none";
+                let sx = 0,
+                    sy = 0,
+                    left = 0,
+                    top = 0,
+                    dragging = false;
+
+                const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
+                const main = $("#doctor-video");
+
+                function start(e) {
+                    dragging = true;
+                    const pt = "touches" in e ? e.touches[0] : e;
+                    sx = pt.clientX;
+                    sy = pt.clientY;
+                    const rect = pip.getBoundingClientRect();
+                    left = rect.left;
+                    top = rect.top;
+                    e.preventDefault();
+                }
+                function move(e) {
+                    if (!dragging) return;
+                    const pt = "touches" in e ? e.touches[0] : e;
+                    const dx = pt.clientX - sx;
+                    const dy = pt.clientY - sy;
+                    const container = main.getBoundingClientRect();
+                    const pipRect = pip.getBoundingClientRect();
+                    let nx = left + dx,
+                        ny = top + dy;
+
+                    // 컨테이너 내부로 제한
+                    nx = clamp(nx, container.left, container.right - pipRect.width);
+                    ny = clamp(ny, container.top, container.bottom - pipRect.height);
+
+                    pip.style.left = nx + "px";
+                    pip.style.top = ny + "px";
+                    pip.style.right = "auto"; // 기존 right-4 클래스 영향 상쇄
+                    pip.style.bottom = "auto";
+                    pip.style.position = "fixed"; // 절대 -> 고정으로 전환
+                }
+                function end() {
+                    dragging = false;
+                }
+
+                pip.addEventListener("mousedown", start);
+                window.addEventListener("mousemove", move);
+                window.addEventListener("mouseup", end);
+
+                pip.addEventListener("touchstart", start, { passive: false });
+                window.addEventListener("touchmove", move, { passive: false });
+                window.addEventListener("touchend", end);
+            })();
+
+            // ---------- 8) 응급 알림 트리거 ----------
+            async function showEmergencyToast(msg = "응급상황 신고가 접수되었습니다") {
+                if (!emergencyAlert) return;
+                emergencyAlert.querySelector("span").textContent = msg;
+                emergencyAlert.classList.remove("hidden");
+                emergencyAlert.classList.add("opacity-0", "transition", "duration-200");
+                await sleep(10);
+                emergencyAlert.classList.remove("opacity-0");
+                await sleep(2400);
+                emergencyAlert.classList.add("opacity-0");
+                await sleep(200);
+                emergencyAlert.classList.add("hidden");
+                emergencyAlert.classList.remove("opacity-0", "transition", "duration-200");
+            }
+            // 데모 단축키: E 키로 토스트 띄우기
+            window.addEventListener("keydown", (e) => {
+                if (e.key.toLowerCase() === "e") showEmergencyToast();
+                if (e.key.toLowerCase() === "c") toggleChat();
+                if (e.key.toLowerCase() === "m") btnMic?.click();
+                if (e.key.toLowerCase() === "v") btnCam?.click();
+                if (e.key === "Escape") toggleChat(false);
+            });
+
+            // ---------- 9) 컨트롤 버튼 “선택 상태” 피드백 ----------
+            [btnMic, btnCam, btnChat].forEach((btn) => {
+                if (!btn) return;
+                btn.addEventListener("mousedown", () => btn.classList.add("scale-95"));
+                btn.addEventListener("mouseup", () => btn.classList.remove("scale-95"));
+                btn.addEventListener("mouseleave", () => btn.classList.remove("scale-95"));
+            });
+
+            // ---------- 10) 가벼운 HUD 등장 애니메이션 ----------
+            (function enterAnimations() {
+                // 상단/하단 바 슥 등장
+                header?.classList.add("opacity-0", "-translate-y-2", "transition", "duration-300");
+                controls?.classList.add("opacity-0", "translate-y-2", "transition", "duration-300");
+                requestAnimationFrame(() => {
+                    header?.classList.remove("opacity-0", "-translate-y-2");
+                    controls?.classList.remove("opacity-0", "translate-y-2");
+                });
+            })();
+        </script>
+    </body>
+</html>

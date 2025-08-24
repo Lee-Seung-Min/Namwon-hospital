@@ -1,0 +1,1207 @@
+<html class="">
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            window.FontAwesomeConfig = {
+                autoReplaceSvg: "nest", // Options: 'nest', 'remove', 'replace'
+            };
+        </script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+
+        <style>
+            * {
+                font-family: "Inter", sans-serif;
+            }
+
+            ::-webkit-scrollbar {
+                display: none;
+            }
+        </style>
+
+        <style>
+            .highlighted-section {
+                outline: 2px solid #3f20fb;
+                background-color: rgba(63, 32, 251, 0.1);
+            }
+
+            .edit-button {
+                position: absolute;
+                z-index: 1000;
+            }
+            .submenu {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-in-out;
+            }
+
+            .submenu.active {
+                max-height: 500px;
+            }
+
+            .arrow {
+                transition: transform 0.3s ease-in-out;
+            }
+
+            .arrow.rotated {
+                transform: rotate(90deg);
+            }
+        </style>
+
+        <style>
+            :root {
+                /* Base colors */
+                --color-base: #ffffff;
+                --color-base-50: #f9fafb;
+                --color-base-100: #f3f4f6;
+                --color-base-200: #e5e7eb;
+                --color-base-300: #d1d5db;
+                --color-base-400: #9ca3af;
+                --color-base-500: #6b7280;
+                --color-base-600: #4b5563;
+                --color-base-700: #374151;
+                --color-base-800: #1f2937;
+                --color-base-900: #111827;
+                --color-base-content: #1f2937;
+
+                /* Primary colors */
+                --color-primary: #3b82f6;
+                --color-primary-50: #eff6ff;
+                --color-primary-100: #dbeafe;
+                --color-primary-200: #bfdbfe;
+                --color-primary-300: #93c5fd;
+                --color-primary-400: #60a5fa;
+                --color-primary-500: #3b82f6;
+                --color-primary-600: #2563eb;
+                --color-primary-700: #1d4ed8;
+                --color-primary-800: #1e40af;
+                --color-primary-900: #1e3a8a;
+                --color-primary-focus: #2563eb;
+                --color-primary-content: #ffffff;
+
+                /* Secondary colors */
+                --color-secondary: #8b5cf6;
+                --color-secondary-50: #f5f3ff;
+                --color-secondary-100: #ede9fe;
+                --color-secondary-200: #ddd6fe;
+                --color-secondary-300: #c4b5fd;
+                --color-secondary-400: #a78bfa;
+                --color-secondary-500: #8b5cf6;
+                --color-secondary-600: #7c3aed;
+                --color-secondary-700: #6d28d9;
+                --color-secondary-800: #5b21b6;
+                --color-secondary-900: #4c1d95;
+                --color-secondary-focus: #7c3aed;
+                --color-secondary-content: #ffffff;
+
+                /* Accent colors */
+                --color-accent: #f472b6;
+                --color-accent-50: #fdf2f8;
+                --color-accent-100: #fce7f3;
+                --color-accent-200: #fbcfe8;
+                --color-accent-300: #f9a8d4;
+                --color-accent-400: #f472b6;
+                --color-accent-500: #ec4899;
+                --color-accent-600: #db2777;
+                --color-accent-700: #be185d;
+                --color-accent-800: #9d174d;
+                --color-accent-900: #831843;
+                --color-accent-focus: #db2777;
+                --color-accent-content: #ffffff;
+
+                /* Neutral colors */
+                --color-neutral: #6b7280;
+                --color-neutral-50: #f9fafb;
+                --color-neutral-100: #f3f4f6;
+                --color-neutral-200: #e5e7eb;
+                --color-neutral-300: #d1d5db;
+                --color-neutral-400: #9ca3af;
+                --color-neutral-500: #6b7280;
+                --color-neutral-600: #4b5563;
+                --color-neutral-700: #374151;
+                --color-neutral-800: #1f2937;
+                --color-neutral-900: #111827;
+                --color-neutral-focus: #4b5563;
+                --color-neutral-content: #ffffff;
+
+                /* Info colors */
+                --color-info: #3b82f6;
+                --color-info-50: #eff6ff;
+                --color-info-100: #dbeafe;
+                --color-info-200: #bfdbfe;
+                --color-info-300: #93c5fd;
+                --color-info-400: #60a5fa;
+                --color-info-500: #3b82f6;
+                --color-info-600: #2563eb;
+                --color-info-700: #1d4ed8;
+                --color-info-800: #1e40af;
+                --color-info-900: #1e3a8a;
+                --color-info-focus: #2563eb;
+                --color-info-content: #ffffff;
+
+                /* Success colors */
+                --color-success: #10b981;
+                --color-success-50: #ecfdf5;
+                --color-success-100: #d1fae5;
+                --color-success-200: #a7f3d0;
+                --color-success-300: #6ee7b7;
+                --color-success-400: #34d399;
+                --color-success-500: #10b981;
+                --color-success-600: #059669;
+                --color-success-700: #047857;
+                --color-success-800: #065f46;
+                --color-success-900: #064e3b;
+                --color-success-focus: #059669;
+                --color-success-content: #ffffff;
+
+                /* Warning colors */
+                --color-warning: #f59e0b;
+                --color-warning-50: #fffbeb;
+                --color-warning-100: #fef3c7;
+                --color-warning-200: #fde68a;
+                --color-warning-300: #fcd34d;
+                --color-warning-400: #fbbf24;
+                --color-warning-500: #f59e0b;
+                --color-warning-600: #d97706;
+                --color-warning-700: #b45309;
+                --color-warning-800: #92400e;
+                --color-warning-900: #78350f;
+                --color-warning-focus: #d97706;
+                --color-warning-content: #ffffff;
+
+                /* Error colors */
+                --color-error: #ef4444;
+                --color-error-50: #fef2f2;
+                --color-error-100: #fee2e2;
+                --color-error-200: #fecaca;
+                --color-error-300: #fca5a5;
+                --color-error-400: #f87171;
+                --color-error-500: #ef4444;
+                --color-error-600: #dc2626;
+                --color-error-700: #b91c1c;
+                --color-error-800: #991b1b;
+                --color-error-900: #7f1d1d;
+                --color-error-focus: #dc2626;
+                --color-error-content: #ffffff;
+            }
+        </style>
+
+        <style>
+            /* Dark theme */
+            .dark {
+                /* Base colors */
+                --color-base: #1f2937;
+                --color-base-50: #111827;
+                --color-base-100: #1f2937;
+                --color-base-200: #374151;
+                --color-base-300: #4b5563;
+                --color-base-400: #6b7280;
+                --color-base-500: #9ca3af;
+                --color-base-600: #d1d5db;
+                --color-base-700: #e5e7eb;
+                --color-base-800: #f3f4f6;
+                --color-base-900: #f9fafb;
+                --color-base-content: #f9fafb;
+
+                /* Primary colors */
+                --color-primary: #60a5fa;
+                --color-primary-50: #1e3a8a;
+                --color-primary-100: #1e40af;
+                --color-primary-200: #1d4ed8;
+                --color-primary-300: #2563eb;
+                --color-primary-400: #3b82f6;
+                --color-primary-500: #60a5fa;
+                --color-primary-600: #93c5fd;
+                --color-primary-700: #bfdbfe;
+                --color-primary-800: #dbeafe;
+                --color-primary-900: #eff6ff;
+                --color-primary-focus: #3b82f6;
+                --color-primary-content: #1f2937;
+
+                /* Secondary colors */
+                --color-secondary: #a78bfa;
+                --color-secondary-50: #4c1d95;
+                --color-secondary-100: #5b21b6;
+                --color-secondary-200: #6d28d9;
+                --color-secondary-300: #7c3aed;
+                --color-secondary-400: #8b5cf6;
+                --color-secondary-500: #a78bfa;
+                --color-secondary-600: #c4b5fd;
+                --color-secondary-700: #ddd6fe;
+                --color-secondary-800: #ede9fe;
+                --color-secondary-900: #f5f3ff;
+                --color-secondary-focus: #8b5cf6;
+                --color-secondary-content: #1f2937;
+
+                /* Accent colors */
+                --color-accent: #f472b6;
+                --color-accent-50: #831843;
+                --color-accent-100: #9d174d;
+                --color-accent-200: #be185d;
+                --color-accent-300: #db2777;
+                --color-accent-400: #ec4899;
+                --color-accent-500: #f472b6;
+                --color-accent-600: #f9a8d4;
+                --color-accent-700: #fbcfe8;
+                --color-accent-800: #fce7f3;
+                --color-accent-900: #fdf2f8;
+                --color-accent-focus: #ec4899;
+                --color-accent-content: #1f2937;
+
+                /* Neutral colors remain the same as light theme */
+
+                /* Info colors */
+                --color-info: #60a5fa;
+                --color-info-50: #1e3a8a;
+                --color-info-100: #1e40af;
+                --color-info-200: #1d4ed8;
+                --color-info-300: #2563eb;
+                --color-info-400: #3b82f6;
+                --color-info-500: #60a5fa;
+                --color-info-600: #93c5fd;
+                --color-info-700: #bfdbfe;
+                --color-info-800: #dbeafe;
+                --color-info-900: #eff6ff;
+                --color-info-focus: #3b82f6;
+                --color-info-content: #1f2937;
+
+                /* Success colors */
+                --color-success: #34d399;
+                --color-success-50: #064e3b;
+                --color-success-100: #065f46;
+                --color-success-200: #047857;
+                --color-success-300: #059669;
+                --color-success-400: #10b981;
+                --color-success-500: #34d399;
+                --color-success-600: #6ee7b7;
+                --color-success-700: #a7f3d0;
+                --color-success-800: #d1fae5;
+                --color-success-900: #ecfdf5;
+                --color-success-focus: #10b981;
+                --color-success-content: #1f2937;
+
+                /* Warning colors */
+                --color-warning: #fbbf24;
+                --color-warning-50: #78350f;
+                --color-warning-100: #92400e;
+                --color-warning-200: #b45309;
+                --color-warning-300: #d97706;
+                --color-warning-400: #f59e0b;
+                --color-warning-500: #fbbf24;
+                --color-warning-600: #fcd34d;
+                --color-warning-700: #fde68a;
+                --color-warning-800: #fef3c7;
+                --color-warning-900: #fffbeb;
+                --color-warning-focus: #f59e0b;
+                --color-warning-content: #1f2937;
+
+                /* Error colors */
+                --color-error: #f87171;
+                --color-error-50: #7f1d1d;
+                --color-error-100: #991b1b;
+                --color-error-200: #b91c1c;
+                --color-error-300: #dc2626;
+                --color-error-400: #ef4444;
+                --color-error-500: #f87171;
+                --color-error-600: #fca5a5;
+                --color-error-700: #fecaca;
+                --color-error-800: #fee2e2;
+                --color-error-900: #fef2f2;
+                --color-error-focus: #ef4444;
+                --color-error-content: #1f2937;
+            }
+        </style>
+
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            transparent: "transparent",
+                            current: "currentColor",
+                            black: "#000000",
+                            white: "#ffffff",
+                            gray: {
+                                50: "#f9fafb",
+                                100: "#f3f4f6",
+                                200: "#e5e7eb",
+                                300: "#d1d5db",
+                                400: "#9ca3af",
+                                500: "#6b7280",
+                                600: "#4b5563",
+                                700: "#374151",
+                                800: "#1f2937",
+                                900: "#111827",
+                            },
+                            red: {
+                                50: "#fef2f2",
+                                100: "#fee2e2",
+                                200: "#fecaca",
+                                300: "#fca5a5",
+                                400: "#f87171",
+                                500: "#ef4444",
+                                600: "#dc2626",
+                                700: "#b91c1c",
+                                800: "#991b1b",
+                                900: "#7f1d1d",
+                            },
+                            yellow: {
+                                50: "#fffbeb",
+                                100: "#fef3c7",
+                                200: "#fde68a",
+                                300: "#fcd34d",
+                                400: "#fbbf24",
+                                500: "#f59e0b",
+                                600: "#d97706",
+                                700: "#b45309",
+                                800: "#92400e",
+                                900: "#78350f",
+                            },
+                            green: {
+                                50: "#ecfdf5",
+                                100: "#d1fae5",
+                                200: "#a7f3d0",
+                                300: "#6ee7b7",
+                                400: "#34d399",
+                                500: "#10b981",
+                                600: "#059669",
+                                700: "#047857",
+                                800: "#065f46",
+                                900: "#064e3b",
+                            },
+                            blue: {
+                                50: "#eff6ff",
+                                100: "#dbeafe",
+                                200: "#bfdbfe",
+                                300: "#93c5fd",
+                                400: "#60a5fa",
+                                500: "#3b82f6",
+                                600: "#2563eb",
+                                700: "#1d4ed8",
+                                800: "#1e40af",
+                                900: "#1e3a8a",
+                            },
+                            indigo: {
+                                50: "#eef2ff",
+                                100: "#e0e7ff",
+                                200: "#c7d2fe",
+                                300: "#a5b4fc",
+                                400: "#818cf8",
+                                500: "#6366f1",
+                                600: "#4f46e5",
+                                700: "#4338ca",
+                                800: "#3730a3",
+                                900: "#312e81",
+                            },
+                            purple: {
+                                50: "#f5f3ff",
+                                100: "#ede9fe",
+                                200: "#ddd6fe",
+                                300: "#c4b5fd",
+                                400: "#a78bfa",
+                                500: "#8b5cf6",
+                                600: "#7c3aed",
+                                700: "#6d28d9",
+                                800: "#5b21b6",
+                                900: "#4c1d95",
+                            },
+                            pink: {
+                                50: "#fdf2f8",
+                                100: "#fce7f3",
+                                200: "#fbcfe8",
+                                300: "#f9a8d4",
+                                400: "#f472b6",
+                                500: "#ec4899",
+                                600: "#db2777",
+                                700: "#be185d",
+                                800: "#9d174d",
+                                900: "#831843",
+                            },
+                            primary: {
+                                50: "var(--color-primary-50)",
+                                100: "var(--color-primary-100)",
+                                200: "var(--color-primary-200)",
+                                300: "var(--color-primary-300)",
+                                400: "var(--color-primary-400)",
+                                500: "var(--color-primary-500)",
+                                600: "var(--color-primary-600)",
+                                700: "var(--color-primary-700)",
+                                800: "var(--color-primary-800)",
+                                900: "var(--color-primary-900)",
+                                DEFAULT: "var(--color-primary)",
+                                focus: "var(--color-primary-focus)",
+                                content: "var(--color-primary-content)",
+                            },
+                            secondary: {
+                                50: "var(--color-secondary-50)",
+                                100: "var(--color-secondary-100)",
+                                200: "var(--color-secondary-200)",
+                                300: "var(--color-secondary-300)",
+                                400: "var(--color-secondary-400)",
+                                500: "var(--color-secondary-500)",
+                                600: "var(--color-secondary-600)",
+                                700: "var(--color-secondary-700)",
+                                800: "var(--color-secondary-800)",
+                                900: "var(--color-secondary-900)",
+                                DEFAULT: "var(--color-secondary)",
+                                focus: "var(--color-secondary-focus)",
+                                content: "var(--color-secondary-content)",
+                            },
+                            accent: {
+                                50: "var(--color-accent-50)",
+                                100: "var(--color-accent-100)",
+                                200: "var(--color-accent-200)",
+                                300: "var(--color-accent-300)",
+                                400: "var(--color-accent-400)",
+                                500: "var(--color-accent-500)",
+                                600: "var(--color-accent-600)",
+                                700: "var(--color-accent-700)",
+                                800: "var(--color-accent-800)",
+                                900: "var(--color-accent-900)",
+                                DEFAULT: "var(--color-accent)",
+                                focus: "var(--color-accent-focus)",
+                                content: "var(--color-accent-content)",
+                            },
+                            neutral: {
+                                50: "var(--color-neutral-50)",
+                                100: "var(--color-neutral-100)",
+                                200: "var(--color-neutral-200)",
+                                300: "var(--color-neutral-300)",
+                                400: "var(--color-neutral-400)",
+                                500: "var(--color-neutral-500)",
+                                600: "var(--color-neutral-600)",
+                                700: "var(--color-neutral-700)",
+                                800: "var(--color-neutral-800)",
+                                900: "var(--color-neutral-900)",
+                                DEFAULT: "var(--color-neutral)",
+                                focus: "var(--color-neutral-focus)",
+                                content: "var(--color-neutral-content)",
+                            },
+                            info: {
+                                50: "var(--color-info-50)",
+                                100: "var(--color-info-100)",
+                                200: "var(--color-info-200)",
+                                300: "var(--color-info-300)",
+                                400: "var(--color-info-400)",
+                                500: "var(--color-info-500)",
+                                600: "var(--color-info-600)",
+                                700: "var(--color-info-700)",
+                                800: "var(--color-info-800)",
+                                900: "var(--color-info-900)",
+                                DEFAULT: "var(--color-info)",
+                                focus: "var(--color-info-focus)",
+                                content: "var(--color-info-content)",
+                            },
+                            success: {
+                                50: "var(--color-success-50)",
+                                100: "var(--color-success-100)",
+                                200: "var(--color-success-200)",
+                                300: "var(--color-success-300)",
+                                400: "var(--color-success-400)",
+                                500: "var(--color-success-500)",
+                                600: "var(--color-success-600)",
+                                700: "var(--color-success-700)",
+                                800: "var(--color-success-800)",
+                                900: "var(--color-success-900)",
+                                DEFAULT: "var(--color-success)",
+                                focus: "var(--color-success-focus)",
+                                content: "var(--color-success-content)",
+                            },
+                            warning: {
+                                50: "var(--color-warning-50)",
+                                100: "var(--color-warning-100)",
+                                200: "var(--color-warning-200)",
+                                300: "var(--color-warning-300)",
+                                400: "var(--color-warning-400)",
+                                500: "var(--color-warning-500)",
+                                600: "var(--color-warning-600)",
+                                700: "var(--color-warning-700)",
+                                800: "var(--color-warning-800)",
+                                900: "var(--color-warning-900)",
+                                DEFAULT: "var(--color-warning)",
+                                focus: "var(--color-warning-focus)",
+                                content: "var(--color-warning-content)",
+                            },
+                            error: {
+                                50: "var(--color-error-50)",
+                                100: "var(--color-error-100)",
+                                200: "var(--color-error-200)",
+                                300: "var(--color-error-300)",
+                                400: "var(--color-error-400)",
+                                500: "var(--color-error-500)",
+                                600: "var(--color-error-600)",
+                                700: "var(--color-error-700)",
+                                800: "var(--color-error-800)",
+                                900: "var(--color-error-900)",
+                                DEFAULT: "var(--color-error)",
+                                focus: "var(--color-error-focus)",
+                                content: "var(--color-error-content)",
+                            },
+                            danger: {
+                                50: "var(--color-error-50)",
+                                100: "var(--color-error-100)",
+                                200: "var(--color-error-200)",
+                                300: "var(--color-error-300)",
+                                400: "var(--color-error-400)",
+                                500: "var(--color-error-500)",
+                                600: "var(--color-error-600)",
+                                700: "var(--color-error-700)",
+                                800: "var(--color-error-800)",
+                                900: "var(--color-error-900)",
+                                DEFAULT: "var(--color-error)",
+                                focus: "var(--color-error-focus)",
+                                content: "var(--color-error-content)",
+                            },
+                            failure: {
+                                50: "var(--color-error-50)",
+                                100: "var(--color-error-100)",
+                                200: "var(--color-error-200)",
+                                300: "var(--color-error-300)",
+                                400: "var(--color-error-400)",
+                                500: "var(--color-error-500)",
+                                600: "var(--color-error-600)",
+                                700: "var(--color-error-700)",
+                                800: "var(--color-error-800)",
+                                900: "var(--color-error-900)",
+                                DEFAULT: "var(--color-error)",
+                                focus: "var(--color-error-focus)",
+                                content: "var(--color-error-content)",
+                            },
+                        },
+                        fontFamily: {
+                            sans: ["Inter", "sans-serif"],
+                        },
+                    },
+                },
+                variants: {
+                    extend: {
+                        backgroundColor: ["active", "group-hover"],
+                        textColor: ["active", "group-hover"],
+                    },
+                },
+                plugins: [],
+            };
+        </script>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
+        />
+        <style>
+            .highlighted-section {
+                outline: 2px solid #3f20fb;
+                background-color: rgba(63, 32, 251, 0.1);
+            }
+
+            .edit-button {
+                position: absolute;
+                z-index: 1000;
+            }
+
+            ::-webkit-scrollbar {
+                display: none;
+            }
+
+            html,
+            body {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+        </style>
+    </head>
+
+    <body class="h-full text-base-content">
+        <header id="header" class="bg-white border-b border-neutral-200 px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <i class="fa-solid fa-hospital text-2xl text-neutral-700"></i>
+                    <h1 class="text-xl text-neutral-900">병원 관리 시스템</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <img
+                            src="https://api.dicebear.com/7.x/notionists/svg?scale=200&amp;seed=789"
+                            alt="User Avatar"
+                            class="w-8 h-8 rounded-full"
+                        />
+                        <span class="text-sm text-neutral-700">김의사</span>
+                    </div>
+                    <button class="px-3 py-1 text-sm text-neutral-600 hover:text-neutral-900">
+                        <i class="fa-solid fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main id="main-content" class="flex">
+            <!-- 사이드바 -->
+            <aside id="sidebar" class="w-64 bg-neutral-50 border-r border-neutral-200 p-6">
+                <nav class="space-y-2">
+                    <!-- 일정 관리 -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('schedule-submenu')"
+                            class="flex items-center justify-between px-3 py-2 text-neutral-700 hover:bg-neutral-200 rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-calendar-days"></i>
+                                <span>일정 관리</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="schedule-arrow"></i>
+                        </span>
+                        <div id="schedule-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="main.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-clock"></i>
+                                <span>월별 일정</span>
+                            </a>
+                            <a
+                                href="weeklySchedule.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-calendar-week"></i>
+                                <span>주간 일정</span>
+                            </a>
+                            <a
+                                href="appointmentManage.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-user-clock"></i>
+                                <span>예약 관리</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 환자 관리 -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('patient-submenu')"
+                            class="flex items-center justify-between px-3 py-2 bg-neutral-900 text-white rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-users"></i>
+                                <span>환자 관리</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm text-white" id="patient-arrow"></i>
+                        </span>
+                        <div id="patient-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="patientList.html"
+                                class="flex items-center space-x-3 px-3 py-2 bg-neutral-100 text-neutral-900 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-list"></i>
+                                <span>환자 목록</span>
+                            </a>
+                            <!-- <a href="new-patient.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-user-plus"></i>
+                            <span>신규 환자 등록</span>
+                        </a>
+                        <a href="patient-search.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <span>환자 검색</span>
+                        </a> -->
+                        </div>
+                    </div>
+
+                    <!-- 진료 기록 -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('record-submenu')"
+                            class="flex items-center justify-between px-3 py-2 text-neutral-700 hover:bg-neutral-200 rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-file-medical"></i>
+                                <span>진료 기록</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="record-arrow"></i>
+                        </span>
+                        <div id="record-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="patientDgnsLst.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-file-lines"></i>
+                                <span>환자별 진료 기록</span>
+                            </a>
+                            <!-- <a href="today-records.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-calendar-day"></i>
+                            <span>오늘 진료 기록</span>
+                        </a> -->
+                            <!-- <a href="search-records.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-search"></i>
+                            <span>기록 검색</span>
+                        </a> -->
+                            <!-- <a href="diagnosis-history.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-history"></i>
+                            <span>진단 이력</span>
+                        </a> -->
+                            <!-- <a href="prescription-manage.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-pills"></i>
+                            <span>처방 관리</span>
+                        </a> -->
+                        </div>
+                    </div>
+
+                    <!-- 통계 -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('stats-submenu')"
+                            class="flex items-center justify-between px-3 py-2 text-neutral-700 hover:bg-neutral-200 rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-chart-bar"></i>
+                                <span>통계</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="stats-arrow"></i>
+                        </span>
+                        <div id="stats-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="patient-stats.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-user-chart"></i>
+                                <span>진료 통계</span>
+                            </a>
+                            <a
+                                href="revenue-stats.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-won-sign"></i>
+                                <span>결제 현황</span>
+                            </a>
+                            <a
+                                href="disease-stats.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-chart-pie"></i>
+                                <span>정산 현황</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 설정 -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('settings-submenu')"
+                            class="flex items-center justify-between px-3 py-2 text-neutral-700 hover:bg-neutral-200 rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-cog"></i>
+                                <span>설정</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="settings-arrow"></i>
+                        </span>
+                        <div id="settings-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="profile-settings.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-user-gear"></i>
+                                <span>병원 정보 설정</span>
+                            </a>
+                            <a
+                                href="clinic-settings.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-hospital"></i>
+                                <span>병원 시간 설정</span>
+                            </a>
+                            <!-- <a href="system-settings.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-sliders"></i>
+                            <span>시스템 설정</span>
+                        </a> -->
+                            <a
+                                href="backup-settings.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-database"></i>
+                                <span>-</span>
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            </aside>
+
+            <section id="patient-detail-section" class="flex-1 p-6">
+                <div class="mb-6">
+                    <div class="flex items-center space-x-2 mb-4">
+                        <button class="text-neutral-600 hover:text-neutral-900">
+                            <i class="fa-solid fa-arrow-left mr-2"></i>
+                            환자 목록으로
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-2xl text-neutral-900">환자 상세 정보</h2>
+                        <div class="flex items-center space-x-2">
+                            <button
+                                class="px-4 py-2 border border-neutral-300 text-neutral-700 rounded-md hover:bg-neutral-50"
+                            >
+                                <i class="fa-solid fa-edit mr-2"></i>
+                                정보 수정
+                            </button>
+                            <button class="px-4 py-2 bg-neutral-900 text-white rounded-md hover:bg-neutral-800">
+                                <i class="fa-solid fa-plus mr-2"></i>
+                                새 진료 기록
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 space-y-6">
+                        <div id="patient-info-card" class="bg-white border border-neutral-200 rounded-lg p-6">
+                            <div class="flex items-start space-x-6 mb-6">
+                                <img
+                                    src="https://api.dicebear.com/7.x/notionists/svg?scale=200&amp;seed=123"
+                                    alt="Patient"
+                                    class="w-24 h-24 rounded-full"
+                                />
+                                <div class="flex-1">
+                                    <h3 class="text-xl text-neutral-900 mb-2">김철수</h3>
+                                    <div class="grid grid-cols-2 gap-4 text-sm">
+                                        <div>
+                                            <span class="text-neutral-600">환자번호:</span>
+                                            <span class="ml-2 text-neutral-900">P-2025001</span>
+                                        </div>
+                                        <div>
+                                            <span class="text-neutral-600">나이:</span>
+                                            <span class="ml-2 text-neutral-900">75세</span>
+                                        </div>
+                                        <div>
+                                            <span class="text-neutral-600">성별:</span>
+                                            <span class="ml-2 text-neutral-900">남성</span>
+                                        </div>
+                                        <div>
+                                            <span class="text-neutral-600">경로당:</span>
+                                            <span class="ml-2 text-neutral-900">중앙경로당</span>
+                                        </div>
+                                        <div>
+                                            <span class="text-neutral-600">연락처:</span>
+                                            <span class="ml-2 text-neutral-900">010-1234-5678</span>
+                                        </div>
+                                        <div>
+                                            <span class="text-neutral-600">등록일:</span>
+                                            <span class="ml-2 text-neutral-900">2024-03-15</span>
+                                        </div>
+                                        <div>
+                                            <span class="text-neutral-600">주소:</span>
+                                            <span class="ml-2 text-neutral-900">서울시 중구 명동 123-45</span>
+                                        </div>
+                                        <div>
+                                            <span class="text-neutral-600">혈액형:</span>
+                                            <span class="ml-2 text-neutral-900">A+</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="border-t border-neutral-200 pt-4">
+                                <h4 class="text-neutral-900 mb-3">알레르기 정보</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-neutral-100 text-neutral-800 text-sm rounded-full"
+                                        >페니실린</span
+                                    >
+                                    <span class="px-3 py-1 bg-neutral-100 text-neutral-800 text-sm rounded-full"
+                                        >견과류</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="medical-history-card" class="bg-white border border-neutral-200 rounded-lg">
+                            <div class="p-6 border-b border-neutral-200">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-lg text-neutral-900">진료 이력</h3>
+                                    <div class="flex items-center space-x-2">
+                                        <input
+                                            type="date"
+                                            value="2025-01-15"
+                                            class="px-3 py-1 text-sm border border-neutral-300 rounded-md"
+                                        />
+                                        <button
+                                            class="px-3 py-1 text-sm border border-neutral-300 rounded-md hover:bg-neutral-50"
+                                        >
+                                            <i class="fa-solid fa-filter"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="divide-y divide-neutral-200">
+                                <div class="p-6">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div>
+                                            <div class="text-neutral-900">고혈압 정기검진</div>
+                                            <div class="text-sm text-neutral-600">2025-01-10 09:30</div>
+                                        </div>
+                                        <span class="px-2 py-1 text-xs bg-neutral-100 text-neutral-800 rounded-full"
+                                            >완료</span
+                                        >
+                                    </div>
+                                    <div class="text-sm text-neutral-700 mb-2">
+                                        <span class="text-neutral-600">담당의:</span> 김의사
+                                    </div>
+                                    <div class="text-sm text-neutral-700 mb-3">
+                                        <span class="text-neutral-600">증상:</span> 혈압 상승, 두통
+                                    </div>
+                                    <div class="text-sm text-neutral-700 mb-3">
+                                        <span class="text-neutral-600">진단:</span> 본태성 고혈압 (I10)
+                                    </div>
+                                    <div class="text-sm text-neutral-700">
+                                        <span class="text-neutral-600">처방:</span> 암로디핀 5mg 1일 1회, 혈압 모니터링
+                                    </div>
+                                </div>
+
+                                <div class="p-6">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div>
+                                            <div class="text-neutral-900">감기 치료</div>
+                                            <div class="text-sm text-neutral-600">2024-12-20 14:20</div>
+                                        </div>
+                                        <span class="px-2 py-1 text-xs bg-neutral-100 text-neutral-800 rounded-full"
+                                            >완료</span
+                                        >
+                                    </div>
+                                    <div class="text-sm text-neutral-700 mb-2">
+                                        <span class="text-neutral-600">담당의:</span> 이의사
+                                    </div>
+                                    <div class="text-sm text-neutral-700 mb-3">
+                                        <span class="text-neutral-600">증상:</span> 발열, 기침, 콧물
+                                    </div>
+                                    <div class="text-sm text-neutral-700 mb-3">
+                                        <span class="text-neutral-600">진단:</span> 급성 상기도 감염 (J06.9)
+                                    </div>
+                                    <div class="text-sm text-neutral-700">
+                                        <span class="text-neutral-600">처방:</span> 해열제, 기침억제제 3일분
+                                    </div>
+                                </div>
+
+                                <div class="p-6">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div>
+                                            <div class="text-neutral-900">건강검진</div>
+                                            <div class="text-sm text-neutral-600">2024-11-15 10:00</div>
+                                        </div>
+                                        <span class="px-2 py-1 text-xs bg-neutral-100 text-neutral-800 rounded-full"
+                                            >완료</span
+                                        >
+                                    </div>
+                                    <div class="text-sm text-neutral-700 mb-2">
+                                        <span class="text-neutral-600">담당의:</span> 김의사
+                                    </div>
+                                    <div class="text-sm text-neutral-700 mb-3">
+                                        <span class="text-neutral-600">검사항목:</span> 혈액검사, 소변검사, 흉부X선
+                                    </div>
+                                    <div class="text-sm text-neutral-700">
+                                        <span class="text-neutral-600">결과:</span> 전반적으로 양호, 혈압 관리 필요
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="p-4 border-t border-neutral-200 text-center">
+                                <button class="text-neutral-600 hover:text-neutral-900 text-sm">
+                                    더 많은 이력 보기 <i class="fa-solid fa-chevron-down ml-1"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div id="documents-card" class="bg-white border border-neutral-200 rounded-lg p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg text-neutral-900">제증명 서류</h3>
+                                <button
+                                    class="px-3 py-1 text-sm bg-neutral-900 text-white rounded-md hover:bg-neutral-800"
+                                >
+                                    <i class="fa-solid fa-plus mr-1"></i>
+                                    추가
+                                </button>
+                            </div>
+
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between p-3 border border-neutral-200 rounded-lg">
+                                    <div class="flex items-center space-x-3">
+                                        <i class="fa-solid fa-file-pdf text-neutral-500"></i>
+                                        <div>
+                                            <div class="text-sm text-neutral-900">진단서</div>
+                                            <div class="text-xs text-neutral-600">2025-01-10</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <button class="text-neutral-600 hover:text-neutral-900">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                        <button class="text-neutral-600 hover:text-neutral-900">
+                                            <i class="fa-solid fa-download"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center justify-between p-3 border border-neutral-200 rounded-lg">
+                                    <div class="flex items-center space-x-3">
+                                        <i class="fa-solid fa-file-pdf text-neutral-500"></i>
+                                        <div>
+                                            <div class="text-sm text-neutral-900">처방전</div>
+                                            <div class="text-xs text-neutral-600">2024-12-20</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <button class="text-neutral-600 hover:text-neutral-900">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                        <button class="text-neutral-600 hover:text-neutral-900">
+                                            <i class="fa-solid fa-download"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center justify-between p-3 border border-neutral-200 rounded-lg">
+                                    <div class="flex items-center space-x-3">
+                                        <i class="fa-solid fa-file-pdf text-neutral-500"></i>
+                                        <div>
+                                            <div class="text-sm text-neutral-900">검사결과</div>
+                                            <div class="text-xs text-neutral-600">2024-11-15</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <button class="text-neutral-600 hover:text-neutral-900">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                        <button class="text-neutral-600 hover:text-neutral-900">
+                                            <i class="fa-solid fa-download"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- <div id="quick-actions-card" class="bg-white border border-neutral-200 rounded-lg p-6">
+                            <h3 class="text-lg text-neutral-900 mb-4">빠른 작업</h3>
+
+                            <div class="space-y-3">
+                                <button
+                                    class="w-full flex items-center space-x-3 p-3 border border-neutral-200 rounded-lg hover:bg-neutral-50"
+                                >
+                                    <i class="fa-solid fa-calendar-plus text-neutral-600"></i>
+                                    <span class="text-sm text-neutral-900">진료 예약</span>
+                                </button>
+
+                                <button
+                                    class="w-full flex items-center space-x-3 p-3 border border-neutral-200 rounded-lg hover:bg-neutral-50"
+                                >
+                                    <i class="fa-solid fa-prescription-bottle-medical text-neutral-600"></i>
+                                    <span class="text-sm text-neutral-900">처방전 발행</span>
+                                </button>
+
+                                <button
+                                    class="w-full flex items-center space-x-3 p-3 border border-neutral-200 rounded-lg hover:bg-neutral-50"
+                                >
+                                    <i class="fa-solid fa-file-medical text-neutral-600"></i>
+                                    <span class="text-sm text-neutral-900">진단서 발행</span>
+                                </button>
+
+                                <button
+                                    class="w-full flex items-center space-x-3 p-3 border border-neutral-200 rounded-lg hover:bg-neutral-50"
+                                >
+                                    <i class="fa-solid fa-phone text-neutral-600"></i>
+                                    <span class="text-sm text-neutral-900">연락하기</span>
+                                </button>
+                            </div>
+                        </div> -->
+
+                        <div id="vital-signs-card" class="bg-white border border-neutral-200 rounded-lg p-6">
+                            <h3 class="text-lg text-neutral-900 mb-4">최근 생체신호</h3>
+
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fa-solid fa-heart text-neutral-600"></i>
+                                        <span class="text-sm text-neutral-700">혈압</span>
+                                    </div>
+                                    <span class="text-sm text-neutral-900">140/90 mmHg</span>
+                                </div>
+
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fa-solid fa-heartbeat text-neutral-600"></i>
+                                        <span class="text-sm text-neutral-700">맥박</span>
+                                    </div>
+                                    <span class="text-sm text-neutral-900">72 bpm</span>
+                                </div>
+
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fa-solid fa-thermometer text-neutral-600"></i>
+                                        <span class="text-sm text-neutral-700">체온</span>
+                                    </div>
+                                    <span class="text-sm text-neutral-900">36.5°C</span>
+                                </div>
+
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fa-solid fa-weight text-neutral-600"></i>
+                                        <span class="text-sm text-neutral-700">체중</span>
+                                    </div>
+                                    <span class="text-sm text-neutral-900">68kg</span>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 pt-4 border-t border-neutral-200 text-xs text-neutral-600">
+                                마지막 측정: 2025-01-10
+                            </div>
+                            <a
+                                href="patientDetail.html"
+                                class="items-end mt-6 text-sm text-blue-600 hover:text-blue-800"
+                            >
+                                <span>상세 정보</span>
+                                <i class="fa-solid fa-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </body>
+    <script>
+        function toggleSubmenu(submenuId) {
+            const submenu = document.getElementById(submenuId);
+            const arrow = document.getElementById(submenuId.replace("-submenu", "-arrow"));
+
+            // 현재 서브메뉴가 열려있는지 확인
+            const isActive = submenu.classList.contains("active");
+
+            // 모든 서브메뉴 닫기
+            const allSubmenus = document.querySelectorAll(".submenu");
+            const allArrows = document.querySelectorAll(".arrow");
+
+            allSubmenus.forEach((menu) => menu.classList.remove("active"));
+            allArrows.forEach((arr) => arr.classList.remove("rotated"));
+
+            // 클릭한 서브메뉴가 닫혀있었다면 열기
+            if (!isActive) {
+                submenu.classList.add("active");
+                arrow.classList.add("rotated");
+            }
+        }
+
+        // 페이지 로드 시 현재 활성화된 메뉴의 서브메뉴 열기 (진료 기록)
+        document.addEventListener("DOMContentLoaded", function () {
+            toggleSubmenu("patient-submenu");
+        });
+    </script>
+</html>

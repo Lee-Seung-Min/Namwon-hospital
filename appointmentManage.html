@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <title>진료 예약 관리</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        />
+        <style>
+            * {
+                font-family: "Inter", sans-serif;
+            }
+            ::-webkit-scrollbar {
+                display: none;
+            }
+            html,
+            body {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            .submenu {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-in-out;
+            }
+            .submenu.active {
+                max-height: 500px;
+            }
+            .arrow {
+                transition: transform 0.3s ease-in-out;
+            }
+            .arrow.rotated {
+                transform: rotate(90deg);
+            }
+        </style>
+    </head>
+    <body class="h-full text-base-content bg-neutral-50">
+        <header id="header" class="h-fullbg-white border-b border-neutral-200 px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <i class="fa-solid fa-hospital text-2xl text-neutral-700"></i>
+                    <h1 class="text-xl text-neutral-900">병원 관리 시스템</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <img
+                            src="https://api.dicebear.com/7.x/notionists/svg?scale=200&amp;seed=789"
+                            alt="User Avatar"
+                            class="w-8 h-8 rounded-full"
+                        />
+                        <span class="text-sm text-neutral-700">김의사</span>
+                    </div>
+                    <button class="px-3 py-1 text-sm text-neutral-600 hover:text-neutral-900">
+                        <i class="fa-solid fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+        <main class="h-full flex">
+            <!-- 사이드바 -->
+            <aside id="sidebar" class="w-64 bg-neutral-50 border-r border-neutral-200 p-6">
+                <nav class="space-y-2">
+                    <!-- 일정 관리 -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('schedule-submenu')"
+                            class="flex items-center justify-between px-3 py-2 bg-neutral-900 text-white rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-calendar-days"></i>
+                                <span>일정 관리</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm text-white" id="record-arrow"></i>
+                        </span>
+                        <div id="schedule-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="main.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-clock"></i>
+                                <span>월별 일정</span>
+                            </a>
+                            <a
+                                href="weeklySchedule.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-calendar-week"></i>
+                                <span>주간 일정</span>
+                            </a>
+                            <a
+                                href="appointmentManage.html"
+                                class="flex items-center space-x-3 px-3 py-2 bg-neutral-100 text-neutral-900 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-user-clock"></i>
+                                <span>예약 관리</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 환자 관리 -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('patient-submenu')"
+                            class="flex items-center justify-between px-3 py-2 text-neutral-700 hover:bg-neutral-200 rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-users"></i>
+                                <span>환자 관리</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="patient-arrow"></i>
+                        </span>
+                        <div id="patient-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="patientList.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-list"></i>
+                                <span>환자 목록</span>
+                            </a>
+                            <!-- <a href="new-patient.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-user-plus"></i>
+                            <span>신규 환자 등록</span>
+                        </a>
+                        <a href="patient-search.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <span>환자 검색</span>
+                        </a> -->
+                        </div>
+                    </div>
+
+                    <!-- 진료 기록 (현재 활성화된 메뉴) -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('record-submenu')"
+                            class="flex items-center justify-between px-3 py-2 text-neutral-700 hover:bg-neutral-200 rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-file-medical"></i>
+                                <span>진료 기록</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="schedule-arrow"></i>
+                        </span>
+                        <div id="record-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="patientDgnsLst.html"
+                                class="flex items-center space-x-3 px-3 py-2 bg-neutral-100 text-neutral-900 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-file-lines"></i>
+                                <span>환자별 진료 기록</span>
+                            </a>
+                            <!-- <a href="today-records.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-calendar-day"></i>
+                            <span>오늘 진료 기록</span>
+                        </a> -->
+                            <!-- <a href="search-records.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-search"></i>
+                            <span>기록 검색</span>
+                        </a> -->
+                            <!-- <a href="diagnosis-history.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-history"></i>
+                            <span>진단 이력</span>
+                        </a> -->
+                            <!-- <a href="prescription-manage.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-pills"></i>
+                            <span>처방 관리</span>
+                        </a> -->
+                        </div>
+                    </div>
+
+                    <!-- 통계 -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('stats-submenu')"
+                            class="flex items-center justify-between px-3 py-2 text-neutral-700 hover:bg-neutral-200 rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-chart-bar"></i>
+                                <span>통계</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="stats-arrow"></i>
+                        </span>
+                        <div id="stats-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="patient-stats.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-user-chart"></i>
+                                <span>진료 통계</span>
+                            </a>
+                            <a
+                                href="revenue-stats.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-won-sign"></i>
+                                <span>결제 현황</span>
+                            </a>
+                            <a
+                                href="disease-stats.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-chart-pie"></i>
+                                <span>정산 현황</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 설정 -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('settings-submenu')"
+                            class="flex items-center justify-between px-3 py-2 text-neutral-700 hover:bg-neutral-200 rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-cog"></i>
+                                <span>설정</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="settings-arrow"></i>
+                        </span>
+                        <div id="settings-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="profile-settings.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-user-gear"></i>
+                                <span>병원 정보 설정</span>
+                            </a>
+                            <a
+                                href="clinic-settings.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-hospital"></i>
+                                <span>병원 시간 설정</span>
+                            </a>
+                            <!-- <a href="system-settings.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-sliders"></i>
+                            <span>시스템 설정</span>
+                        </a> -->
+                            <a
+                                href="backup-settings.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-database"></i>
+                                <span>-</span>
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            </aside>
+            <section class="flex-1 p-6">
+                <div class="mb-6">
+                    <h2 class="text-2xl text-neutral-900 mb-4">예약 목록</h2>
+                    <div class="flex items-center space-x-4 mb-6">
+                        <div class="flex-1">
+                            <div class="relative">
+                                <i
+                                    class="fa-solid fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400"
+                                ></i>
+                                <input
+                                    type="text"
+                                    placeholder="환자명으로 검색"
+                                    class="w-full pl-10 pr-4 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <input
+                                type="date"
+                                class="px-4 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                            />
+                            ~
+                            <input
+                                type="date"
+                                class="px-4 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                            />
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <button class="px-4 py-2 bg-neutral-900 text-white rounded-md hover:bg-neutral-800">
+                                <i class="fa-solid fa-search mr-2"></i>
+                                검색
+                            </button>
+                            <button
+                                class="px-4 py-2 border border-neutral-300 text-neutral-700 rounded-md hover:bg-neutral-50"
+                            >
+                                <i class="fa-solid fa-refresh mr-2"></i>
+                                초기화
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white border border-neutral-200 rounded-lg p-4">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="border-b border-neutral-200">
+                                <th class="py-2 px-4 text-neutral-700">예약 일자</th>
+                                <th class="py-2 px-4 text-neutral-700">예약 시간</th>
+                                <th class="py-2 px-4 text-neutral-700">환자명</th>
+                                <th class="py-2 px-4 text-neutral-700">진료과(담당의)</th>
+                                <th class="py-2 px-4 text-neutral-700">증상</th>
+                                <th class="py-2 px-4 text-neutral-700">상태</th>
+                                <th class="py-2 px-4 text-neutral-700">관리</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-neutral-100 hover:bg-neutral-50">
+                                <td class="py-2 px-4">2025-01-25</td>
+                                <td class="py-2 px-4">09:00</td>
+                                <td class="py-2 px-4">김환자</td>
+                                <td class="py-2 px-4">내과(김의사)</td>
+                                <td class="py-2 px-4">감기</td>
+                                <td class="py-2 px-4 text-green-600">예약됨</td>
+                                <td class="py-2 px-4">
+                                    <div class="flex space-x-2">
+                                        <button
+                                            onclick="confirmAppointment(event)"
+                                            class="px-3 py-1 text-blue-800 rounded-md"
+                                        >
+                                            <i class="fa-solid fa-check mr-1"></i>확정
+                                        </button>
+                                        <button
+                                            class="px-3 py-1 text-red-500 hover:text-red-600"
+                                            onclick="confirmCancel(event)"
+                                        >
+                                            <i class="fa-solid fa-times mr-1"></i>취소
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-neutral-100 hover:bg-neutral-50">
+                                <td class="py-2 px-4">2025-01-22</td>
+                                <td class="py-2 px-4">14:00</td>
+                                <td class="py-2 px-4">이환자</td>
+                                <td class="py-2 px-4">정형외과(이의사)</td>
+                                <td class="py-2 px-4">무릎 통증</td>
+                                <td class="py-2 px-4 text-green-600">예약됨</td>
+                                <td class="py-2 px-4">
+                                    <div class="flex space-x-2">
+                                        <button
+                                            onclick="confirmAppointment(event)"
+                                            class="px-3 py-1 text-blue-800 rounded-md"
+                                        >
+                                            <i class="fa-solid fa-check mr-1"></i>확정
+                                        </button>
+                                        <button
+                                            class="px-3 py-1 text-red-500 hover:text-red-600"
+                                            onclick="confirmCancel(event)"
+                                        >
+                                            <i class="fa-solid fa-times mr-1"></i>취소
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-neutral-100 hover:bg-neutral-50">
+                                <td class="py-2 px-4">2025-01-20</td>
+                                <td class="py-2 px-4">16:30</td>
+                                <td class="py-2 px-4">박환자</td>
+                                <td class="py-2 px-4">피부과(박의사)</td>
+                                <td class="py-2 px-4">알레르기</td>
+                                <td class="py-2 px-4 text-green-600">예약됨</td>
+                                <td class="py-2 px-4">
+                                    <div class="flex space-x-2">
+                                        <button
+                                            onclick="confirmAppointment(event)"
+                                            class="px-3 py-1 text-blue-800 rounded-md"
+                                        >
+                                            <i class="fa-solid fa-check mr-1"></i>확정
+                                        </button>
+                                        <button
+                                            class="px-3 py-1 text-red-500 hover:text-red-600"
+                                            onclick="confirmCancel(event)"
+                                        >
+                                            <i class="fa-solid fa-times mr-1"></i>취소
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-neutral-100 hover:bg-neutral-50">
+                                <td class="py-2 px-4">2025-01-19</td>
+                                <td class="py-2 px-4">10:15</td>
+                                <td class="py-2 px-4">최환자</td>
+                                <td class="py-2 px-4">소아과(최의사)</td>
+                                <td class="py-2 px-4">열감</td>
+                                <td class="py-2 px-4 text-green-600">예약됨</td>
+                                <td class="py-2 px-4">
+                                    <div class="flex space-x-2">
+                                        <button
+                                            onclick="confirmAppointment(event)"
+                                            class="px-3 py-1 text-blue-800 rounded-md"
+                                        >
+                                            <i class="fa-solid fa-check mr-1"></i>확정
+                                        </button>
+                                        <button
+                                            class="px-3 py-1 text-red-500 hover:text-red-600"
+                                            onclick="confirmCancel(event)"
+                                        >
+                                            <i class="fa-solid fa-times mr-1"></i>취소
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-neutral-100 hover:bg-neutral-50">
+                                <td class="py-2 px-4">2025-01-11</td>
+                                <td class="py-2 px-4">11:00</td>
+                                <td class="py-2 px-4">정환자</td>
+                                <td class="py-2 px-4">이비인후과(정의사)</td>
+                                <td class="py-2 px-4">목 통증</td>
+                                <td class="py-2 px-4 text-green-600">예약됨</td>
+                                <td class="py-2 px-4">
+                                    <div class="flex space-x-2">
+                                        <button
+                                            onclick="confirmAppointment(event)"
+                                            class="px-3 py-1 text-blue-800 rounded-md"
+                                        >
+                                            <i class="fa-solid fa-check mr-1"></i>확정
+                                        </button>
+                                        <button
+                                            class="px-3 py-1 text-red-500 hover:text-red-600"
+                                            onclick="confirmCancel(event)"
+                                        >
+                                            <i class="fa-solid fa-times mr-1"></i>취소
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-neutral-100 hover:bg-neutral-50">
+                                <td class="py-2 px-4">2025-01-10</td>
+                                <td class="py-2 px-4">13:30</td>
+                                <td class="py-2 px-4">오환자</td>
+                                <td class="py-2 px-4">정신과(오의사)</td>
+                                <td class="py-2 px-4">불면증</td>
+                                <td class="py-2 px-4 text-green-600">예약됨</td>
+                                <td class="py-2 px-4">
+                                    <div class="flex space-x-2">
+                                        <button
+                                            onclick="confirmAppointment(event)"
+                                            class="px-3 py-1 text-blue-800 rounded-md"
+                                        >
+                                            <i class="fa-solid fa-check mr-1"></i>확정
+                                        </button>
+                                        <button
+                                            class="px-3 py-1 text-red-500 hover:text-red-600"
+                                            onclick="confirmCancel(event)"
+                                        >
+                                            <i class="fa-solid fa-times mr-1"></i>취소
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-neutral-100 hover:bg-neutral-50">
+                                <td class="py-2 px-4">2025-01-09</td>
+                                <td class="py-2 px-4">15:00</td>
+                                <td class="py-2 px-4">유환자</td>
+                                <td class="py-2 px-4">외과(유의사)</td>
+                                <td class="py-2 px-4">복통</td>
+                                <td class="py-2 px-4 text-green-600">예약됨</td>
+                                <td class="py-2 px-4">
+                                    <div class="flex space-x-2">
+                                        <button
+                                            onclick="confirmAppointment(event)"
+                                            class="px-3 py-1 text-blue-800 rounded-md"
+                                        >
+                                            <i class="fa-solid fa-check mr-1"></i>확정
+                                        </button>
+                                        <button
+                                            class="px-3 py-1 text-red-500 hover:text-red-600"
+                                            onclick="confirmCancel(event)"
+                                        >
+                                            <i class="fa-solid fa-times mr-1"></i>취소
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-neutral-100 hover:bg-neutral-50">
+                                <td class="py-2 px-4">2025-01-08</td>
+                                <td class="py-2 px-4">17:00</td>
+                                <td class="py-2 px-4">임환자</td>
+                                <td class="py-2 px-4">산부인과(임의사)</td>
+                                <td class="py-2 px-4">임신 확인</td>
+                                <td class="py-2 px-4 text-yellow-600">진료중</td>
+                                <td class="py-2 px-4">
+                                    <button
+                                        onclick="confirmAppointment(event)"
+                                        class="px-3 py-1 opacity-50 text-blue-800 rounded-md"
+                                        disabled
+                                    >
+                                        <i class="fa-solid fa-check mr-1"></i>확정
+                                    </button>
+                                    <button
+                                        class="px-3 py-1 opacity-50 text-red-500 hover:text-red-600"
+                                        onclick="confirmCancel(event)"
+                                        disabled
+                                    >
+                                        <i class="fa-solid fa-times mr-1"></i>취소
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-neutral-100 hover:bg-neutral-50">
+                                <td class="py-2 px-4">2025-01-05</td>
+                                <td class="py-2 px-4">08:30</td>
+                                <td class="py-2 px-4">강환자</td>
+                                <td class="py-2 px-4">내과(김의사)</td>
+                                <td class="py-2 px-4">고혈압</td>
+                                <td class="py-2 px-4 text-neutral-400">진료완료</td>
+                                <td class="py-2 px-4">
+                                    <button
+                                        onclick="confirmAppointment(event)"
+                                        class="px-3 py-1 opacity-50 text-blue-800 rounded-md"
+                                        disabled
+                                    >
+                                        <i class="fa-solid fa-check mr-1"></i>확정
+                                    </button>
+                                    <button
+                                        class="px-3 py-1 opacity-50 text-red-500 hover:text-red-600"
+                                        onclick="confirmCancel(event)"
+                                        disabled
+                                    >
+                                        <i class="fa-solid fa-times mr-1"></i>취소
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 예약 상세 -->
+                <div
+                    id="appointment-detail"
+                    class="mt-8 p-6 bg-white rounded-lg border border-neutral-200 shadow"
+                    style="display: none"
+                >
+                    <div class="flex items-center space-x-4 mb-4">
+                        <h2 class="text-2xl text-neutral-900">예약 상세 정보</h2>
+                    </div>
+                    <div class="grid grid-cols-3 gap-6">
+                        <div class="col-span-2 space-y-6">
+                            <div id="patient-info" class="border border-neutral-200 rounded-lg p-6">
+                                <h3 class="text-lg text-neutral-900 mb-4 flex items-center">
+                                    <i class="fa-solid fa-user mr-2"></i>
+                                    환자 정보
+                                </h3>
+                                <div class="grid grid-cols-2 gap-4" id="detail-patient-info"></div>
+                            </div>
+                            <div id="appointment-info" class="border border-neutral-200 rounded-lg p-6">
+                                <h3 class="text-lg text-neutral-900 mb-4 flex items-center">
+                                    <i class="fa-solid fa-calendar-check mr-2"></i>
+                                    예약 정보
+                                </h3>
+                                <div class="grid grid-cols-2 gap-4" id="detail-appointment-info"></div>
+                                <div class="mt-4">
+                                    <label class="block text-sm text-neutral-600 mb-1">주요 증상</label>
+                                    <div class="text-neutral-900" id="detail-symptom"></div>
+                                </div>
+                                <div class="mt-4">
+                                    <label class="block text-sm text-neutral-600 mb-1">특이사항</label>
+                                    <div class="text-neutral-900" id="detail-memo"></div>
+                                </div>
+                            </div>
+                            <div id="medical-history" class="border border-neutral-200 rounded-lg p-6">
+                                <h3 class="text-lg text-neutral-900 mb-4 flex items-center">
+                                    <i class="fa-solid fa-file-medical mr-2"></i>
+                                    최근 진료 기록
+                                </h3>
+                                <div class="space-y-4" id="detail-history"></div>
+                            </div>
+                            <!-- 전체 상세 보기 버튼 -->
+                            <div class="mt-4 text-center">
+                                <button
+                                    onclick="location.href='patientDgnsLst.html'"
+                                    class="px-4 py-2 bg-neutral-100 text-neutral-700 rounded-md hover:bg-neutral-200"
+                                >
+                                    <i class="fa-solid fa-list mr-2"></i>
+                                    전체 보기
+                                </button>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div id="quick-actions" class="border border-neutral-200 rounded-lg p-6">
+                                <h3 class="text-lg text-neutral-900 mb-4">빠른 작업</h3>
+                                                        <div class="space-y-3">
+                            <button
+                                class="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-neutral-900 text-white rounded-md hover:bg-neutral-800">
+                                <i class="fa-solid fa-check"></i>
+                                <span>예약 확정</span>
+                            </button>
+
+                            <button
+                                class="w-full flex items-center justify-center space-x-2 px-4 py-3 border border-neutral-300 text-neutral-700 rounded-md hover:bg-neutral-50"
+                                onclick="showEditPopup()">
+                                <i class="fa-solid fa-edit"></i>
+                                <span>예약 수정</span>
+                            </button>
+
+                            <!-- <button
+                                    class="w-full flex items-center justify-center space-x-2 px-4 py-3 border border-neutral-300 text-neutral-700 rounded-md hover:bg-neutral-50"
+                                >
+                                    <i class="fa-solid fa-check"></i>
+                                    <span>예약 확정</span>
+                                </button> -->
+
+                            <button
+                                class="w-full flex items-center justify-center space-x-2 px-4 py-3 border border-neutral-300 text-neutral-600 rounded-md hover:bg-neutral-50">
+                                <i class="fa-solid fa-times"></i>
+                                <span>예약 취소</span>
+                            </button>
+                        </div>
+                            </div>
+                            <div id="notes" class="border border-neutral-200 rounded-lg p-6">
+                                <h3 class="text-lg text-neutral-900 mb-4">메모</h3>
+                                <textarea
+                                    id="detail-note"
+                                    class="w-full h-32 p-3 border border-neutral-300 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-neutral-500"
+                                    placeholder="환자에 대한 메모를 입력하세요..."
+                                ></textarea>
+                                <button
+                                    class="mt-3 w-full px-4 py-2 bg-neutral-100 text-neutral-700 rounded-md hover:bg-neutral-200"
+                                >
+                                    <i class="fa-solid fa-save mr-2"></i>
+                                    메모 저장
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 예약 수정 팝업 -->
+                <div
+                    id="edit-popup"
+                    class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
+                    style="display: none"
+                >
+                    <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-lg">
+                        <h3 class="text-xl text-neutral-900 mb-6">예약 정보 수정</h3>
+                        <form id="edit-form" class="space-y-4">
+                            <div>
+                                <label class="block text-sm text-neutral-600 mb-1">환자명</label>
+                                <input
+                                    type="text"
+                                    id="edit-name"
+                                    class="w-full border border-neutral-300 rounded-md px-3 py-2"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label class="block text-sm text-neutral-600 mb-1">예약 시간</label>
+                                <input
+                                    type="text"
+                                    id="edit-time"
+                                    class="w-full border border-neutral-300 rounded-md px-3 py-2"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label class="block text-sm text-neutral-600 mb-1">진료과</label>
+                                <input
+                                    type="text"
+                                    id="edit-dept"
+                                    class="w-full border border-neutral-300 rounded-md px-3 py-2"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label class="block text-sm text-neutral-600 mb-1">증상</label>
+                                <input
+                                    type="text"
+                                    id="edit-symptom"
+                                    class="w-full border border-neutral-300 rounded-md px-3 py-2"
+                                />
+                            </div>
+                            <div>
+                                <label class="block text-sm text-neutral-600 mb-1">특이사항</label>
+                                <input
+                                    type="text"
+                                    id="edit-memo"
+                                    class="w-full border border-neutral-300 rounded-md px-3 py-2"
+                                />
+                            </div>
+                            <div class="flex justify-end space-x-2 mt-6">
+                                <button
+                                    type="button"
+                                    id="edit-cancel"
+                                    class="px-4 py-2 bg-neutral-100 text-neutral-700 rounded-md hover:bg-neutral-200"
+                                >
+                                    취소
+                                </button>
+                                <button
+                                    type="submit"
+                                    class="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700"
+                                >
+                                    저장
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- 취소 확인 팝업 -->
+                <div
+                    id="cancel-popup"
+                    class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
+                    style="display: none"
+                >
+                    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+                        <h3 class="text-lg text-neutral-900 mb-4">예약 취소 확인</h3>
+                        <p class="text-neutral-600 mb-6">정말로 이 예약을 취소하시겠습니까?</p>
+                        <div class="flex justify-end space-x-3">
+                            <button
+                                onclick="closeCancelPopup()"
+                                class="px-4 py-2 text-neutral-700 border border-neutral-300 rounded-md hover:bg-neutral-50"
+                            >
+                                아니오
+                            </button>
+                            <button
+                                onclick="proceedCancel()"
+                                class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+                            >
+                                예, 취소합니다
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <aside class="w-80 bg-neutral-50 border-l border-neutral-200 p-6" id="right-sidebar">
+                <h4 class="text-lg text-neutral-900 mb-3">예약 통계</h4>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-neutral-600">오늘 예약</span>
+                        <span>8건</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-neutral-600">이번 주</span>
+                        <span>42건</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-neutral-600">이번 달</span>
+                        <span>186건</span>
+                    </div>
+                </div>
+            </aside>
+        </main>
+        <script>
+            // 예약 데이터 (테이블과 상세 정보용)
+            const appointments = [
+                {
+                    time: "09:00",
+                    name: "김환자",
+                    dept: "내과",
+                    symptom: "감기",
+                    status: "예약됨",
+                    detail: {
+                        환자명: "김환자",
+                        예약시간: "09:00",
+                        진료과: "내과",
+                        증상: "감기",
+                        상태: "예약됨",
+                        연락처: "010-1234-5678",
+                        메모: "최근 감기 증상 악화, 기침 심함",
+                        의사: "김의사",
+                        진료실: "101호",
+                        보험: "국민건강보험",
+                        환자번호: "P-2025-0001",
+                        생년월일: "1985-03-15",
+                        성별: "남성",
+                        이메일: "kim@email.com",
+                        경로당: "중앙 경로당",
+                        주소: "서울시 강남구 테헤란로 123, 456호",
+                        예약유형: "초진",
+                        예상소요시간: "30분",
+                        진료기록: [
+                            {
+                                날짜: "2024-12-20",
+                                진료과: "내과",
+                                의사: "김의사",
+                                진단: "급성 상기도염",
+                                처방: "해열제, 기침약",
+                            },
+                            {
+                                날짜: "2024-11-15",
+                                진료과: "내과",
+                                의사: "김의사",
+                                진단: "고혈압 정기 검진",
+                                처방: "혈압약 지속",
+                            },
+                            {
+                                날짜: "2024-10-08",
+                                진료과: "내과",
+                                의사: "이의사",
+                                진단: "위염",
+                                처방: "위장약, 제산제",
+                            },
+                        ],
+                    },
+                },
+                // ...기존 데이터 동일, 각 detail에 위와 같은 필드 추가 가능...
+            ];
+
+            let currentIdx = null;
+            let cancelRowIndex = null;
+            let confirmRowIndex = null;
+
+            // 예약 확정 관련 함수
+            function confirmAppointment(event) {
+                event.stopPropagation(); // 이벤트 버블링 방지
+                const row = event.target.closest("tr");
+                const statusCell = row.querySelector("td:nth-last-child(2)");
+                const btnsContainer = row.querySelector("td:last-child");
+
+                statusCell.textContent = "예약 확정";
+                statusCell.classList.remove("text-green-600");
+                statusCell.classList.add("text-blue-600");
+
+                // 확정 버튼 비활성화
+                const confirmBtn = btnsContainer.querySelector("button");
+                confirmBtn.disabled = true;
+                confirmBtn.classList.add("opacity-50", "cursor-not-allowed");
+            }
+
+            // 취소 확인 팝업 관련 함수들
+            function confirmCancel(event) {
+                event.stopPropagation(); // 이벤트 버블링 방지
+                const row = event.target.closest("tr");
+                const rows = Array.from(row.parentElement.children);
+                cancelRowIndex = rows.indexOf(row);
+                document.getElementById("cancel-popup").style.display = "flex";
+            }
+
+            function closeCancelPopup() {
+                document.getElementById("cancel-popup").style.display = "none";
+                cancelRowIndex = null;
+            }
+
+            function proceedCancel() {
+                if (cancelRowIndex !== null) {
+                    const row = document.querySelector("table tbody").children[cancelRowIndex];
+                    const statusCell = row.querySelector("td:nth-last-child(2)");
+                    const cancelBtn = row.querySelector("button");
+
+                    statusCell.textContent = "취소됨";
+                    statusCell.classList.remove("text-green-600", "text-yellow-600", "text-blue-600");
+                    statusCell.classList.add("text-red-500");
+
+                    cancelBtn.disabled = true;
+                    cancelBtn.classList.add("opacity-50", "cursor-not-allowed");
+                }
+                closeCancelPopup();
+            }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                const tbody = document.querySelector("table tbody");
+                const rows = tbody.querySelectorAll("tr");
+                rows.forEach((row, idx) => {
+                    row.style.cursor = "pointer";
+                    row.addEventListener("click", function () {
+                        // 모든 행의 하이라이트 제거
+                        rows.forEach((r) => r.classList.remove("bg-neutral-100"));
+                        // 선택된 행 하이라이트
+                        row.classList.add("bg-neutral-100");
+                        showDetail(idx);
+                    });
+                });
+            });
+
+            function showDetail(idx) {
+                currentIdx = idx;
+                const detailBox = document.getElementById("appointment-detail");
+                const data = appointments[idx].detail;
+                // 환자 정보
+                let patientInfoHtml = "";
+                patientInfoHtml += `<div><label class='block text-sm text-neutral-600 mb-1'>환자명</label><div class='text-neutral-900'>${
+                    data.환자명 || ""
+                }</div></div>`;
+                patientInfoHtml += `<div><label class='block text-sm text-neutral-600 mb-1'>환자 번호</label><div class='text-neutral-900'>${
+                    data.환자번호 || ""
+                }</div></div>`;
+                patientInfoHtml += `<div><label class='block text-sm text-neutral-600 mb-1'>생년월일</label><div class='text-neutral-900'>${
+                    data.생년월일 || ""
+                }</div></div>`;
+                patientInfoHtml += `<div><label class='block text-sm text-neutral-600 mb-1'>성별</label><div class='text-neutral-900'>${
+                    data.성별 || ""
+                }</div></div>`;
+                patientInfoHtml += `<div><label class='block text-sm text-neutral-600 mb-1'>연락처</label><div class='text-neutral-900'>${
+                    data.연락처 || ""
+                }</div></div>`;
+                patientInfoHtml += `<div><label class='block text-sm text-neutral-600 mb-1'>이메일</label><div class='text-neutral-900'>${
+                    data.이메일 || ""
+                }</div></div>`;
+                patientInfoHtml += `<div><label class='block text-sm text-neutral-600 mb-1'>소속 경로당</label><div class='text-neutral-900'>${
+                    data.경로당 || ""
+                }</div></div>`;
+                patientInfoHtml += `<div><label class='block text-sm text-neutral-600 mb-1'>주소</label><div class='text-neutral-900'>${
+                    data.주소 || ""
+                }</div></div>`;
+                document.getElementById("detail-patient-info").innerHTML = patientInfoHtml;
+
+                // 예약 정보
+                let appointmentInfoHtml = "";
+                appointmentInfoHtml += `<div><label class='block text-sm text-neutral-600 mb-1'>예약 일시</label><div class='text-neutral-900'>2025년 1월 15일 (수) ${
+                    data.예약시간 || ""
+                }</div></div>`;
+                appointmentInfoHtml += `<div><label class='block text-sm text-neutral-600 mb-1'>진료과</label><div class='text-neutral-900'>${
+                    data.진료과 || ""
+                }</div></div>`;
+                appointmentInfoHtml += `<div><label class='block text-sm text-neutral-600 mb-1'>담당의</label><div class='text-neutral-900'>${
+                    data.의사 || ""
+                }</div></div>`;
+                appointmentInfoHtml += `<div><label class='block text-sm text-neutral-600 mb-1'>예약 유형</label><div class='text-neutral-900'>${
+                    data.예약유형 || ""
+                }</div></div>`;
+                appointmentInfoHtml += `<div><label class='block text-sm text-neutral-600 mb-1'>예상 소요시간</label><div class='text-neutral-900'>${
+                    data.예상소요시간 || ""
+                }</div></div>`;
+                appointmentInfoHtml += `<div><label class='block text-sm text-neutral-600 mb-1'>상태</label><div class='flex items-center'><span class='px-2 py-1 bg-neutral-100 text-neutral-800 rounded text-sm'>${
+                    data.상태 || ""
+                }</span></div></div>`;
+                document.getElementById("detail-appointment-info").innerHTML = appointmentInfoHtml;
+                document.getElementById("detail-symptom").textContent = data.증상 || "";
+                document.getElementById("detail-memo").textContent = data.메모 || "";
+
+                // 최근 진료 기록
+                let historyHtml = "";
+                if (data.진료기록) {
+                    data.진료기록.forEach((r) => {
+                        historyHtml += `<div class='border-l-4 border-neutral-300 pl-4 mb-2'><div class='flex items-center justify-between mb-1'><span class='text-neutral-900'>${r.날짜} - ${r.진료과}</span><span class='text-sm text-neutral-500'>${r.의사}</span></div><div class='text-sm text-neutral-600'>진단: ${r.진단}</div><div class='text-sm text-neutral-600'>처방: ${r.처방}</div></div>`;
+                    });
+                }
+                document.getElementById("detail-history").innerHTML = historyHtml;
+
+                // 메모
+                document.getElementById("detail-note").value = data.메모 || "";
+
+                detailBox.style.display = "block";
+                detailBox.scrollIntoView({ behavior: "smooth", block: "center" });
+
+                // 수정 버튼 이벤트 연결
+                document.getElementById("edit-btn").onclick = function () {
+                    openEditPopup(idx);
+                };
+            }
+
+            // 예약 수정 팝업 열기
+            function openEditPopup(idx) {
+                const data = appointments[idx].detail;
+                document.getElementById("edit-name").value = data.환자명 || "";
+                document.getElementById("edit-time").value = data.예약시간 || "";
+                document.getElementById("edit-dept").value = data.진료과 || "";
+                document.getElementById("edit-symptom").value = data.증상 || "";
+                document.getElementById("edit-memo").value = data.메모 || "";
+                document.getElementById("edit-popup").style.display = "flex";
+                document.getElementById("edit-cancel").onclick = function () {
+                    document.getElementById("edit-popup").style.display = "none";
+                };
+            }
+
+            // 예약 수정 폼 제출
+            document.getElementById("edit-form").onsubmit = function (e) {
+                e.preventDefault();
+                if (currentIdx === null) return;
+                const data = appointments[currentIdx].detail;
+                data.환자명 = document.getElementById("edit-name").value;
+                data.예약시간 = document.getElementById("edit-time").value;
+                data.진료과 = document.getElementById("edit-dept").value;
+                data.증상 = document.getElementById("edit-symptom").value;
+                data.메모 = document.getElementById("edit-memo").value;
+                document.getElementById("edit-popup").style.display = "none";
+                showDetail(currentIdx);
+            };
+
+            function toggleSubmenu(submenuId) {
+                const submenu = document.getElementById(submenuId);
+                const arrow = document.getElementById(submenuId.replace("-submenu", "-arrow"));
+
+                // 현재 서브메뉴가 열려있는지 확인
+                const isActive = submenu.classList.contains("active");
+
+                // 모든 서브메뉴 닫기
+                const allSubmenus = document.querySelectorAll(".submenu");
+                const allArrows = document.querySelectorAll(".arrow");
+
+                allSubmenus.forEach((menu) => menu.classList.remove("active"));
+                allArrows.forEach((arr) => arr.classList.remove("rotated"));
+
+                // 클릭한 서브메뉴가 닫혀있었다면 열기
+                if (!isActive) {
+                    submenu.classList.add("active");
+                    arrow.classList.add("rotated");
+                }
+            }
+
+            // 페이지 로드 시 현재 활성화된 메뉴의 서브메뉴 열기 (진료 기록)
+            document.addEventListener("DOMContentLoaded", function () {
+                toggleSubmenu("schedule-submenu");
+            });
+
+            
+            // 예약 수정 팝업 관련 함수들
+            // function showEditPopup() {
+            //     const popup = document.getElementById('edit-popup');
+            //     const form = document.getElementById('edit-form');
+            //     const appointment = appointments[0]; // 현재는 첫 번째 예약 데이터만 사용
+
+            //     // 폼 필드에 현재 예약 정보 설정
+            //     form.appointmentDate.value = appointment.date;
+            //     form.appointmentTime.value = appointment.time;
+            //     form.department.value = appointment.department;
+            //     form.doctor.value = appointment.doctor;
+            //     form.symptoms.value = appointment.symptoms;
+
+            //     // 팝업 표시
+            //     popup.style.display = 'flex';
+            // }
+
+            // function closeEditPopup() {
+            //     const popup = document.getElementById('edit-popup');
+            //     popup.style.display = 'none';
+            // }
+
+            // // 폼 제출 처리
+            // document.getElementById('edit-form').addEventListener('submit', function(e) {
+            //     e.preventDefault();
+                
+            //     // 폼 데이터 가져오기
+            //     const formData = new FormData(e.target);
+            //     const updatedAppointment = {
+            //         date: formData.get('appointmentDate'),
+            //         time: formData.get('appointmentTime'),
+            //         department: formData.get('department'),
+            //         doctor: formData.get('doctor'),
+            //         symptoms: formData.get('symptoms')
+            //     };
+
+            //     // 예약 정보 업데이트 (실제로는 서버에 전송)
+            //     console.log('Updated appointment:', updatedAppointment);
+                
+            //     // 성공 메시지 표시
+            //     alert('예약이 성공적으로 수정되었습니다.');
+                
+            //     // 팝업 닫기
+            //     closeEditPopup();
+            // });
+            function setQuickActionsToConfirmed() {
+            const quickActions = document.querySelector('#quick-actions .space-y-3');
+            const appointmentInfo = document.querySelector('#appointment-info .grid .flex' );
+            quickActions.innerHTML = `
+                    <button
+                        class="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-green-600 text-white rounded-md hover:bg-green-700"
+                        onclick="window.open('imagingTreatment.html', '_blank')"
+                    >
+                        <i class='fa-solid fa-stethoscope'></i>
+                        <span>진료 시작</span>
+                    </button>
+                    <button
+                        onclick="location.href='treatmentComplete.html'"
+                        class="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-neutral-900 text-white rounded-md hover:bg-neutral-800"
+                    >
+                        <i class="fa-solid fa-pen"></i>
+                        <span>진료 완료 결과 작성</span>
+                    </button>
+                    <button
+                        class="w-full flex items-center justify-center space-x-2 px-4 py-3 border border-neutral-300 text-neutral-700 rounded-md hover:bg-neutral-50"
+                        onclick="location.href='patientDetail.html'"
+                    >
+                        <i class='fa-solid fa-user'></i>
+                        <span>환자 상세 정보</span>
+                    </button>
+                    <button
+                        class="w-full flex items-center justify-center space-x-2 px-4 py-3 border border-neutral-300 text-red-600 rounded-md hover:bg-neutral-50"
+                        onclick="cancelAppointment()"
+                    >
+                        <i class='fa-solid fa-times'></i>
+                        <span>예약 취소</span>
+                    </button>
+                `;
+                appointmentInfo.innerHTML = `
+                    <span class="px-2 py-1 bg-neutral-100 text-neutral-800 rounded text-sm">진료 대기</span>
+                `;
+        }
+        function startTreatment() {
+            alert('진료를 시작합니다.');
+        }
+        function showPatientDetail() {
+            alert('환자 상세 정보 페이지로 이동합니다.');
+            // location.href = 'patientDetail.html'; // 실제 이동 시 주석 해제
+        }
+        function cancelAppointment() {
+            if (confirm('예약을 취소하시겠습니까?')) {
+                alert('예약이 취소되었습니다.');
+            }
+        }
+        document.querySelector('#quick-actions .bg-neutral-900').addEventListener('click', setQuickActionsToConfirmed);
+        </script>
+    </body>
+</html>

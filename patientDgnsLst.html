@@ -1,0 +1,759 @@
+<html class="">
+    <head>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <style>
+            * {
+                font-family: "Inter", sans-serif;
+            }
+
+            ::-webkit-scrollbar {
+                display: none;
+            }
+
+            .submenu {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-in-out;
+            }
+
+            .submenu.active {
+                max-height: 500px;
+            }
+
+            .arrow {
+                transition: transform 0.3s ease-in-out;
+            }
+
+            .arrow.rotated {
+                transform: rotate(90deg);
+            }
+        </style>
+    </head>
+
+    <body class="h-full text-base-content bg-neutral-50">
+        <!-- 헤더 -->
+        <header id="header" class="bg-white border-b border-neutral-200 px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <i class="fa-solid fa-hospital text-2xl text-neutral-700"></i>
+                    <h1 class="text-xl text-neutral-900">병원 관리 시스템</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <img
+                            src="https://api.dicebear.com/7.x/notionists/svg?seed=123"
+                            alt="User Avatar"
+                            class="w-8 h-8 rounded-full"
+                        />
+                        <span class="text-sm text-neutral-700">김의사</span>
+                    </div>
+                    <button class="px-3 py-1 text-sm text-neutral-600 hover:text-neutral-900">
+                        <i class="fa-solid fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main id="main-content" class="flex">
+            <!-- 사이드바 -->
+            <aside id="sidebar" class="w-64 bg-neutral-50 border-r border-neutral-200 p-6">
+                <nav class="space-y-2">
+                    <!-- 일정 관리 -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('schedule-submenu')"
+                            class="flex items-center justify-between px-3 py-2 text-neutral-700 hover:bg-neutral-200 rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-calendar-days"></i>
+                                <span>일정 관리</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="schedule-arrow"></i>
+                        </span>
+                        <div id="schedule-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="main.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-clock"></i>
+                                <span>월별 일정</span>
+                            </a>
+                            <a
+                                href="weeklySchedule.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-calendar-week"></i>
+                                <span>주간 일정</span>
+                            </a>
+                            <a
+                                href="appointmentManage.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-user-clock"></i>
+                                <span>예약 관리</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 환자 관리 -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('patient-submenu')"
+                            class="flex items-center justify-between px-3 py-2 text-neutral-700 hover:bg-neutral-200 rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-users"></i>
+                                <span>환자 관리</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="patient-arrow"></i>
+                        </span>
+                        <div id="patient-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="patientList.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-list"></i>
+                                <span>환자 목록</span>
+                            </a>
+                            <!-- <a href="new-patient.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-user-plus"></i>
+                            <span>신규 환자 등록</span>
+                        </a>
+                        <a href="patient-search.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <span>환자 검색</span>
+                        </a> -->
+                        </div>
+                    </div>
+
+                    <!-- 진료 기록 (현재 활성화된 메뉴) -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('record-submenu')"
+                            class="flex items-center justify-between px-3 py-2 bg-neutral-900 text-white rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-file-medical"></i>
+                                <span>진료 기록</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm text-white" id="record-arrow"></i>
+                        </span>
+                        <div id="record-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="patientDgnsLst.html"
+                                class="flex items-center space-x-3 px-3 py-2 bg-neutral-100 text-neutral-900 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-file-lines"></i>
+                                <span>환자별 진료 기록</span>
+                            </a>
+                            <!-- <a href="today-records.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-calendar-day"></i>
+                            <span>오늘 진료 기록</span>
+                        </a> -->
+                            <!-- <a href="search-records.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-search"></i>
+                            <span>기록 검색</span>
+                        </a> -->
+                            <!-- <a href="diagnosis-history.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-history"></i>
+                            <span>진단 이력</span>
+                        </a> -->
+                            <!-- <a href="prescription-manage.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-pills"></i>
+                            <span>처방 관리</span>
+                        </a> -->
+                        </div>
+                    </div>
+
+                    <!-- 통계 -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('stats-submenu')"
+                            class="flex items-center justify-between px-3 py-2 text-neutral-700 hover:bg-neutral-200 rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-chart-bar"></i>
+                                <span>통계</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="stats-arrow"></i>
+                        </span>
+                        <div id="stats-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="patient-stats.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-user-chart"></i>
+                                <span>진료 통계</span>
+                            </a>
+                            <a
+                                href="revenue-stats.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-won-sign"></i>
+                                <span>결제 현황</span>
+                            </a>
+                            <a
+                                href="disease-stats.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-chart-pie"></i>
+                                <span>정산 현황</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 설정 -->
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('settings-submenu')"
+                            class="flex items-center justify-between px-3 py-2 text-neutral-700 hover:bg-neutral-200 rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-cog"></i>
+                                <span>설정</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="settings-arrow"></i>
+                        </span>
+                        <div id="settings-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="profile-settings.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-user-gear"></i>
+                                <span>병원 정보 설정</span>
+                            </a>
+                            <a
+                                href="clinic-settings.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-hospital"></i>
+                                <span>병원 시간 설정</span>
+                            </a>
+                            <!-- <a href="system-settings.html"
+                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
+                            <i class="fa-solid fa-sliders"></i>
+                            <span>시스템 설정</span>
+                        </a> -->
+                            <a
+                                href="backup-settings.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-database"></i>
+                                <span>-</span>
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- ▶▶ 추가 부분 (사이드바 오른쪽 메인 콘텐츠) ◀◀ -->
+            <section id="records-page" class="flex-1 p-6">
+                <!-- 필터 바 -->
+                <div class="bg-white border border-neutral-200 rounded-xl p-4 mb-4">
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
+                        <div class="md:col-span-2">
+                            <label for="filter-name" class="block text-sm text-neutral-600 mb-1">환자 이름</label>
+                            <input
+                                id="filter-name"
+                                type="text"
+                                placeholder="예) 김환자"
+                                class="w-full border border-neutral-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-400"
+                            />
+                        </div>
+                        <div>
+                            <label for="filter-from" class="block text-sm text-neutral-600 mb-1">시작 날짜</label>
+                            <input
+                                id="filter-from"
+                                type="date"
+                                class="w-full border border-neutral-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-400"
+                            />
+                        </div>
+                        <div>
+                            <label for="filter-to" class="block text-sm text-neutral-600 mb-1">끝 날짜</label>
+                            <input
+                                id="filter-to"
+                                type="date"
+                                class="w-full border border-neutral-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-400"
+                            />
+                        </div>
+                        <div class="flex gap-2">
+                            <button
+                                id="btn-apply"
+                                class="flex-1 bg-neutral-900 text-white px-4 py-2 rounded-lg hover:opacity-90"
+                            >
+                                필터 적용
+                            </button>
+                            <button
+                                id="btn-reset"
+                                class="flex-1 border border-neutral-300 px-4 py-2 rounded-lg hover:bg-neutral-50"
+                            >
+                                초기화
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 결과 영역: 좌(환자) - 중(기록 리스트) - 우(상세) -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                    <!-- 환자 목록 -->
+                    <div class="bg-white border border-neutral-200 rounded-xl">
+                        <div class="px-4 py-3 border-b border-neutral-200 flex items-center justify-between">
+                            <h2 class="text-sm font-medium text-neutral-700">환자 목록</h2>
+                            <span id="patient-count" class="text-xs text-neutral-500"></span>
+                        </div>
+                        <div id="patient-list" class="max-h-[60vh] overflow-auto p-2"></div>
+                    </div>
+
+                    <!-- 기록 리스트 -->
+                    <div class="bg-white border border-neutral-200 rounded-xl">
+                        <div class="px-4 py-3 border-b border-neutral-200 flex items-center justify-between">
+                            <h2 class="text-sm font-medium text-neutral-700">진료 기록</h2>
+                            <span id="record-count" class="text-xs text-neutral-500"></span>
+                        </div>
+                        <div id="record-list" class="max-h-[60vh] overflow-auto p-2"></div>
+                    </div>
+
+                    <!-- 상세 패널 -->
+                    <div class="bg-white border border-neutral-200 rounded-xl">
+                        <div class="px-4 py-3 border-b border-neutral-200">
+                            <h2 class="text-sm font-medium text-neutral-700">상세</h2>
+                        </div>
+                        <div id="record-detail" class="p-4">
+                            <div id="record-content" class="space-y-2 text-sm text-neutral-800">
+                                <p class="text-neutral-500">좌측에서 기록을 선택하세요.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <script>
+            const recordDetails = {
+                record1: {
+                    date: "2025-01-15",
+                    dept: "내과",
+                    doctor: "김의사",
+                    diagnosis: "감기",
+                    prescription: "기침약, 해열제",
+                    notes: "충분한 휴식과 수분 섭취 권장",
+                    files: ["의사소견서.pdf", "처방전.pdf"],
+                },
+                record2: {
+                    date: "2024-12-20",
+                    dept: "내과",
+                    doctor: "김의사",
+                    diagnosis: "급성 상기도염",
+                    prescription: "항생제, 해열제",
+                    notes: "증상 악화 시 재방문 권고",
+                    files: ["의사소견서.pdf"],
+                },
+                record3: {
+                    date: "2024-11-10",
+                    dept: "소화기내과",
+                    doctor: "이의사",
+                    diagnosis: "위염",
+                    prescription: "제산제, 위장약",
+                    notes: "음식 조절 필요",
+                    files: ["의사소견서.pdf", "위내시경결과.jpg"],
+                },
+                record4: {
+                    date: "2025-02-02",
+                    dept: "심장내과",
+                    doctor: "박의사",
+                    diagnosis: "협심증",
+                    prescription: "니트로글리세린, 아스피린",
+                    notes: "과격한 운동 자제 필요",
+                    files: ["심전도결과.pdf"],
+                },
+                record5: {
+                    date: "2025-01-28",
+                    dept: "호흡기내과",
+                    doctor: "정의사",
+                    diagnosis: "천식",
+                    prescription: "흡입제, 항히스타민제",
+                    notes: "환경 관리 필요",
+                    files: ["폐기능검사.pdf"],
+                },
+                record6: {
+                    date: "2025-02-10",
+                    dept: "정형외과",
+                    doctor: "한의사",
+                    diagnosis: "류마티스 관절염",
+                    prescription: "소염진통제, 물리치료",
+                    notes: "정기적 검진 필요",
+                    files: ["X-ray.jpg"],
+                },
+                record7: {
+                    date: "2025-02-15",
+                    dept: "내분비내과",
+                    doctor: "오의사",
+                    diagnosis: "당뇨",
+                    prescription: "인슐린 주사, 혈당관리",
+                    notes: "식이요법 철저히",
+                    files: ["혈당검사.pdf"],
+                },
+                record8: {
+                    date: "2024-12-05",
+                    dept: "호흡기내과",
+                    doctor: "유의사",
+                    diagnosis: "폐렴",
+                    prescription: "항생제, 해열제",
+                    notes: "입원 치료 권장",
+                    files: ["흉부X-ray.jpg", "혈액검사.pdf"],
+                },
+                record9: {
+                    date: "2025-01-05",
+                    dept: "이비인후과",
+                    doctor: "서의사",
+                    diagnosis: "편도염",
+                    prescription: "항생제, 소염제",
+                    notes: "목 보호 필요",
+                    files: ["의사소견서.pdf"],
+                },
+                record10: {
+                    date: "2025-02-12",
+                    dept: "정형외과",
+                    doctor: "문의사",
+                    diagnosis: "골다공증",
+                    prescription: "칼슘제, 비타민D",
+                    notes: "낙상 주의, 보조기 착용 권장",
+                    files: ["골밀도검사.pdf"],
+                },
+            };
+
+            function showDetail(recordId) {
+                const detailBox = document.getElementById("record-detail");
+                const content = document.getElementById("record-content");
+                const record = recordDetails[recordId];
+
+                content.innerHTML = `
+                <div><strong>진료일:</strong> ${record.date}</div>
+                <div><strong>진료과:</strong> ${record.dept}</div>
+                <div><strong>담당의:</strong> ${record.doctor}</div>
+                <div><strong>진단:</strong> ${record.diagnosis}</div>
+                <div><strong>처방:</strong> ${record.prescription}</div>
+                <div><strong>의사 소견:</strong> ${record.notes}</div>
+                <div>
+                    <strong>첨부 파일:</strong>
+                    <ul class="list-disc pl-5 mt-1">
+                        ${record.files
+                            .map((f) => `<li><a href="#" class="text-blue-600 hover:underline">${f}</a></li>`)
+                            .join("")}
+                    </ul>
+                </div>
+            `;
+
+                detailBox.classList.remove("hidden");
+            }
+
+            function toggleSubmenu(submenuId) {
+                const submenu = document.getElementById(submenuId);
+                const arrow = document.getElementById(submenuId.replace("-submenu", "-arrow"));
+
+                // 현재 서브메뉴가 열려있는지 확인
+                const isActive = submenu.classList.contains("active");
+
+                // 모든 서브메뉴 닫기
+                const allSubmenus = document.querySelectorAll(".submenu");
+                const allArrows = document.querySelectorAll(".arrow");
+
+                allSubmenus.forEach((menu) => menu.classList.remove("active"));
+                allArrows.forEach((arr) => arr.classList.remove("rotated"));
+
+                // 클릭한 서브메뉴가 닫혀있었다면 열기
+                if (!isActive) {
+                    submenu.classList.add("active");
+                    arrow.classList.add("rotated");
+                }
+            }
+
+            // 페이지 로드 시 현재 활성화된 메뉴의 서브메뉴 열기 (진료 기록)
+            document.addEventListener("DOMContentLoaded", function () {
+                toggleSubmenu("record-submenu");
+            });
+
+            // 하드코딩 환자 데이터
+            const patients = [
+                { name: "김환자", age: 30, gender: "남", diagnosis: "감기", phone: "010-1234-5678" },
+                { name: "이환자", age: 25, gender: "여", diagnosis: "두통", phone: "010-2345-6789" },
+                { name: "박환자", age: 40, gender: "남", diagnosis: "고혈압", phone: "010-3456-7890" },
+                { name: "최환자", age: 35, gender: "여", diagnosis: "당뇨", phone: "010-4567-8901" },
+                { name: "정환자", age: 55, gender: "남", diagnosis: "협심증", phone: "010-5678-9012" },
+                { name: "한환자", age: 28, gender: "여", diagnosis: "천식", phone: "010-6789-0123" },
+                { name: "오환자", age: 62, gender: "남", diagnosis: "폐렴", phone: "010-7890-1234" },
+                { name: "유환자", age: 47, gender: "여", diagnosis: "류마티스 관절염", phone: "010-8901-2345" },
+                { name: "서환자", age: 33, gender: "남", diagnosis: "편도염", phone: "010-9012-3456" },
+                { name: "문환자", age: 70, gender: "여", diagnosis: "골다공증", phone: "010-0123-4567" },
+            ];
+
+            const searchInput = document.getElementById("search-input");
+            const searchResults = document.getElementById("search-results");
+            const modal = document.getElementById("patient-modal");
+            const modalContent = document.getElementById("modal-content");
+            const modalClose = document.getElementById("modal-close");
+
+            // 검색 함수
+            function searchPatients() {
+                const query = searchInput.value.trim();
+                searchResults.innerHTML = "";
+
+                if (query === "") return;
+
+                const filtered = patients.filter((patient) => patient.name.includes(query));
+
+                if (filtered.length === 0) {
+                    searchResults.innerHTML = `<p class="text-sm text-neutral-500">검색 결과가 없습니다.</p>`;
+                    return;
+                }
+
+                filtered.forEach((patient) => {
+                    const div = document.createElement("div");
+                    div.classList.add(
+                        "p-3",
+                        "border",
+                        "border-neutral-300",
+                        "rounded-md",
+                        "cursor-pointer",
+                        "hover:bg-neutral-100"
+                    );
+                    div.innerHTML = `
+                    <p><strong>이름:</strong> ${patient.name}</p>
+                    <p><strong>나이:</strong> ${patient.age}</p>
+                    <p><strong>성별:</strong> ${patient.gender}</p>
+                `;
+                    div.addEventListener("click", () => showPatientDetail(patient));
+                    searchResults.appendChild(div);
+                });
+            }
+
+            // 상세 정보 표시
+            function showPatientDetail(patient) {
+                modalContent.innerHTML = `
+                <p><strong>이름:</strong> ${patient.name}</p>
+                <p><strong>나이:</strong> ${patient.age}</p>
+                <p><strong>성별:</strong> ${patient.gender}</p>
+                <p><strong>진단:</strong> ${patient.diagnosis}</p>
+                <p><strong>전화번호:</strong> ${patient.phone}</p>
+            `;
+                modal.classList.remove("hidden");
+            }
+
+            // 모달 닫기
+            modalClose.addEventListener("click", () => {
+                modal.classList.add("hidden");
+            });
+
+            // 모달 바깥 클릭 시 닫기
+            modal.addEventListener("click", (e) => {
+                if (e.target === modal) modal.classList.add("hidden");
+            });
+
+            // 입력할 때마다 검색 실행
+            searchInput.addEventListener("input", searchPatients);
+
+            // 페이지 로드 시 초기 검색
+            window.addEventListener("DOMContentLoaded", searchPatients);
+        </script>
+
+        <script>
+            // ▼ 기존 더미 데이터(patients, recordDetails)는 그대로 사용
+            // 기록과 환자를 연결하는 매핑 (필요에 따라 더 추가 가능)
+            const records = [
+                { id: "record1", patient: "김환자" },
+                { id: "record2", patient: "이환자" },
+                { id: "record3", patient: "김환자" },
+                { id: "record4", patient: "정환자" },
+                { id: "record5", patient: "한환자" },
+                { id: "record6", patient: "유환자" },
+                { id: "record7", patient: "최환자" },
+                { id: "record8", patient: "오환자" },
+                { id: "record9", patient: "서환자" },
+                { id: "record10", patient: "문환자" },
+            ];
+
+            // 상태
+            let state = {
+                name: "",
+                from: "",
+                to: "",
+                selectedPatient: null,
+            };
+
+            // 유틸: 날짜 범위 필터
+            function inDateRange(iso, from, to) {
+                if (!iso) return false;
+                const d = new Date(iso);
+                if (from) {
+                    const f = new Date(from);
+                    if (d < new Date(f.getFullYear(), f.getMonth(), f.getDate())) return false;
+                }
+                if (to) {
+                    const t = new Date(to);
+                    if (d > new Date(t.getFullYear(), t.getMonth(), t.getDate(), 23, 59, 59)) return false;
+                }
+                return true;
+            }
+
+            // 필터 적용된 환자 목록 계산
+            function getFilteredPatients() {
+                // 이름 필터 우선
+                const nameFiltered = state.name ? patients.filter((p) => p.name.includes(state.name)) : [...patients];
+
+                // 날짜 필터는 "해당 환자에게 날짜 조건을 만족하는 기록이 하나라도 있으면" 포함
+                const result = nameFiltered.filter((p) => {
+                    const hasAny = records.some((r) => {
+                        if (r.patient !== p.name) return false;
+                        const rec = recordDetails[r.id];
+                        return inDateRange(rec.date, state.from, state.to);
+                    });
+                    return hasAny;
+                });
+
+                return result;
+            }
+
+            // 환자 목록 렌더
+            function renderPatientList() {
+                const listEl = document.getElementById("patient-list");
+                const counter = document.getElementById("patient-count");
+                const filtered = getFilteredPatients();
+
+                listEl.innerHTML = "";
+                counter.textContent = `${filtered.length}명`;
+
+                if (filtered.length === 0) {
+                    listEl.innerHTML = `<div class="text-sm text-neutral-500 p-3">조건에 맞는 환자가 없습니다.</div>`;
+                    document.getElementById("record-list").innerHTML = "";
+                    document.getElementById("record-count").textContent = "";
+                    document.getElementById(
+                        "record-content"
+                    ).innerHTML = `<p class="text-neutral-500">좌측에서 기록을 선택하세요.</p>`;
+                    return;
+                }
+
+                filtered.forEach((p) => {
+                    const btn = document.createElement("button");
+                    btn.className =
+                        "w-full text-left px-3 py-2 rounded-lg hover:bg-neutral-50 border border-transparent hover:border-neutral-200 mb-2";
+                    btn.innerHTML = `
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="font-medium text-neutral-800">${p.name}</div>
+            <div class="text-xs text-neutral-500">${p.gender} · ${p.age}세 · ${p.diagnosis}</div>
+          </div>
+          <i class="fa-solid fa-chevron-right text-neutral-400"></i>
+        </div>
+      `;
+                    btn.addEventListener("click", () => {
+                        state.selectedPatient = p.name;
+                        renderRecordList();
+                    });
+                    listEl.appendChild(btn);
+                });
+
+                // 선택 환자 없으면 첫 환자 자동 선택
+                if (!state.selectedPatient || !filtered.some((p) => p.name === state.selectedPatient)) {
+                    state.selectedPatient = filtered[0].name;
+                }
+                renderRecordList();
+            }
+
+            // 기록 리스트 렌더
+            function renderRecordList() {
+                const listEl = document.getElementById("record-list");
+                const counter = document.getElementById("record-count");
+
+                const rows = records
+                    .filter((r) => r.patient === state.selectedPatient)
+                    .filter((r) => inDateRange(recordDetails[r.id].date, state.from, state.to))
+                    .sort((a, b) => (recordDetails[b.id].date > recordDetails[a.id].date ? 1 : -1));
+
+                listEl.innerHTML = "";
+                counter.textContent = `${rows.length}건`;
+
+                if (rows.length === 0) {
+                    listEl.innerHTML = `<div class="text-sm text-neutral-500 p-3">해당 기간에 기록이 없습니다.</div>`;
+                    document.getElementById(
+                        "record-content"
+                    ).innerHTML = `<p class="text-neutral-500">좌측에서 기록을 선택하세요.</p>`;
+                    return;
+                }
+
+                rows.forEach((r) => {
+                    const rec = recordDetails[r.id];
+                    const card = document.createElement("div");
+                    card.className = "p-3 mb-2 border border-neutral-200 rounded-lg hover:bg-neutral-50 cursor-pointer";
+                    card.innerHTML = `
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-sm text-neutral-600">${rec.date}</div>
+            <div class="font-medium text-neutral-800">${rec.diagnosis}</div>
+            <div class="text-xs text-neutral-500">${rec.dept} · ${rec.doctor}</div>
+          </div>
+          <button class="text-xs px-3 py-1 border border-neutral-300 rounded-lg hover:bg-neutral-100">
+            상세
+          </button>
+        </div>
+      `;
+                    card.addEventListener("click", () => showDetail(r.id));
+                    listEl.appendChild(card);
+                });
+
+                // 첫 항목 자동 상세표시 (선택 UX 강화)
+                showDetail(rows[0].id);
+            }
+
+            // 필터 이벤트
+            const $name = document.getElementById("filter-name");
+            const $from = document.getElementById("filter-from");
+            const $to = document.getElementById("filter-to");
+            const $apply = document.getElementById("btn-apply");
+            const $reset = document.getElementById("btn-reset");
+
+            // 간단 디바운스
+            let t;
+            function debounce(fn) {
+                clearTimeout(t);
+                t = setTimeout(fn, 200);
+            }
+
+            $name.addEventListener("input", () =>
+                debounce(() => {
+                    state.name = $name.value.trim();
+                    renderPatientList();
+                })
+            );
+
+            $apply.addEventListener("click", () => {
+                state.from = $from.value || "";
+                state.to = $to.value || "";
+                renderPatientList();
+            });
+
+            $reset.addEventListener("click", () => {
+                $name.value = "";
+                $from.value = "";
+                $to.value = "";
+                state = { name: "", from: "", to: "", selectedPatient: null };
+                renderPatientList();
+            });
+
+            // 최초 렌더
+            document.addEventListener("DOMContentLoaded", () => {
+                renderPatientList();
+            });
+        </script>
+    </body>
+</html>
