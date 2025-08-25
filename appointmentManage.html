@@ -591,33 +591,36 @@
                         <div class="space-y-6">
                             <div id="quick-actions" class="border border-neutral-200 rounded-lg p-6">
                                 <h3 class="text-lg text-neutral-900 mb-4">빠른 작업</h3>
-                                                        <div class="space-y-3">
-                            <button
-                                class="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-neutral-900 text-white rounded-md hover:bg-neutral-800">
-                                <i class="fa-solid fa-check"></i>
-                                <span>예약 확정</span>
-                            </button>
+                                <div class="space-y-3">
+                                    <button
+                                        class="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-neutral-900 text-white rounded-md hover:bg-neutral-800"
+                                    >
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>예약 확정</span>
+                                    </button>
 
-                            <button
-                                class="w-full flex items-center justify-center space-x-2 px-4 py-3 border border-neutral-300 text-neutral-700 rounded-md hover:bg-neutral-50"
-                                onclick="showEditPopup()">
-                                <i class="fa-solid fa-edit"></i>
-                                <span>예약 수정</span>
-                            </button>
+                                    <button
+                                        class="w-full flex items-center justify-center space-x-2 px-4 py-3 border border-neutral-300 text-neutral-700 rounded-md hover:bg-neutral-50"
+                                        onclick="showEditPopup()"
+                                    >
+                                        <i class="fa-solid fa-edit"></i>
+                                        <span>예약 수정</span>
+                                    </button>
 
-                            <!-- <button
+                                    <!-- <button
                                     class="w-full flex items-center justify-center space-x-2 px-4 py-3 border border-neutral-300 text-neutral-700 rounded-md hover:bg-neutral-50"
                                 >
                                     <i class="fa-solid fa-check"></i>
                                     <span>예약 확정</span>
                                 </button> -->
 
-                            <button
-                                class="w-full flex items-center justify-center space-x-2 px-4 py-3 border border-neutral-300 text-neutral-600 rounded-md hover:bg-neutral-50">
-                                <i class="fa-solid fa-times"></i>
-                                <span>예약 취소</span>
-                            </button>
-                        </div>
+                                    <button
+                                        class="w-full flex items-center justify-center space-x-2 px-4 py-3 border border-neutral-300 text-neutral-600 rounded-md hover:bg-neutral-50"
+                                    >
+                                        <i class="fa-solid fa-times"></i>
+                                        <span>예약 취소</span>
+                                    </button>
+                                </div>
                             </div>
                             <div id="notes" class="border border-neutral-200 rounded-lg p-6">
                                 <h3 class="text-lg text-neutral-900 mb-4">메모</h3>
@@ -1004,7 +1007,6 @@
                 toggleSubmenu("schedule-submenu");
             });
 
-            
             // 예약 수정 팝업 관련 함수들
             // function showEditPopup() {
             //     const popup = document.getElementById('edit-popup');
@@ -1030,7 +1032,7 @@
             // // 폼 제출 처리
             // document.getElementById('edit-form').addEventListener('submit', function(e) {
             //     e.preventDefault();
-                
+
             //     // 폼 데이터 가져오기
             //     const formData = new FormData(e.target);
             //     const updatedAppointment = {
@@ -1043,17 +1045,17 @@
 
             //     // 예약 정보 업데이트 (실제로는 서버에 전송)
             //     console.log('Updated appointment:', updatedAppointment);
-                
+
             //     // 성공 메시지 표시
             //     alert('예약이 성공적으로 수정되었습니다.');
-                
+
             //     // 팝업 닫기
             //     closeEditPopup();
             // });
             function setQuickActionsToConfirmed() {
-            const quickActions = document.querySelector('#quick-actions .space-y-3');
-            const appointmentInfo = document.querySelector('#appointment-info .grid .flex' );
-            quickActions.innerHTML = `
+                const quickActions = document.querySelector("#quick-actions .space-y-3");
+                const appointmentInfo = document.querySelector("#appointment-info .grid .flex");
+                quickActions.innerHTML = `
                     <button
                         class="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-green-600 text-white rounded-md hover:bg-green-700"
                         onclick="window.open('imagingTreatment.html', '_blank')"
@@ -1086,20 +1088,22 @@
                 appointmentInfo.innerHTML = `
                     <span class="px-2 py-1 bg-neutral-100 text-neutral-800 rounded text-sm">진료 대기</span>
                 `;
-        }
-        function startTreatment() {
-            alert('진료를 시작합니다.');
-        }
-        function showPatientDetail() {
-            alert('환자 상세 정보 페이지로 이동합니다.');
-            // location.href = 'patientDetail.html'; // 실제 이동 시 주석 해제
-        }
-        function cancelAppointment() {
-            if (confirm('예약을 취소하시겠습니까?')) {
-                alert('예약이 취소되었습니다.');
             }
-        }
-        document.querySelector('#quick-actions .bg-neutral-900').addEventListener('click', setQuickActionsToConfirmed);
+            function startTreatment() {
+                alert("진료를 시작합니다.");
+            }
+            function showPatientDetail() {
+                alert("환자 상세 정보 페이지로 이동합니다.");
+                // location.href = 'patientDetail.html'; // 실제 이동 시 주석 해제
+            }
+            function cancelAppointment() {
+                if (confirm("예약을 취소하시겠습니까?")) {
+                    alert("예약이 취소되었습니다.");
+                }
+            }
+            document
+                .querySelector("#quick-actions .bg-neutral-900")
+                .addEventListener("click", setQuickActionsToConfirmed);
         </script>
     </body>
 </html>

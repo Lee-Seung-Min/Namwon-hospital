@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <title>환자 생체정보 상세</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        />
+        <style>
+            body {
+                font-family: "Inter", sans-serif;
+            }
+            ::-webkit-scrollbar {
+                display: none;
+            }
+        </style>
+    </head>
+    <body class="h-full text-base-content bg-neutral-50">
+        <header id="header" class="bg-white border-b border-neutral-200 px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <i class="fa-solid fa-hospital text-2xl text-neutral-700"></i>
+                    <h1 class="text-xl text-neutral-900">병원 관리 시스템</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <img
+                            src="https://api.dicebear.com/7.x/notionists/svg?scale=200&seed=789"
+                            class="w-8 h-8 rounded-full"
+                        />
+                        <span class="text-sm text-neutral-700">김의사</span>
+                    </div>
+                    <button
+                        class="px-3 py-1 text-sm text-neutral-600 hover:text-neutral-900"
+                        onclick="location.href='login.html'"
+                    >
+                        <i class="fa-solid fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+        <main class="h-full flex">
+            <!-- 사이드바 -->
+            <aside id="sidebar" class="w-64 bg-neutral-50 border-r border-neutral-200 p-6">
+                <nav class="space-y-2">
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('schedule-submenu')"
+                            class="flex items-center justify-between px-3 py-2 text-neutral-700 hover:bg-neutral-200 rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-calendar-days"></i>
+                                <span>일정 관리</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="schedule-arrow"></i>
+                        </span>
+                        <div id="schedule-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="main.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-clock"></i>
+                                <span>월별 일정</span>
+                            </a>
+                            <a
+                                href="weeklySchedule.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-calendar-week"></i>
+                                <span>주간 일정</span>
+                            </a>
+                            <a
+                                href="appointmentManage.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-user-clock"></i>
+                                <span>예약 관리</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('patient-submenu')"
+                            class="flex items-center justify-between px-3 py-2 bg-neutral-900 text-white rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-users"></i>
+                                <span>환자 관리</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="patient-arrow"></i>
+                        </span>
+                        <div id="patient-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="patientList.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-list"></i>
+                                <span>환자 목록</span>
+                            </a>
+                            <a
+                                href="vitalSignsDetail.html"
+                                class="flex items-center space-x-3 px-3 py-2 bg-neutral-100 text-neutral-900 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-user-plus"></i>
+                                <span>환자 별 생체 정보</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('record-submenu')"
+                            class="flex items-center justify-between px-3 py-2 text-neutral-700 hover:bg-neutral-200 rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-file-medical"></i>
+                                <span>진료 기록</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="record-arrow"></i>
+                        </span>
+                        <div id="record-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="patientDgnsLst.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-file-lines"></i>
+                                <span>환자별 진료 기록</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('stats-submenu')"
+                            class="flex items-center justify-between px-3 py-2 text-neutral-700 hover:bg-neutral-200 rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-chart-bar"></i>
+                                <span>통계</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="stats-arrow"></i>
+                        </span>
+                        <div id="stats-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="patient-stats.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-user-chart"></i>
+                                <span>진료 통계</span>
+                            </a>
+                            <a
+                                href="revenue-stats.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-won-sign"></i>
+                                <span>결제 현황</span>
+                            </a>
+                            <a
+                                href="disease-stats.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-chart-pie"></i>
+                                <span>정산 현황</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <span
+                            onclick="toggleSubmenu('settings-submenu')"
+                            class="flex items-center justify-between px-3 py-2 text-neutral-700 hover:bg-neutral-200 rounded-md cursor-pointer"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i class="fa-solid fa-cog"></i>
+                                <span>설정</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right arrow text-sm" id="settings-arrow"></i>
+                        </span>
+                        <div id="settings-submenu" class="submenu ml-6 mt-1 space-y-1">
+                            <a
+                                href="profile-settings.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-user-gear"></i>
+                                <span>병원 정보 설정</span>
+                            </a>
+                            <a
+                                href="clinic-settings.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-hospital"></i>
+                                <span>병원 시간 설정</span>
+                            </a>
+                            <a
+                                href="backup-settings.html"
+                                class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
+                            >
+                                <i class="fa-solid fa-database"></i>
+                                <span>-</span>
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            </aside>
+            <!-- 본문 -->
+            <section class="flex-1 p-6">
+                <div class="mb-6 flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <button class="p-2 hover:bg-neutral-100 rounded-md" onclick="history.back()">
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </button>
+                        <h2 class="text-2xl text-neutral-900">환자 생체정보 상세</h2>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <input
+                                type="text"
+                                id="patient-search"
+                                placeholder="환자 검색..."
+                                class="w-64 px-4 py-2 border border-neutral-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                oninput="filterPatients(this.value)"
+                            />
+                            <i class="fa-solid fa-search absolute right-3 top-3 text-neutral-400"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 환자 목록 -->
+                <div id="patient-list" class="bg-white rounded-lg border border-neutral-200 mb-8">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead class="bg-neutral-50">
+                                <tr>
+                                    <th class="py-3 px-4 text-left">환자 번호</th>
+                                    <th class="py-3 px-4 text-left">이름</th>
+                                    <th class="py-3 px-4 text-left">생년월일</th>
+                                    <th class="py-3 px-4 text-left">연락처</th>
+                                    <th class="py-3 px-4 text-left">최근 방문일</th>
+                                    <th class="py-3 px-4 text-left"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="patient-list-body">
+                                <!-- 환자 데이터는 JavaScript로 동적 생성 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 생체 정보: 차트 + 이력 + 카드 -->
+                <div id="vital-signs-section" class="hidden">
+                    <!-- 단일 통합 차트 영역 + 지표 -->
+                    <div class="bg-white rounded-lg p-4 border border-neutral-200 mb-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="text-sm font-medium text-neutral-900">건강 지표 추이</h4>
+                            <div id="indicators" class="flex items-center space-x-3 text-sm text-neutral-700">
+                                <div class="px-3 py-2 bg-neutral-50 rounded-md" id="ind-bp">혈압: -</div>
+                                <div class="px-3 py-2 bg-neutral-50 rounded-md" id="ind-bs">혈당: -</div>
+                                <div class="px-3 py-2 bg-neutral-50 rounded-md" id="ind-spo2">SpO₂: -</div>
+                                <div class="px-3 py-2 bg-neutral-50 rounded-md" id="ind-weight">체중: -</div>
+                                <div class="px-3 py-2 bg-neutral-50 rounded-md" id="ind-bmi">BMI: -</div>
+                                <div class="px-3 py-2 bg-neutral-50 rounded-md" id="ind-temp">체온: -</div>
+                            </div>
+                        </div>
+                        <div id="chart-all" class="w-full h-72"></div>
+                    </div>
+
+                    <!-- 이력 테이블 -->
+                    <div class="bg-white rounded-lg p-4 border border-neutral-200 mb-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="text-sm font-medium text-neutral-900">측정 이력</h4>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm" id="history-table">
+                                <thead class="bg-neutral-100">
+                                    <tr>
+                                        <th class="py-2 px-3 text-left">측정일</th>
+                                        <th class="py-2 px-3 text-left">혈압</th>
+                                        <th class="py-2 px-3 text-left">혈당</th>
+                                        <th class="py-2 px-3 text-left">산소포화도</th>
+                                        <th class="py-2 px-3 text-left">체중</th>
+                                        <th class="py-2 px-3 text-left">BMI</th>
+                                        <th class="py-2 px-3 text-left">체온</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="history-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 선택된 이력의 세부 카드 -->
+                    <!-- 생체 정보 카드 영역 -->
+                    <div id="selected-card" class="hidden">
+                        <div class="grid grid-cols-3 gap-6 mb-8">
+                            <div class="bg-white rounded-lg p-6 border border-neutral-200">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <i class="fa-solid fa-heart text-red-500"></i>
+                                    <span class="text-sm text-neutral-700">혈압</span>
+                                </div>
+                                <div id="card_bp_val" class="text-lg text-neutral-900 font-bold">-</div>
+                                <div id="card_bp_meta" class="text-xs text-neutral-500 mt-1">-</div>
+                            </div>
+                            <div class="bg-white rounded-lg p-6 border border-neutral-200">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <i class="fa-solid fa-droplet text-blue-500"></i>
+                                    <span class="text-sm text-neutral-700">혈당</span>
+                                </div>
+                                <div id="card_bs_val" class="text-lg text-neutral-900 font-bold">-</div>
+                                <div id="card_bs_meta" class="text-xs text-neutral-500 mt-1">-</div>
+                            </div>
+                            <div class="bg-white rounded-lg p-6 border border-neutral-200">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <i class="fa-solid fa-lungs text-indigo-500"></i>
+                                    <span class="text-sm text-neutral-700">산소포화도</span>
+                                </div>
+                                <div id="card_spo2_val" class="text-lg text-neutral-900 font-bold">-</div>
+                                <div id="card_spo2_meta" class="text-xs text-neutral-500 mt-1">-</div>
+                            </div>
+                            <div class="bg-white rounded-lg p-6 border border-neutral-200">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <i class="fa-solid fa-weight text-green-500"></i>
+                                    <span class="text-sm text-neutral-700">체중</span>
+                                </div>
+                                <div id="card_weight_val" class="text-lg text-neutral-900 font-bold">-</div>
+                                <div id="card_weight_meta" class="text-xs text-neutral-500 mt-1">-</div>
+                            </div>
+                            <div class="bg-white rounded-lg p-6 border border-neutral-200">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <i class="fa-solid fa-ruler text-orange-500"></i>
+                                    <span class="text-sm text-neutral-700">BMI</span>
+                                </div>
+                                <div id="card_bmi_val" class="text-lg text-neutral-900 font-bold">-</div>
+                                <div id="card_bmi_meta" class="text-xs text-neutral-500 mt-1">-</div>
+                            </div>
+                            <div class="bg-white rounded-lg p-6 border border-neutral-200">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <i class="fa-solid fa-thermometer text-pink-500"></i>
+                                    <span class="text-sm text-neutral-700">체온</span>
+                                </div>
+                                <div id="card_temp_val" class="text-lg text-neutral-900 font-bold">-</div>
+                                <div id="card_temp_meta" class="text-xs text-neutral-500 mt-1">-</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <script>
+            // 샘플 환자 데이터
+            const patients = [
+                {
+                    id: "P001",
+                    name: "김환자",
+                    birthDate: "1980-05-15",
+                    phone: "010-1234-5678",
+                    lastVisit: "2025-08-20",
+                },
+                {
+                    id: "P002",
+                    name: "이상태",
+                    birthDate: "1992-03-22",
+                    phone: "010-2345-6789",
+                    lastVisit: "2025-08-19",
+                },
+                {
+                    id: "P003",
+                    name: "박건강",
+                    birthDate: "1975-11-30",
+                    phone: "010-3456-7890",
+                    lastVisit: "2025-08-15",
+                },
+                // 필요한 만큼 환자 데이터 추가
+            ];
+
+            function toggleSubmenu(submenuId) {
+                const submenu = document.getElementById(submenuId);
+                const arrow = document.getElementById(submenuId.replace("-submenu", "-arrow"));
+                const isActive = submenu.classList.contains("active");
+                const allSubmenus = document.querySelectorAll(".submenu");
+                const allArrows = document.querySelectorAll(".arrow");
+                allSubmenus.forEach((menu) => menu.classList.remove("active"));
+                allArrows.forEach((arr) => arr.classList.remove("rotated"));
+                if (!isActive) {
+                    submenu.classList.add("active");
+                    arrow.classList.add("rotated");
+                }
+            }
+
+            function filterPatients(searchTerm) {
+                const filteredPatients = patients.filter(
+                    (patient) =>
+                        patient.name.includes(searchTerm) ||
+                        patient.id.includes(searchTerm) ||
+                        patient.phone.includes(searchTerm)
+                );
+                renderPatientList(filteredPatients);
+            }
+
+            function renderPatientList(patientList) {
+                const tbody = document.getElementById("patient-list-body");
+                tbody.innerHTML = patientList
+                    .map(
+                        (patient) => `
+                    <tr class="border-t border-neutral-200 hover:bg-neutral-50 cursor-pointer" 
+                        onclick="showPatientVitalSigns('${patient.id}')">
+                        <td class="py-3 px-4">${patient.id}</td>
+                        <td class="py-3 px-4">${patient.name}</td>
+                        <td class="py-3 px-4">${patient.birthDate}</td>
+                        <td class="py-3 px-4">${patient.phone}</td>
+                        <td class="py-3 px-4">${patient.lastVisit}</td>
+                        <td class="py-3 px-4">
+                            <button class="px-3 py-1 text-sm text-blue-600 hover:bg-blue-50 rounded">
+                                상세보기
+                            </button>
+                        </td>
+                    </tr>
+                `
+                    )
+                    .join("");
+            }
+
+            function showPatientVitalSigns(patientId) {
+                // 생체 정보 섹션 표시
+                document.getElementById("vital-signs-section").classList.remove("hidden");
+
+                // 더미 측정 데이터 (실제로는 API 호출)
+                const sample = {
+                    dates: ["2024-11-05", "2024-12-20", "2025-01-10"],
+                    bp: [
+                        { s: 123, d: 80 },
+                        { s: 135, d: 88 },
+                        { s: 140, d: 90 },
+                    ],
+                    bs: [91, 100, 103],
+                    spo2: [99, 99, 97],
+                    weight: [66, 75, 68],
+                    bmi: [17.5, 20.5, 23.5],
+                    temp: [36.5, 36.0, 36.9],
+                };
+
+                // 렌더 히스토리 테이블
+                const historyBody = document.getElementById("history-body");
+                historyBody.innerHTML = "";
+                for (let i = 0; i < sample.dates.length; i++) {
+                    const tr = document.createElement("tr");
+                    tr.className = "border-t hover:bg-neutral-50 cursor-pointer";
+                    tr.dataset.index = i;
+                    tr.innerHTML = `
+                        <td class="py-2 px-3">${sample.dates[i]}</td>
+                        <td class="py-2 px-3">${sample.bp[i].s}/${sample.bp[i].d}</td>
+                        <td class="py-2 px-3">${sample.bs[i]}</td>
+                        <td class="py-2 px-3">${sample.spo2[i]}%</td>
+                        <td class="py-2 px-3">${sample.weight[i]}</td>
+                        <td class="py-2 px-3">${sample.bmi[i]}</td>
+                        <td class="py-2 px-3">${sample.temp[i]}</td>
+                    `;
+                    tr.addEventListener("click", () => showSelectedCard(i, sample));
+                    historyBody.appendChild(tr);
+                }
+
+                // 차트 렌더링
+                renderCharts(sample);
+            }
+            function renderCharts(data) {
+                // Prepare series for combined chart
+                const bpS = data.bp.map((x) => x.s);
+                const bpD = data.bp.map((x) => x.d);
+                const series = [
+                    { name: "수축기 (BP S)", data: bpS },
+                    { name: "이완기 (BP D)", data: bpD },
+                    { name: "혈당 (BS)", data: data.bs },
+                    { name: "산소포화도", data: data.spo2 },
+                    { name: "체중", data: data.weight },
+                    { name: "BMI", data: data.bmi },
+                ];
+
+                const optsAll = {
+                    series: series,
+                    chart: { type: "line", height: 320, toolbar: { show: false }, id: "chart-all" },
+                    xaxis: { categories: data.dates },
+                    stroke: { curve: "smooth" },
+                    colors: ["#ef4444", "#3b82f6", "#60a5fa", "#6366f1", "#22c55e", "#f97316"],
+                    markers: { size: 4 },
+                    legend: { position: "top" },
+                    tooltip: { shared: true, intersect: false },
+                };
+
+                ApexCharts.exec("chart-all", "destroy");
+                const el = document.querySelector("#chart-all");
+                if (el) {
+                    new ApexCharts(el, optsAll).render();
+                }
+
+                const avg = (arr) => arr.reduce((a, b) => a + b, 0) / arr.length;
+
+                // 혈압 평균 계산
+                const avgSys = avg(data.bp.map((x) => x.s)).toFixed(1);
+                const avgDia = avg(data.bp.map((x) => x.d)).toFixed(1);
+
+                // 다른 값 평균
+                const avgBs = avg(data.bs).toFixed(1);
+                const avgSpo2 = avg(data.spo2).toFixed(1);
+                const avgWeight = avg(data.weight).toFixed(1);
+                const avgBmi = avg(data.bmi).toFixed(1);
+
+                // 지표 표시
+                document.getElementById("ind-bp").textContent = `혈압: ${avgSys}/${avgDia} mmHg`;
+                document.getElementById("ind-bs").textContent = `혈당: ${avgBs} mg/dL`;
+                document.getElementById("ind-spo2").textContent = `산소포화도: ${avgSpo2} %`;
+                document.getElementById("ind-weight").textContent = `체중: ${avgWeight} kg`;
+                document.getElementById("ind-bmi").textContent = `BMI: ${avgBmi}`;
+                document.getElementById("ind-temp").textContent =
+                    data.temp && data.temp.length > 0 ? `체온: ${avg(data.temp).toFixed(1)} ℃` : "체온: -";
+            }
+
+            function showSelectedCard(index, sample) {
+                // 표시
+                document.getElementById("selected-card").classList.remove("hidden");
+                // 혈압
+                const bp = sample.bp[index];
+                document.getElementById("card_bp_val").textContent = `${bp.s}/${bp.d} mmHg`;
+                document.getElementById("card_bp_meta").textContent = `맥박 72 bpm · 측정: ${sample.dates[index]}`;
+                // 혈당
+                document.getElementById("card_bs_val").textContent = `${sample.bs[index]} mg/dL`;
+                document.getElementById("card_bs_meta").textContent = `최근 7일 평균: ${avg(sample.bs)} · ${
+                    sample.dates[index]
+                }`;
+                // SpO2
+                document.getElementById("card_spo2_val").textContent = `${sample.spo2[index]} %`;
+                document.getElementById("card_spo2_meta").textContent = `측정: ${sample.dates[index]}`;
+                // 체중
+                document.getElementById("card_weight_val").textContent = `${sample.weight[index]} kg`;
+                document.getElementById("card_weight_meta").textContent = `최근 변화: ${formatChange(
+                    sample.weight,
+                    index
+                )} · ${sample.dates[index]}`;
+                // BMI
+                document.getElementById("card_bmi_val").textContent = `${sample.bmi[index]} kg/m²`;
+                document.getElementById("card_bmi_meta").textContent = `상태: ${bmiStatus(sample.bmi[index])} · ${
+                    sample.dates[index]
+                }`;
+                // 체온
+                const temp = sample.temp && sample.temp[index] ? `${sample.temp[index]} ℃` : `-`;
+                document.getElementById("card_temp_val").textContent = temp;
+                document.getElementById("card_temp_meta").textContent = `측정: ${sample.dates[index]}`;
+
+                // 스크롤
+                document.getElementById("selected-card").scrollIntoView({ behavior: "smooth" });
+            }
+
+            function avg(arr) {
+                if (!arr || arr.length === 0) return "-";
+                const s = arr.reduce((a, b) => a + b, 0);
+                return Math.round((s / arr.length) * 10) / 10;
+            }
+
+            function formatChange(arr, idx) {
+                if (!arr || arr.length < 2) return "-";
+                const prev = idx > 0 ? arr[idx - 1] : arr[idx];
+                const diff = (arr[idx] - prev).toFixed(1);
+                return diff > 0 ? `+${diff}kg` : `${diff}kg`;
+            }
+
+            function bmiStatus(val) {
+                if (val < 18.5) return "저체중";
+                if (val < 23) return "정상";
+                if (val < 25) return "과체중";
+                return "비만";
+            }
+
+            // 페이지 로드 시 초기화
+            document.addEventListener("DOMContentLoaded", function () {
+                toggleSubmenu("schedule-submenu");
+                renderPatientList(patients); // 초기 환자 목록 표시
+            });
+        </script>
+    </body>
+</html>
