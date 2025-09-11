@@ -378,6 +378,72 @@
                     </div>
 
                     <div class="space-y-6">
+                        <!-- 진료비 입력 영역 -->
+                        <div class="bg-white border border-neutral-200 rounded-lg p-6">
+                            <h3 class="text-lg font-medium mb-4">진료비 정보</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="text-sm text-neutral-500">본인 부담금 (원)</label>
+                                    <div class="flex items-center mt-2">
+                                        <input
+                                            type="text"
+                                            id="patient-fee"
+                                            class="flex-1 p-3 border border-neutral-200 rounded-lg text-right"
+                                            placeholder="0"
+                                            onkeyup="formatNumber(this); calculateTotal();"
+                                            onblur="validateFees()"
+                                            required
+                                        />
+                                        <span class="ml-2 text-neutral-700">원</span>
+                                    </div>
+                                    <p id="patient-fee-error" class="hidden text-xs text-red-500 mt-1">
+                                        본인 부담금을 입력해주세요
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <label class="text-sm text-neutral-500">공단 부담금 (원)</label>
+                                    <div class="flex items-center mt-2">
+                                        <input
+                                            type="text"
+                                            id="insurance-fee"
+                                            class="flex-1 p-3 border border-neutral-200 rounded-lg text-right"
+                                            placeholder="0"
+                                            onkeyup="formatNumber(this); calculateTotal();"
+                                            onblur="validateFees()"
+                                            required
+                                        />
+                                        <span class="ml-2 text-neutral-700">원</span>
+                                    </div>
+                                    <p id="insurance-fee-error" class="hidden text-xs text-red-500 mt-1">
+                                        공단 부담금을 입력해주세요
+                                    </p>
+                                </div>
+
+                                <div class="pt-2 border-t border-neutral-200">
+                                    <label class="text-sm font-medium text-neutral-700">총 진료비 (원)</label>
+                                    <div class="flex items-center mt-2">
+                                        <input
+                                            type="text"
+                                            id="total-fee"
+                                            class="flex-1 p-3 bg-neutral-50 border border-neutral-200 rounded-lg text-right font-bold"
+                                            value="0"
+                                            readonly
+                                        />
+                                        <span class="ml-2 text-neutral-700">원</span>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="text-sm text-neutral-500">비고</label>
+                                    <textarea
+                                        class="w-full h-16 mt-2 p-3 border border-neutral-200 rounded-lg text-sm"
+                                        placeholder="비고사항이 있으면 입력하세요"
+                                    ></textarea>
+                                </div>
+                            </div>
+                        </div>
+
                         <button
                             onclick="alert('처방전 업로드 완료')"
                             class="w-full px-6 py-3 bg-neutral-900 text-white rounded-lg hover:bg-neutral-800 flex items-center justify-center space-x-2"
@@ -471,18 +537,145 @@
                 document.querySelector('input[type="file"]').dispatchEvent(changeEvent);
             });
 
+            // 숫자 포맷팅 함수 (천 단위 콤마)
+            function formatNumber(input) {
+                // 숫자와 쉼표만 허용
+                let value = input.value.replace(/[^\d]/g, "");
+
+                // 천 단위 콤마 추가
+                if (value) {
+                    input.value = parseInt(value, 10).toLocaleString("ko-KR");
+                } else {
+                    input.value = "";
+                }
+            }
+
+            // 총 진료비 계산 함수
+            function calculateTotal() {
+                const patientFee = document.getElementById("patient-fee").value.replace(/[^\d]/g, "") || 0;
+                const insuranceFee = document.getElementById("insurance-fee").value.replace(/[^\d]/g, "") || 0;
+
+                const total = parseInt(patientFee) + parseInt(insuranceFee);
+
+                document.getElementById("total-fee").value = total.toLocaleString("ko-KR");
+
+                return total;
+            }
+
+            // 진료비 검증 함수
+            function validateFees() {
+                const patientFeeInput = document.getElementById("patient-fee");
+                const patientFeeError = document.getElementById("patient-fee-error");
+                const insuranceFeeInput = document.getElementById("insurance-fee");
+                const insuranceFeeError = document.getElementById("insurance-fee-error");
+
+                const patientValue = patientFeeInput.value.replace(/[^\d]/g, "");
+                const insuranceValue = insuranceFeeInput.value.replace(/[^\d]/g, "");
+
+                let isValid = true;
+
+                if (!patientValue) {
+                    patientFeeError.classList.remove("hidden");
+                    isValid = false;
+                } else {
+                    patientFeeError.classList.add("hidden");
+                }
+
+                if (!insuranceValue) {
+                    insuranceFeeError.classList.remove("hidden");
+                    isValid = false;
+                } else {
+                    insuranceFeeError.classList.add("hidden");
+                }
+
+                return isValid;
+            }
+
             // 진료 완료 처리 함수
             function completeTreatment() {
-                if (confirm("진료를 완료하시겠습니까?")) {
-                    // 여기에 진료 완료 처리 로직 추가
-                    alert("진료가 완료되었습니다.");
-                    window.location.href = "main.html"; // 환자별 진료 기록 페이지로 이동
+                // 진료비 입력 검증
+                if (!validateFees()) {
+                    alert("본인 부담금과 공단 부담금을 모두 입력해주세요.");
+                    return;
                 }
+
+                // 진료비 금액 가져오기 (콤마 제거)
+                const patientFee = document.getElementById("patient-fee").value.replace(/,/g, "");
+                const insuranceFee = document.getElementById("insurance-fee").value.replace(/,/g, "");
+                const totalFee = document.getElementById("total-fee").value.replace(/,/g, "");
+
+                // 결제 방법 가져오기
+                const paymentMethod = document.querySelector('input[name="payment-method"]:checked')?.value || "현금";
+
+                if (confirm("진료를 완료하시겠습니까?")) {
+                    // 여기에 진료 완료 및 결제 처리 로직 추가
+                    console.log(
+                        "본인 부담금:",
+                        patientFee + "원",
+                        "공단 부담금:",
+                        insuranceFee + "원",
+                        "총 진료비:",
+                        totalFee + "원",
+                        "결제 방법:",
+                        paymentMethod
+                    );
+
+                    // 서버에 데이터 전송 코드 추가 (현재는 예시)
+                    // const paymentData = {
+                    //     patientFee,
+                    //     insuranceFee,
+                    //     totalFee,
+                    //     paymentMethod,
+                    //     patientId: '12345',
+                    //     treatmentId: 'T2025-0825'
+                    // };
+                    // fetch('/api/payment', {
+                    //    method: 'POST',
+                    //    body: JSON.stringify(paymentData),
+                    //    headers: { 'Content-Type': 'application/json' }
+                    // });
+
+                    alert("진료 및 결제가 완료되었습니다.");
+                    window.location.href = "main.html"; // 메인 페이지로 이동
+                }
+            }
+
+            // 무료진료 선택 시 진료비 비활성화 처리
+            function handlePaymentMethodChange() {
+                const paymentMethodRadios = document.querySelectorAll('input[name="payment-method"]');
+                const patientFeeInput = document.getElementById("patient-fee");
+                const insuranceFeeInput = document.getElementById("insurance-fee");
+
+                paymentMethodRadios.forEach((radio) => {
+                    radio.addEventListener("change", function () {
+                        if (this.value === "무료진료") {
+                            // 모든 금액을 0으로 설정하고 비활성화
+                            patientFeeInput.value = "0";
+                            insuranceFeeInput.value = "0";
+                            patientFeeInput.disabled = true;
+                            insuranceFeeInput.disabled = true;
+                            document.getElementById("patient-fee-error").classList.add("hidden");
+                            document.getElementById("insurance-fee-error").classList.add("hidden");
+                            calculateTotal();
+                        } else {
+                            // 다시 활성화
+                            patientFeeInput.disabled = false;
+                            insuranceFeeInput.disabled = false;
+                            if (patientFeeInput.value === "0") {
+                                patientFeeInput.value = "";
+                            }
+                            if (insuranceFeeInput.value === "0") {
+                                insuranceFeeInput.value = "";
+                            }
+                        }
+                    });
+                });
             }
 
             // 페이지 로드 시 설정
             document.addEventListener("DOMContentLoaded", function () {
-                toggleSubmenu("");
+                toggleSubmenu("record-submenu");
+                handlePaymentMethodChange();
             });
         </script>
     </body>

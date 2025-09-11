@@ -153,26 +153,6 @@
                                 <i class="fa-solid fa-file-lines"></i>
                                 <span>환자별 진료 기록</span>
                             </a>
-                            <!-- <a href="today-records.html"
-                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
-                            <i class="fa-solid fa-calendar-day"></i>
-                            <span>오늘 진료 기록</span>
-                        </a> -->
-                            <!-- <a href="search-records.html"
-                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
-                            <i class="fa-solid fa-search"></i>
-                            <span>기록 검색</span>
-                        </a> -->
-                            <!-- <a href="diagnosis-history.html"
-                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
-                            <i class="fa-solid fa-history"></i>
-                            <span>진단 이력</span>
-                        </a> -->
-                            <!-- <a href="prescription-manage.html"
-                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
-                            <i class="fa-solid fa-pills"></i>
-                            <span>처방 관리</span>
-                        </a> -->
                         </div>
                     </div>
 
@@ -240,11 +220,6 @@
                                 <i class="fa-solid fa-hospital"></i>
                                 <span>병원 시간 설정</span>
                             </a>
-                            <!-- <a href="system-settings.html"
-                            class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer">
-                            <i class="fa-solid fa-sliders"></i>
-                            <span>시스템 설정</span>
-                        </a> -->
                             <a
                                 href="backup-settings.html"
                                 class="flex items-center space-x-3 px-3 py-2 text-neutral-600 hover:bg-neutral-100 rounded-md text-sm cursor-pointer"
@@ -349,6 +324,8 @@
                     prescription: "기침약, 해열제",
                     notes: "충분한 휴식과 수분 섭취 권장",
                     files: ["의사소견서.pdf", "처방전.pdf"],
+                    status: "결제완료",
+                    paymentAmount: 15000,
                 },
                 record2: {
                     date: "2024-12-20",
@@ -358,6 +335,8 @@
                     prescription: "항생제, 해열제",
                     notes: "증상 악화 시 재방문 권고",
                     files: ["의사소견서.pdf"],
+                    status: "결제대기",
+                    paymentAmount: 20000,
                 },
                 record3: {
                     date: "2024-11-10",
@@ -367,6 +346,8 @@
                     prescription: "제산제, 위장약",
                     notes: "음식 조절 필요",
                     files: ["의사소견서.pdf", "위내시경결과.jpg"],
+                    status: "결제완료",
+                    paymentAmount: 35000,
                 },
                 record4: {
                     date: "2025-02-02",
@@ -376,6 +357,8 @@
                     prescription: "니트로글리세린, 아스피린",
                     notes: "과격한 운동 자제 필요",
                     files: ["심전도결과.pdf"],
+                    status: "결제취소",
+                    paymentAmount: 50000,
                 },
                 record5: {
                     date: "2025-01-28",
@@ -385,6 +368,8 @@
                     prescription: "흡입제, 항히스타민제",
                     notes: "환경 관리 필요",
                     files: ["폐기능검사.pdf"],
+                    status: "결제대기",
+                    paymentAmount: 25000,
                 },
                 record6: {
                     date: "2025-02-10",
@@ -394,6 +379,8 @@
                     prescription: "소염진통제, 물리치료",
                     notes: "정기적 검진 필요",
                     files: ["X-ray.jpg"],
+                    status: "결제완료",
+                    paymentAmount: 40000,
                 },
                 record7: {
                     date: "2025-02-15",
@@ -403,6 +390,8 @@
                     prescription: "인슐린 주사, 혈당관리",
                     notes: "식이요법 철저히",
                     files: ["혈당검사.pdf"],
+                    status: "결제대기",
+                    paymentAmount: 30000,
                 },
                 record8: {
                     date: "2024-12-05",
@@ -412,6 +401,8 @@
                     prescription: "항생제, 해열제",
                     notes: "입원 치료 권장",
                     files: ["흉부X-ray.jpg", "혈액검사.pdf"],
+                    status: "결제완료",
+                    paymentAmount: 45000,
                 },
                 record9: {
                     date: "2025-01-05",
@@ -421,6 +412,8 @@
                     prescription: "항생제, 소염제",
                     notes: "목 보호 필요",
                     files: ["의사소견서.pdf"],
+                    status: "결제취소",
+                    paymentAmount: 18000,
                 },
                 record10: {
                     date: "2025-02-12",
@@ -430,6 +423,8 @@
                     prescription: "칼슘제, 비타민D",
                     notes: "낙상 주의, 보조기 착용 권장",
                     files: ["골밀도검사.pdf"],
+                    status: "결제완료",
+                    paymentAmount: 32000,
                 },
             };
 
@@ -438,20 +433,87 @@
                 const content = document.getElementById("record-content");
                 const record = recordDetails[recordId];
 
+                // 진료 상태에 따른 배지 스타일
+                let statusClass = "";
+                switch (record.status) {
+                    case "결제완료":
+                        statusClass = "bg-green-100 text-green-800";
+                        break;
+                    case "결제대기":
+                        statusClass = "bg-yellow-100 text-yellow-800";
+                        break;
+                    case "결제취소":
+                        statusClass = "bg-red-100 text-red-800";
+                        break;
+                    default:
+                        statusClass = "bg-gray-100 text-gray-800";
+                }
+
+                // 결제 상태에 따라 활성화/비활성화할 버튼 설정
+                let requestBtnDisabled = record.status === "결제완료" || record.status === "결제취소" ? "disabled" : "";
+                let completeBtnDisabled =
+                    record.status === "결제완료" || record.status === "결제취소" ? "disabled" : "";
+                let cancelBtnDisabled = record.status === "결제취소" ? "disabled" : "";
+
                 content.innerHTML = `
-                <div><strong>진료일:</strong> ${record.date}</div>
-                <div><strong>진료과:</strong> ${record.dept}</div>
-                <div><strong>담당의:</strong> ${record.doctor}</div>
-                <div><strong>진단:</strong> ${record.diagnosis}</div>
-                <div><strong>처방:</strong> ${record.prescription}</div>
-                <div><strong>의사 소견:</strong> ${record.notes}</div>
-                <div>
-                    <strong>첨부 파일:</strong>
-                    <ul class="list-disc pl-5 mt-1">
-                        ${record.files
-                            .map((f) => `<li><a href="#" class="text-blue-600 hover:underline">${f}</a></li>`)
-                            .join("")}
-                    </ul>
+                <div class="space-y-4">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <div class="text-lg font-bold">${record.diagnosis}</div>
+                            <span class="px-3 py-1 rounded-full ${statusClass} text-xs font-medium">${
+                    record.status
+                }</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <div><strong>진료일:</strong> ${record.date}</div>
+                                <div><strong>진료과:</strong> ${record.dept}</div>
+                                <div><strong>담당의:</strong> ${record.doctor}</div>
+                            </div>
+                            <div>
+                                <div><strong>진료비:</strong> ${record.paymentAmount.toLocaleString()}원</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div><strong>진단:</strong> ${record.diagnosis}</div>
+                        <div><strong>처방:</strong> ${record.prescription}</div>
+                        <div><strong>의사 소견:</strong> ${record.notes}</div>
+                    </div>
+                    
+                    <div>
+                        <strong>첨부 파일:</strong>
+                        <ul class="list-disc pl-5 mt-1">
+                            ${record.files
+                                .map((f) => `<li><a href="#" class="text-blue-600 hover:underline">${f}</a></li>`)
+                                .join("")}
+                        </ul>
+                    </div>
+                    
+                    <div class="pt-4 border-t border-neutral-200">
+                        <h3 class="text-sm font-medium mb-2">결제 관리</h3>
+                        <div class="flex gap-2">
+                            <button 
+                                onclick="requestPayment('${recordId}')" 
+                                class="flex-1 px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                                ${requestBtnDisabled}>
+                                <i class="fa-solid fa-credit-card mr-1"></i> 결제 요청
+                            </button>
+                            <button 
+                                onclick="completePayment('${recordId}')" 
+                                class="flex-1 px-3 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                                ${completeBtnDisabled}>
+                                <i class="fa-solid fa-check mr-1"></i> 결제 완료
+                            </button>
+                            <button 
+                                onclick="cancelPayment('${recordId}')" 
+                                class="flex-1 px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                                ${cancelBtnDisabled}>
+                                <i class="fa-solid fa-times mr-1"></i> 결제 취소
+                            </button>
+                        </div>
+                    </div>
                 </div>
             `;
 
@@ -583,6 +645,11 @@
                 { id: "record10", patient: "문환자" },
             ];
 
+            // 환자 이름을 recordDetails에 추가
+            records.forEach((rec) => {
+                recordDetails[rec.id].patient = rec.patient;
+            });
+
             // 상태
             let state = {
                 name: "",
@@ -695,10 +762,32 @@
                     const rec = recordDetails[r.id];
                     const card = document.createElement("div");
                     card.className = "p-3 mb-2 border border-neutral-200 rounded-lg hover:bg-neutral-50 cursor-pointer";
+
+                    // 결제 상태에 따른 배지 스타일 설정
+                    let statusBadge = "";
+                    let statusColor = "";
+                    switch (rec.status) {
+                        case "결제완료":
+                            statusColor = "bg-green-100 text-green-800";
+                            break;
+                        case "결제대기":
+                            statusColor = "bg-yellow-100 text-yellow-800";
+                            break;
+                        case "결제취소":
+                            statusColor = "bg-red-100 text-red-800";
+                            break;
+                        default:
+                            statusColor = "bg-gray-100 text-gray-800";
+                    }
+
+                    statusBadge = `<span class="text-xs px-2 py-1 rounded-full ${statusColor}">${rec.status}</span>`;
+
                     card.innerHTML = `
         <div class="flex items-center justify-between">
           <div>
-            <div class="text-sm text-neutral-600">${rec.date}</div>
+            <div class="text-sm text-neutral-600 flex items-center gap-2">
+              ${rec.date} ${statusBadge}
+            </div>
             <div class="font-medium text-neutral-800">${rec.diagnosis}</div>
             <div class="text-xs text-neutral-500">${rec.dept} · ${rec.doctor}</div>
           </div>
@@ -749,6 +838,49 @@
                 state = { name: "", from: "", to: "", selectedPatient: null };
                 renderPatientList();
             });
+
+            // 결제 관련 함수들
+            function requestPayment(recordId) {
+                const record = recordDetails[recordId];
+                if (
+                    confirm(
+                        `${
+                            record.patient || "환자"
+                        }님의 진료비 ${record.paymentAmount.toLocaleString()}원에 대한 결제를 요청하시겠습니까?`
+                    )
+                ) {
+                    record.status = "결제대기";
+                    alert("결제 요청이 완료되었습니다.");
+                    showDetail(recordId); // 상세 정보 업데이트
+                    renderRecordList(); // 목록 업데이트
+                }
+            }
+
+            function completePayment(recordId) {
+                const record = recordDetails[recordId];
+                if (
+                    confirm(
+                        `${
+                            record.patient || "환자"
+                        }님의 진료비 ${record.paymentAmount.toLocaleString()}원이 결제 완료 처리됩니다. 계속하시겠습니까?`
+                    )
+                ) {
+                    record.status = "결제완료";
+                    alert("결제 완료 처리되었습니다.");
+                    showDetail(recordId);
+                    renderRecordList();
+                }
+            }
+
+            function cancelPayment(recordId) {
+                const record = recordDetails[recordId];
+                if (confirm(`${record.patient || "환자"}님의 진료비 결제를 취소하시겠습니까?`)) {
+                    record.status = "결제취소";
+                    alert("결제가 취소되었습니다.");
+                    showDetail(recordId);
+                    renderRecordList();
+                }
+            }
 
             // 최초 렌더
             document.addEventListener("DOMContentLoaded", () => {
