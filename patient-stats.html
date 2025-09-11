@@ -9,7 +9,6 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         ></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
@@ -226,55 +225,27 @@
             <section class="flex-1 p-6">
                 <h2 class="text-2xl text-neutral-900 mb-6">진료 통계</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    <!-- 비대면 진료 예약 -->
-                    <div class="bg-white border border-neutral-200 rounded-lg p-5 shadow-sm relative">
-                        <div class="w-12 h-12 flex items-center justify-center bg-blue-100 text-blue-600 rounded-full mb-3">
-                            <i class="fa-solid fa-mobile-screen-button text-xl"></i>
-                        </div>
+                    <div class="bg-white border border-neutral-200 rounded-lg p-5 shadow-sm">
+                        <i class="fa-solid fa-mobile-screen-button text-2xl text-neutral-600 mb-2"></i>
                         <div class="text-sm text-neutral-600 mb-1">비대면 진료 예약 건수</div>
                         <div class="text-2xl font-semibold text-neutral-900" id="stat-remote">128</div>
-                        <div class="text-xs text-green-500 mt-1 flex items-center">
-                            <i class="fa-solid fa-arrow-up mr-1"></i> 12% 전월 대비
-                        </div>
                     </div>
-                
-                    <!-- 진료 완료 -->
-                    <div class="bg-white border border-neutral-200 rounded-lg p-5 shadow-sm relative">
-                        <div class="w-12 h-12 flex items-center justify-center bg-green-100 text-green-600 rounded-full mb-3">
-                            <i class="fa-solid fa-user-doctor text-xl"></i>
-                        </div>
+                    <div class="bg-white border border-neutral-200 rounded-lg p-5 shadow-sm">
+                        <i class="fa-solid fa-user-doctor text-2xl text-neutral-600 mb-2"></i>
                         <div class="text-sm text-neutral-600 mb-1">진료 완료 건수</div>
                         <div class="text-2xl font-semibold text-neutral-900" id="stat-done">97</div>
-                        <div class="text-xs text-red-500 mt-1 flex items-center">
-                            <i class="fa-solid fa-arrow-down mr-1"></i> 5% 전월 대비
-                        </div>
                     </div>
-                
-                    <!-- 결제 완료 -->
-                    <div class="bg-white border border-neutral-200 rounded-lg p-5 shadow-sm relative">
-                        <div class="w-12 h-12 flex items-center justify-center bg-yellow-100 text-yellow-600 rounded-full mb-3">
-                            <i class="fa-solid fa-credit-card text-xl"></i>
-                        </div>
+                    <div class="bg-white border border-neutral-200 rounded-lg p-5 shadow-sm">
+                        <i class="fa-solid fa-credit-card text-2xl text-neutral-600 mb-2"></i>
                         <div class="text-sm text-neutral-600 mb-1">결제 완료 건수</div>
                         <div class="text-2xl font-semibold text-neutral-900" id="stat-paid">92</div>
-                        <div class="text-xs text-green-500 mt-1 flex items-center">
-                            <i class="fa-solid fa-arrow-up mr-1"></i> 8% 전월 대비
-                        </div>
                     </div>
-                
-                    <!-- 처방 -->
-                    <div class="bg-white border border-neutral-200 rounded-lg p-5 shadow-sm relative">
-                        <div class="w-12 h-12 flex items-center justify-center bg-purple-100 text-purple-600 rounded-full mb-3">
-                            <i class="fa-solid fa-pills text-xl"></i>
-                        </div>
+                    <div class="bg-white border border-neutral-200 rounded-lg p-5 shadow-sm">
+                        <i class="fa-solid fa-pills text-2xl text-neutral-600 mb-2"></i>
                         <div class="text-sm text-neutral-600 mb-1">처방 건수</div>
                         <div class="text-2xl font-semibold text-neutral-900" id="stat-prescribed">85</div>
-                        <div class="text-xs text-green-500 mt-1 flex items-center">
-                            <i class="fa-solid fa-arrow-up mr-1"></i> 10% 전월 대비
-                        </div>
                     </div>
                 </div>
-                
                 <div class="bg-white border border-neutral-200 rounded-lg p-6 shadow">
                     <h3 class="text-lg text-neutral-900 mb-4">월별 통계</h3>
                     <canvas id="statsChart" height="120"></canvas>

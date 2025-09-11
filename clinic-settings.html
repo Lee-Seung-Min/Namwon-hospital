@@ -232,9 +232,19 @@
                     <!-- 탭 메뉴 -->
                     <div class="border-b border-neutral-200 mb-6">
                         <div class="flex space-x-8">
+                            <!-- <button
+                                onclick="showTab('general')"
+                                class="tab-button px-4 py-2 tab-active"
+                                data-tab="general"
+                            >
+                                일반 정보
+                            </button> -->
                             <button onclick="showTab('hours')" class="tab-button px-4 py-2" data-tab="hours">
                                 진료 시간
                             </button>
+                            <!-- <button onclick="showTab('doctors')" class="tab-button px-4 py-2" data-tab="doctors">
+                                의사 정보
+                            </button> -->
                             <button onclick="showTab('holidays')" class="tab-button px-4 py-2" data-tab="holidays">
                                 휴일 관리
                             </button>
@@ -247,74 +257,297 @@
                         </div>
                     </div>
 
-                    <!-- 진료 시간 탭 -->
-                    <div id="hours-tab" class="tab-content hidden">
-                        <div class="space-y-6">
-                            <!-- 기준 시간 & 점심 시간 나란히 -->
-                            <div class="bg-white border border-neutral-200 rounded-lg p-6">
-                                <div class="flex gap-6">
-                                    <!-- 기준 시간 설정 -->
-                                    <div class="flex-1">
-                                        <h3 class="text-lg font-medium mb-4">진료 시간 설정</h3>
-                                        <div class="space-y-4">
-                                            <div>
-                                                <label class="block text-sm font-medium text-neutral-700 mb-2"
-                                                    >진료 기준 시간</label
-                                                >
-                                                <div class="flex items-center gap-4">
-                                                    <div class="flex items-center gap-2">
-                                                        <select
-                                                            id="timeInterval"
-                                                            class="px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500"
-                                                        >
-                                                            <option value="30">30분</option>
-                                                            <option value="20">20분</option>
-                                                            <option value="15">15분</option>
-                                                            <option value="10">10분</option>
-                                                        </select>
-                                                        <span class="text-sm text-neutral-600">간격으로 예약 설정</span>
-                                                    </div>
-                                                    <div class="flex gap-2">
-                                                        <button
-                                                            onclick="generateTimeSlots()"
-                                                            class="px-4 py-2 bg-neutral-900 text-white rounded-lg hover:bg-neutral-800"
-                                                        >
-                                                            시간표 자동 생성
-                                                        </button>
-                                                        <button
-                                                            onclick="selectAllSlots()"
-                                                            class="px-4 py-2 bg-neutral-700 text-white rounded-lg hover:bg-neutral-600"
-                                                        >
-                                                            전체 선택
-                                                        </button>
-                                                        <button
-                                                            onclick="unselectAllSlots()"
-                                                            class="px-4 py-2 bg-neutral-700 text-white rounded-lg hover:bg-neutral-600"
-                                                        >
-                                                            전체 해제
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
+                    <!-- 일반 정보 탭 -->
+                    <!-- <div id="general-tab" class="tab-content">
+                        <form class="max-w-4xl mx-auto">
+                            기본 정보 섹션
+                            <div class="bg-white rounded-lg border border-neutral-200 p-6 mb-6">
+                                <h3 class="text-lg font-medium text-neutral-900 mb-4">기본 정보</h3>
+                                <div class="grid grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-neutral-700 mb-1">병원명</label>
+                                        <input
+                                            type="text"
+                                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
+                                            value="바로병원"
+                                            placeholder="병원 이름을 입력하세요"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-neutral-700 mb-1"
+                                            >요양기관 번호</label
+                                        >
+                                        <input
+                                            type="text"
+                                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
+                                            value="12345"
+                                            placeholder="요양기관 번호를 입력하세요"
+                                        />
+                                    </div>
+                                    <div class="col-span-2">
+                                        <label class="block text-sm text-neutral-600 mb-1">진료과목</label>
+                                        <div class="grid grid-cols-4 gap-3">
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                안과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                이비인후과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                피부과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                신경외과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                산부인과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                소화기내과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                정신건강의학과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                한방내과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                가정의학과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                재활의학과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                비뇨의학과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                흉부외과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                외과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                정형외과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                신경과
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="department-btn px-4 py-3 border rounded-md text-sm text-center hover:border-neutral-400 focus:outline-none bg-white"
+                                            >
+                                                내분비내과
+                                            </button>
                                         </div>
                                     </div>
 
-                                    <!-- 점심 시간 설정 -->
-                                    <div class="flex-1">
-                                        <h3 class="text-lg font-medium mb-4">점심 시간</h3>
-                                        <div class="time-grid flex items-center gap-3">
-                                            <label class="font-medium">점심 시간</label>
+                                    <style>
+                                        .department-btn.selected {
+                                            background-color: #1f2937;
+                                            color: white;
+                                            border-color: #1f2937;
+                                        }
+                                    </style>
+
+                                    <script>
+                                        진료과 버튼 선택 기능
+                                        document.querySelectorAll(".department-btn").forEach((button) => {
+                                            button.addEventListener("click", function () {
+                                                this.classList.toggle("selected");
+                                            });
+                                        });
+                                    </script>
+                                </div>
+                            </div>
+
+                            연락처 정보 섹션
+                            <div class="bg-white rounded-lg border border-neutral-200 p-6 mb-6">
+                                <h3 class="text-lg font-medium text-neutral-900 mb-4">연락처 정보</h3>
+                                <div class="grid grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-neutral-700 mb-1"
+                                            >사업자등록번호</label
+                                        >
+                                        <input
+                                            type="text"
+                                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
+                                            value="123-45-67890"
+                                            placeholder="사업자등록번호를 입력하세요"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-neutral-700 mb-1"
+                                            >병원 전화번호</label
+                                        >
+                                        <input
+                                            type="tel"
+                                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
+                                            value="02-1234-5678"
+                                            placeholder="전화번호를 입력하세요"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-neutral-700 mb-1">담당자</label>
+                                        <input
+                                            type="text"
+                                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
+                                            value="김비트"
+                                            placeholder="담당자 이름을 입력하세요"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-neutral-700 mb-1"
+                                            >담당자 연락처</label
+                                        >
+                                        <input
+                                            type="tel"
+                                            class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
+                                            value="010-1234-5678"
+                                            placeholder="연락처를 입력하세요"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            주소 정보 섹션
+                            <div class="bg-white rounded-lg border border-neutral-200 p-6 mb-6">
+                                <h3 class="text-lg font-medium text-neutral-900 mb-4">주소 정보</h3>
+                                <div class="space-y-4">
+                                    <div class="flex gap-3">
+                                        <div class="w-1/3">
                                             <input
-                                                type="time"
-                                                class="px-3 py-2 border border-neutral-300 rounded-md"
-                                                value="13:00"
+                                                type="text"
+                                                class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
+                                                placeholder="우편번호"
+                                                value="12345"
+                                                readonly
                                             />
-                                            <span>~</span>
-                                            <input
-                                                type="time"
-                                                class="px-3 py-2 border border-neutral-300 rounded-md"
-                                                value="14:00"
-                                            />
+                                        </div>
+                                        <button
+                                            class="px-6 py-2.5 bg-neutral-900 text-white rounded-lg hover:bg-neutral-800 transition-colors"
+                                        >
+                                            우편번호 검색
+                                        </button>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
+                                        placeholder="기본주소"
+                                        value="서울시 강남구 테헤란로 123"
+                                        readonly
+                                    />
+                                    <input
+                                        type="text"
+                                        class="w-full px-4 py-2.5 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors"
+                                        placeholder="상세주소를 입력하세요"
+                                        value="4층"
+                                    />
+                                </div>
+                            </div>
+                            소개글 섹션
+                            <div class="bg-white rounded-lg border border-neutral-200 p-6">
+                                <h3 class="text-lg font-medium text-neutral-900 mb-4">병원 소개</h3>
+                                <textarea
+                                    class="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 transition-colors resize-none"
+                                    rows="5"
+                                    placeholder="병원 소개글을 입력하세요"
+                                >
+바로병원은 최상의 의료 서비스를 제공합니다.</textarea
+                                >
+                                <p class="mt-2 text-sm text-neutral-500">병원의 특징과 주요 서비스를 소개해주세요.</p>
+                            </div>
+                        </form>
+                    </div> -->
+
+                    <!-- 진료 시간 탭 -->
+                    <div id="hours-tab" class="tab-content hidden">
+                        <div class="space-y-6">
+                            <!-- 기준 시간 설정 -->
+                            <div class="bg-white border border-neutral-200 rounded-lg p-6">
+                                <h3 class="text-lg font-medium mb-4">진료 시간 설정</h3>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-neutral-700 mb-2"
+                                            >진료 기준 시간</label
+                                        >
+                                        <div class="flex items-center gap-4">
+                                            <div class="flex items-center gap-2">
+                                                <select
+                                                    id="timeInterval"
+                                                    class="px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500"
+                                                >
+                                                    <option value="30">30분</option>
+                                                    <option value="20">20분</option>
+                                                    <option value="15">15분</option>
+                                                    <option value="10">10분</option>
+                                                </select>
+                                                <span class="text-sm text-neutral-600">간격으로 예약 설정</span>
+                                            </div>
+                                            <div class="flex gap-2">
+                                                <button
+                                                    onclick="generateTimeSlots()"
+                                                    class="px-4 py-2 bg-neutral-900 text-white rounded-lg hover:bg-neutral-800"
+                                                >
+                                                    시간표 자동 생성
+                                                </button>
+                                                <button
+                                                    onclick="selectAllSlots()"
+                                                    class="px-4 py-2 bg-neutral-700 text-white rounded-lg hover:bg-neutral-600"
+                                                >
+                                                    전체 선택
+                                                </button>
+                                                <button
+                                                    onclick="unselectAllSlots()"
+                                                    class="px-4 py-2 bg-neutral-700 text-white rounded-lg hover:bg-neutral-600"
+                                                >
+                                                    전체 해제
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -569,6 +802,22 @@
                                     <div class="time-slots hidden" id="sunday-slots">
                                         <!-- 시간 슬롯이 여기에 동적으로 표시됩니다 -->
                                     </div>
+                                </div>
+                            </div>
+                            <div class="bg-white border border-neutral-200 rounded-lg p-6">
+                                <h3 class="text-lg font-medium mb-4">점심 시간</h3>
+                                <div class="time-grid">
+                                    <label class="font-medium">점심 시간</label>
+                                    <input
+                                        type="time"
+                                        class="px-3 py-2 border border-neutral-300 rounded-md"
+                                        value="13:00"
+                                    />
+                                    <input
+                                        type="time"
+                                        class="px-3 py-2 border border-neutral-300 rounded-md"
+                                        value="14:00"
+                                    />
                                 </div>
                             </div>
                         </div>
